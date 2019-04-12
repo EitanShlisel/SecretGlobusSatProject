@@ -71,7 +71,7 @@ FileSystemResult c_fileWrite(char* c_file_name, void* element);
  * FS_LOCKED if c_file used by other thread,
  * FS_SUCCSESS on success.
  */
-//todo: add function in c file
+
 /*FileSystemResult c_fileDeleteElements(char* c_file_name, time_unix from_time,
 		time_unix to_time);*/
 /*!
@@ -103,7 +103,4 @@ FileSystemResult fileWrite(char* file_name, void* element,int size);
 
 FileSystemResult fileRead(char* c_file_name,char* buffer, int size_of_buffer, unsigned long from_time, unsigned long to_time, int* read, int element_size);
 
-//print c_file for testing
-void print_file(char* c_file_name);
-int FS_test();
 #endif /* FILESYSTEM_H_ */

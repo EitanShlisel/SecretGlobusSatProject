@@ -30,14 +30,14 @@
 								((arr)[0]<<24 & 0xff000000)) \
 
 #define MINUTES_TO_MILLISECONDS(minute) ((minute)*60*1000)
-
+#define SECONDS_TO_TICKS(secs) ((secs * 1000) /portTICK_RATE_MS)
 #define UNIX_JAN_D1_Y2000 {0,0,0,1,1,1,0,0} //!< Time structure of the date 1/1/2000 at 00:00
-typedef unsigned int time_unix; // in seconds
+typedef unsigned int time_unix; 	///< in seconds
 typedef unsigned char byte;
 
-typedef unsigned short voltage_t; // in mV
-typedef unsigned short current_t; // in mA
-typedef short temp_t;// in celsius
+typedef unsigned short voltage_t; 	///< in mV
+typedef unsigned short current_t; 	///< in mA
+typedef short temp_t;				///< in celsius
 typedef char channel_t;
 
 

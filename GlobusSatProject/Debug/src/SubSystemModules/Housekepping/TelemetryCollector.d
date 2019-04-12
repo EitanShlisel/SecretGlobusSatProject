@@ -1,6 +1,6 @@
-src/SubSystemModules/TelemetryCollector.d: \
- ../src/SubSystemModules/TelemetryCollector.c \
- ../src/SubSystemModules/TelemetryCollector.h \
+src/SubSystemModules/Housekepping/TelemetryCollector.d: \
+ ../src/SubSystemModules/Housekepping/TelemetryCollector.c \
+ ../src/SubSystemModules/Housekepping/TelemetryCollector.h \
  C:\ISIS\workspace\GlobusSatProject\src/GlobalStandards.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/boolean.h \
  C:\ISIS\workspace\GlobusSatProject\src/FRAM_FlightParameters.h \
@@ -10,7 +10,7 @@ src/SubSystemModules/TelemetryCollector.d: \
  C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Boolean.h \
  C:\ISIS\workspace\GlobusSatProject\src/GlobalStandards.h
 
-../src/SubSystemModules/TelemetryCollector.h:
+../src/SubSystemModules/Housekepping/TelemetryCollector.h:
 
 C:\ISIS\workspace\GlobusSatProject\src/GlobalStandards.h:
 

@@ -23,8 +23,9 @@ src/SubSystemModules/TRXVU.d: ../src/SubSystemModules/TRXVU.c \
  C:\ISIS\workspace\GlobusSatProject\src/FRAM_FlightParameters.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Storage/FRAM.h \
  C:\ISIS\workspace\GlobusSatProject\src/SysI2CAddr.h \
- ../src/SubSystemModules/SatCommands.h \
- ../src/SubSystemModules/ActUponCommand.h
+ ../src/SubSystemModules/SatCommandHandler.h \
+ ../src/SubSystemModules/ActUponCommand.h \
+ ../src/SubSystemModules/TelemetryCollector.h
 
 C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/FreeRTOS.h:
 
@@ -74,6 +75,8 @@ C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Storage/FRAM.h:
 
 C:\ISIS\workspace\GlobusSatProject\src/SysI2CAddr.h:
 
-../src/SubSystemModules/SatCommands.h:
+../src/SubSystemModules/SatCommandHandler.h:
 
 ../src/SubSystemModules/ActUponCommand.h:
+
+../src/SubSystemModules/TelemetryCollector.h:

@@ -15,9 +15,9 @@
 #include <at91/commons.h>
 
 #include "GlobalStandards.h"
-#include "SubSystemModules/EPS.h"
-#include "SubSystemModules/TRXVU.h"
-#include "SubSystemModules/TelemetryCollector.h"
+#include "SubSystemModules/PowerManagment/EPS.h"
+#include "SubSystemModules/Communication/TRXVU.h"
+#include "SubSystemModules/Housekepping/TelemetryCollector.h"
 #include "InitSystem.h"
 
 
@@ -33,8 +33,6 @@ void taskMain()
 		EPS_Conditioning();
 
 		TRX_Logic();
-
-		BeaconLogic();
 
 		TelemetryCollectorLogic();
 

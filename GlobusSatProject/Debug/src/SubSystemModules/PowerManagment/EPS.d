@@ -1,4 +1,9 @@
-src/InitSystem.d: ../src/InitSystem.c \
+src/SubSystemModules/PowerManagment/EPS.d: \
+ ../src/SubSystemModules/PowerManagment/EPS.c \
+ C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisEPS.h \
+ C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisSolarPanelv2.h \
+ C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Drivers/SPI.h \
+ C:/ISIS/workspace/GlobusSatProject/..//hal/at91/include/at91/commons.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/FreeRTOS.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/projdefs.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/FreeRTOSConfig.h \
@@ -14,22 +19,21 @@ src/InitSystem.d: ../src/InitSystem.c \
  C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/mpu_wrappers.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/semphr.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/queue.h \
- C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/task.h \
- C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/list.h \
- C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Drivers/I2C.h \
- C:/ISIS/workspace/GlobusSatProject/..//hal/at91/include/at91/commons.h \
- C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Drivers/SPI.h \
- C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Timing/Time.h \
- C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/boolean.h \
- C:/ISIS/workspace/GlobusSatProject/..//hal/at91/include/at91/utility/exithandler.h \
- ../src/GlobalStandards.h ../src/FRAM_FlightParameters.h \
- C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Storage/FRAM.h \
- ../src/SysI2CAddr.h ../src/InitSystem.h \
- ../src/SubSystemModules/PowerManagment/EPS.h \
- C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisEPS.h \
+ C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/errors.h \
  C:\ISIS\workspace\GlobusSatProject\src/GlobalStandards.h \
- ../src/SubSystemModules/Communication/TRXVU.h \
- ../src/SubSystemModules/Communication/SatCommandHandler.h
+ C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/boolean.h \
+ C:\ISIS\workspace\GlobusSatProject\src/FRAM_FlightParameters.h \
+ C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Storage/FRAM.h \
+ C:\ISIS\workspace\GlobusSatProject\src/SysI2CAddr.h \
+ ../src/SubSystemModules/PowerManagment/EPS.h
+
+C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisEPS.h:
+
+C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisSolarPanelv2.h:
+
+C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Drivers/SPI.h:
+
+C:/ISIS/workspace/GlobusSatProject/..//hal/at91/include/at91/commons.h:
 
 C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/FreeRTOS.h:
 
@@ -61,38 +65,16 @@ C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/semphr.h:
 
 C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/queue.h:
 
-C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/task.h:
-
-C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/list.h:
-
-C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Drivers/I2C.h:
-
-C:/ISIS/workspace/GlobusSatProject/..//hal/at91/include/at91/commons.h:
-
-C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Drivers/SPI.h:
-
-C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Timing/Time.h:
-
-C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/boolean.h:
-
-C:/ISIS/workspace/GlobusSatProject/..//hal/at91/include/at91/utility/exithandler.h:
-
-../src/GlobalStandards.h:
-
-../src/FRAM_FlightParameters.h:
-
-C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Storage/FRAM.h:
-
-../src/SysI2CAddr.h:
-
-../src/InitSystem.h:
-
-../src/SubSystemModules/PowerManagment/EPS.h:
-
-C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisEPS.h:
+C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/errors.h:
 
 C:\ISIS\workspace\GlobusSatProject\src/GlobalStandards.h:
 
-../src/SubSystemModules/Communication/TRXVU.h:
+C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/boolean.h:
 
-../src/SubSystemModules/Communication/SatCommandHandler.h:
+C:\ISIS\workspace\GlobusSatProject\src/FRAM_FlightParameters.h:
+
+C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Storage/FRAM.h:
+
+C:\ISIS\workspace\GlobusSatProject\src/SysI2CAddr.h:
+
+../src/SubSystemModules/PowerManagment/EPS.h:

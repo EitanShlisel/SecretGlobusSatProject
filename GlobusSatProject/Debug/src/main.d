@@ -26,10 +26,13 @@ src/main.d: ../src/main.c \
  C:/ISIS/workspace/GlobusSatProject/..//hal/at91/include/at91/utility/exithandler.h \
  ../src/GlobalStandards.h ../src/FRAM_FlightParameters.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Storage/FRAM.h \
- ../src/SysI2CAddr.h ../src/SubSystemModules/EPS.h \
+ ../src/SysI2CAddr.h ../src/SubSystemModules/PowerManagment/EPS.h \
+ C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisEPS.h \
  C:\ISIS\workspace\GlobusSatProject\src/GlobalStandards.h \
- ../src/SubSystemModules/TRXVU.h ../src/SubSystemModules/SatCommands.h \
- ../src/SubSystemModules/TelemetryCollector.h ../src/InitSystem.h
+ ../src/SubSystemModules/Communication/TRXVU.h \
+ ../src/SubSystemModules/Communication/SatCommandHandler.h \
+ ../src/SubSystemModules/Housekepping/TelemetryCollector.h \
+ ../src/InitSystem.h
 
 C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/FreeRTOS.h:
 
@@ -89,14 +92,16 @@ C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Storage/FRAM.h:
 
 ../src/SysI2CAddr.h:
 
-../src/SubSystemModules/EPS.h:
+../src/SubSystemModules/PowerManagment/EPS.h:
+
+C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisEPS.h:
 
 C:\ISIS\workspace\GlobusSatProject\src/GlobalStandards.h:
 
-../src/SubSystemModules/TRXVU.h:
+../src/SubSystemModules/Communication/TRXVU.h:
 
-../src/SubSystemModules/SatCommands.h:
+../src/SubSystemModules/Communication/SatCommandHandler.h:
 
-../src/SubSystemModules/TelemetryCollector.h:
+../src/SubSystemModules/Housekepping/TelemetryCollector.h:
 
 ../src/InitSystem.h:
