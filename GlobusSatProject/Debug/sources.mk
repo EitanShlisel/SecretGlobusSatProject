@@ -18,7 +18,10 @@ S_UPPER_DEPS :=
 # Every subdirectory with source files must be described here
 SUBDIRS := \
 src \
+src/TestingDemos \
 src/SubSystemModules/PowerManagment \
+src/SubSystemModules/Maintenance \
 src/SubSystemModules/Housekepping \
 src/SubSystemModules/Communication \
+src/SubSystemModules/Communication/SubsystemCommands \
 

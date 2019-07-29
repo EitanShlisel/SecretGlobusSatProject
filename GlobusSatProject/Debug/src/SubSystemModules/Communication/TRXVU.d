@@ -17,18 +17,28 @@ src/SubSystemModules/Communication/TRXVU.d: \
  C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/queue.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/task.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/list.h \
- C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisTRXVU.h \
- C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/errors.h \
- ../src/SubSystemModules/Communication/TRXVU.h \
- C:\ISIS\workspace\GlobusSatProject\src/GlobalStandards.h \
+ C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Timing/Time.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/boolean.h \
+ C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/errors.h \
+ C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisTRXVU.h \
+ C:\ISIS\workspace\GlobusSatProject\src/GlobalStandards.h \
+ C:/ISIS/workspace/GlobusSatProject/..//hal/at91/include/at91/utility/exithandler.h \
  C:\ISIS\workspace\GlobusSatProject\src/FRAM_FlightParameters.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Storage/FRAM.h \
  C:\ISIS\workspace\GlobusSatProject\src/SysI2CAddr.h \
+ C:\ISIS\workspace\GlobusSatProject\src/TestingConfigurations.h \
+ ../src/SubSystemModules/Communication/TRXVU.h \
+ ../src/SubSystemModules/Communication/AckHandler.h \
  ../src/SubSystemModules/Communication/SatCommandHandler.h \
  ../src/SubSystemModules/Communication/SPL.h \
  ../src/SubSystemModules/Communication/ActUponCommand.h \
- C:\ISIS\workspace\GlobusSatProject\src/SubSystemModules/Housekepping/TelemetryCollector.h
+ C:\ISIS\workspace\GlobusSatProject\src/fileSystem.h \
+ C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Boolean.h \
+ C:\ISIS\workspace\GlobusSatProject\src/SubSystemModules/PowerManagment/EPS.h \
+ C:\ISIS\workspace\GlobusSatProject\src/SubSystemModules/PowerManagment/EPSOperationModes.h \
+ C:\ISIS\workspace\GlobusSatProject\src/SubSystemModules/Maintenance/Maintenance.h \
+ C:\ISIS\workspace\GlobusSatProject\src/SubSystemModules/Housekepping/TelemetryCollector.h \
+ C:\ISIS\workspace\GlobusSatProject\src/SubSystemModules/Housekepping/TelemetryFiles.h
 
 C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/FreeRTOS.h:
 
@@ -64,15 +74,17 @@ C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/task.h:
 
 C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/list.h:
 
-C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisTRXVU.h:
+C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Timing/Time.h:
+
+C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/boolean.h:
 
 C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/errors.h:
 
-../src/SubSystemModules/Communication/TRXVU.h:
+C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisTRXVU.h:
 
 C:\ISIS\workspace\GlobusSatProject\src/GlobalStandards.h:
 
-C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/boolean.h:
+C:/ISIS/workspace/GlobusSatProject/..//hal/at91/include/at91/utility/exithandler.h:
 
 C:\ISIS\workspace\GlobusSatProject\src/FRAM_FlightParameters.h:
 
@@ -80,10 +92,28 @@ C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Storage/FRAM.h:
 
 C:\ISIS\workspace\GlobusSatProject\src/SysI2CAddr.h:
 
+C:\ISIS\workspace\GlobusSatProject\src/TestingConfigurations.h:
+
+../src/SubSystemModules/Communication/TRXVU.h:
+
+../src/SubSystemModules/Communication/AckHandler.h:
+
 ../src/SubSystemModules/Communication/SatCommandHandler.h:
 
 ../src/SubSystemModules/Communication/SPL.h:
 
 ../src/SubSystemModules/Communication/ActUponCommand.h:
 
+C:\ISIS\workspace\GlobusSatProject\src/fileSystem.h:
+
+C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Boolean.h:
+
+C:\ISIS\workspace\GlobusSatProject\src/SubSystemModules/PowerManagment/EPS.h:
+
+C:\ISIS\workspace\GlobusSatProject\src/SubSystemModules/PowerManagment/EPSOperationModes.h:
+
+C:\ISIS\workspace\GlobusSatProject\src/SubSystemModules/Maintenance/Maintenance.h:
+
 C:\ISIS\workspace\GlobusSatProject\src/SubSystemModules/Housekepping/TelemetryCollector.h:
+
+C:\ISIS\workspace\GlobusSatProject\src/SubSystemModules/Housekepping/TelemetryFiles.h:

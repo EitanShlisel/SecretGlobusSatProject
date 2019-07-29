@@ -1,6 +1,5 @@
 src/SubSystemModules/PowerManagment/EPS.d: \
  ../src/SubSystemModules/PowerManagment/EPS.c \
- C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisEPS.h \
  C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisSolarPanelv2.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Drivers/SPI.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/at91/include/at91/commons.h \
@@ -20,14 +19,16 @@ src/SubSystemModules/PowerManagment/EPS.d: \
  C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/semphr.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/queue.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/errors.h \
+ ../src/SubSystemModules/PowerManagment/EPS.h \
  C:\ISIS\workspace\GlobusSatProject\src/GlobalStandards.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/boolean.h \
+ C:/ISIS/workspace/GlobusSatProject/..//hal/at91/include/at91/utility/exithandler.h \
  C:\ISIS\workspace\GlobusSatProject\src/FRAM_FlightParameters.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Storage/FRAM.h \
  C:\ISIS\workspace\GlobusSatProject\src/SysI2CAddr.h \
- ../src/SubSystemModules/PowerManagment/EPS.h
-
-C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisEPS.h:
+ C:\ISIS\workspace\GlobusSatProject\src/TestingConfigurations.h \
+ ../src/SubSystemModules/PowerManagment/EPSOperationModes.h \
+ C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/GomEPS.h
 
 C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisSolarPanelv2.h:
 
@@ -67,9 +68,13 @@ C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/queue.h:
 
 C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/errors.h:
 
+../src/SubSystemModules/PowerManagment/EPS.h:
+
 C:\ISIS\workspace\GlobusSatProject\src/GlobalStandards.h:
 
 C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/boolean.h:
+
+C:/ISIS/workspace/GlobusSatProject/..//hal/at91/include/at91/utility/exithandler.h:
 
 C:\ISIS\workspace\GlobusSatProject\src/FRAM_FlightParameters.h:
 
@@ -77,4 +82,8 @@ C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Storage/FRAM.h:
 
 C:\ISIS\workspace\GlobusSatProject\src/SysI2CAddr.h:
 
-../src/SubSystemModules/PowerManagment/EPS.h:
+C:\ISIS\workspace\GlobusSatProject\src/TestingConfigurations.h:
+
+../src/SubSystemModules/PowerManagment/EPSOperationModes.h:
+
+C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/GomEPS.h:

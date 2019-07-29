@@ -12,28 +12,33 @@
  * @brief	Starts the FRAM using drivers, and checks for errors.
  * @see FRAM.h
  */
-void StartFRAM();
+int StartFRAM();
 
+/*!
+ * @brief	writes the default filght parameters to the corresponding FRAM addresses
+ * @see FRAM_FlightParameters.h
+ */
+void WriteDefaultValuesToFRAM();
 
 /*!
  * @brief	Starts the I2C using drivers, and checks for errors.
  * @see	I2C.h
  */
-void StartI2C();
+int StartI2C();
 
 
 /*!
  * @brief	Starts the SPI using drivers, and checks for errors
  * @see	SPI.h
  */
-void StartSPI();
+int StartSPI();
 
 
 /*!
  * @brief	Starts the Time module using drivers, and checks for errors.
  * @see Time.h
  */
-void StartTIME();
+int StartTIME();
 
 
 /*!
