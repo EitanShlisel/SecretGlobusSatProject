@@ -3,7 +3,7 @@
 
 #include "GlobalStandards.h"
 #include "TelemetryFiles.h"
-#include "fileSystem.h"
+#include "TLM_management.h"
 
 //TODO: finish WOD telemetry according to requirements... TRX TLM...
 typedef struct __attribute__ ((__packed__)) WOD_Telemetry_t

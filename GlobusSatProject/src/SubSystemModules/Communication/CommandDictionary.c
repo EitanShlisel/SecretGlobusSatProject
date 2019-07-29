@@ -8,8 +8,8 @@
 
 #include "SubSystemModules/Housekepping/TelemetryCollector.h"
 #include "SubSystemModules/PowerManagment/EPS.h"
-#include "fileSystem.h"
-
+#include "TLM_management.h"
+#include <stdio.h>
 #include "CommandDictionary.h"
 
 int trxvu_command_router(sat_packet_t *cmd)

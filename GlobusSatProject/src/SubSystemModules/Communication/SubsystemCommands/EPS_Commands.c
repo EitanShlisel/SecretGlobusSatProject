@@ -16,7 +16,7 @@
 #include "SubSystemModules/PowerManagment/EPS.h"
 #include "SubSystemModules/PowerManagment/EPSOperationModes.h"
 #include "EPS_Commands.h"
-
+#include <hal/errors.h>
 int CMD_UpdateThresholdVoltages(sat_packet_t *cmd)
 {
 	int err = 0;

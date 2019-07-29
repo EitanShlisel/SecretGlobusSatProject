@@ -18,7 +18,7 @@
 
 #include "TelemetryCollector.h"
 #include "TelemetryFiles.h"
-#include "fileSystem.h"
+#include "TLM_management.h"
 #include "SubSystemModules/Maintenance/Maintenance.h"
 
 int GetTelemetryFilenameByType(tlm_type_t tlm_type, char filename[MAX_F_FILE_NAME_SIZE])
