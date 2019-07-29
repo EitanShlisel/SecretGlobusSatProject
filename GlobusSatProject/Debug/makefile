@@ -8,8 +8,11 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include src/TestingDemos/subdir.mk
 -include src/SubSystemModules/PowerManagment/subdir.mk
+-include src/SubSystemModules/Maintenance/subdir.mk
 -include src/SubSystemModules/Housekepping/subdir.mk
+-include src/SubSystemModules/Communication/SubsystemCommands/subdir.mk
 -include src/SubSystemModules/Communication/subdir.mk
 -include src/subdir.mk
 -include subdir.mk
@@ -44,7 +47,7 @@ all: GlobusSatProject.elf secondary-outputs
 GlobusSatProject.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross ARM C Linker'
-	arm-none-eabi-gcc -mcpu=arm926ej-s -std=c99 -O0 -fmessage-length=0 -ffunction-sections -Wall -Wextra  -g -T C:/ISIS/workspace/GlobusSatProject/..//hal/at91/linker-scripts/sdram.lds -nostartfiles -Xlinker --gc-sections -L"C:/ISIS/workspace/GlobusSatProject/..//hal/at91/lib" -L"C:/ISIS/workspace/satellite-subsystems/satellite-subsystems/lib" -L"C:/ISIS/workspace/GlobusSatProject/..//hal/hcc/lib" -L"C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/lib" -L"C:/ISIS/workspace/GlobusSatProject/..//hal/hal/lib" -Wl,-Map,"GlobusSatProject.map" --specs=nano.specs -lc -u _printf_float -u _scanf_float -o "GlobusSatProject.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-none-eabi-gcc -mcpu=arm926ej-s -std=c99 -O0 -fmessage-length=0 -ffunction-sections -Wall -Wextra  -g -std=c99 -T C:/ISIS/workspace/GlobusSatProject/..//hal/at91/linker-scripts/sdram.lds -nostartfiles -Xlinker --gc-sections -L"C:/ISIS/workspace/GlobusSatProject/..//hal/at91/lib" -L"C:/ISIS/workspace/satellite-subsystems/satellite-subsystems/lib" -L"C:/ISIS/workspace/GlobusSatProject/..//hal/hcc/lib" -L"C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/lib" -L"C:/ISIS/workspace/GlobusSatProject/..//hal/hal/lib" -Wl,-Map,"GlobusSatProject.map" --specs=nano.specs -lc -u _printf_float -u _scanf_float -o "GlobusSatProject.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

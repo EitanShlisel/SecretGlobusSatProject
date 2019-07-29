@@ -22,14 +22,23 @@ src/InitSystem.d: ../src/InitSystem.c \
  C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Timing/Time.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/boolean.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/at91/include/at91/utility/exithandler.h \
- ../src/GlobalStandards.h ../src/FRAM_FlightParameters.h \
+ ../src/GlobalStandards.h \
+ C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/errors.h \
+ ../src/FRAM_FlightParameters.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Storage/FRAM.h \
- ../src/SysI2CAddr.h ../src/InitSystem.h \
+ ../src/SysI2CAddr.h ../src/TestingConfigurations.h \
  ../src/SubSystemModules/PowerManagment/EPS.h \
- C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisEPS.h \
  C:\ISIS\workspace\GlobusSatProject\src/GlobalStandards.h \
+ ../src/SubSystemModules/PowerManagment/EPSOperationModes.h \
  ../src/SubSystemModules/Communication/TRXVU.h \
- ../src/SubSystemModules/Communication/SatCommandHandler.h
+ C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisTRXVU.h \
+ ../src/SubSystemModules/Communication/AckHandler.h \
+ ../src/SubSystemModules/Communication/SatCommandHandler.h \
+ ../src/SubSystemModules/Communication/SPL.h \
+ ../src/SubSystemModules/Maintenance/Maintenance.h ../src/InitSystem.h \
+ ../src/fileSystem.h \
+ C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Boolean.h \
+ C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/GomEPS.h
 
 C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/FreeRTOS.h:
 
@@ -79,20 +88,38 @@ C:/ISIS/workspace/GlobusSatProject/..//hal/at91/include/at91/utility/exithandler
 
 ../src/GlobalStandards.h:
 
+C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/errors.h:
+
 ../src/FRAM_FlightParameters.h:
 
 C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Storage/FRAM.h:
 
 ../src/SysI2CAddr.h:
 
-../src/InitSystem.h:
+../src/TestingConfigurations.h:
 
 ../src/SubSystemModules/PowerManagment/EPS.h:
 
-C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisEPS.h:
-
 C:\ISIS\workspace\GlobusSatProject\src/GlobalStandards.h:
+
+../src/SubSystemModules/PowerManagment/EPSOperationModes.h:
 
 ../src/SubSystemModules/Communication/TRXVU.h:
 
+C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisTRXVU.h:
+
+../src/SubSystemModules/Communication/AckHandler.h:
+
 ../src/SubSystemModules/Communication/SatCommandHandler.h:
+
+../src/SubSystemModules/Communication/SPL.h:
+
+../src/SubSystemModules/Maintenance/Maintenance.h:
+
+../src/InitSystem.h:
+
+../src/fileSystem.h:
+
+C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Boolean.h:
+
+C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/GomEPS.h:

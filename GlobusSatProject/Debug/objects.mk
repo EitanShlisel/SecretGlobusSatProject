@@ -4,5 +4,5 @@
 
 USER_OBJS :=
 
-LIBS := -lHALD -lSatelliteSubsystemsD -lFreeRTOSD -lAt91D
+LIBS := -lHALD -lHCCD -lSatelliteSubsystemsD -lFreeRTOSD -lAt91D
 

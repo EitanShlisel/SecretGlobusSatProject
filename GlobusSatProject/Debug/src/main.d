@@ -22,17 +22,41 @@ src/main.d: ../src/main.c \
  C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Drivers/I2C.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/at91/include/at91/commons.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Drivers/SPI.h \
+ C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Timing/Time.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/at91/include/at91/peripherals/cp15/cp15.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/at91/include/at91/utility/exithandler.h \
- ../src/GlobalStandards.h ../src/FRAM_FlightParameters.h \
+ C:/ISIS/workspace/GlobusSatProject/..//hal/hcc/include/hcc/api_fat.h \
+ C:/ISIS/workspace/GlobusSatProject/..//hal/hcc/include/hcc/../config/config_fat.h \
+ C:/ISIS/workspace/GlobusSatProject/..//hal/hcc/include/hcc/../config/../version/ver_fat.h \
+ C:/ISIS/workspace/GlobusSatProject/..//hal/hcc/include/hcc/api_mdriver.h \
+ C:/ISIS/workspace/GlobusSatProject/..//hal/hcc/include/hcc/../version/ver_mdriver.h \
+ C:/ISIS/workspace/GlobusSatProject/..//hal/hcc/include/hcc/../version/ver_fat.h \
+ C:/ISIS/workspace/GlobusSatProject/..//hal/hcc/include/hcc/api_fs_err.h \
+ ../src/GlobalStandards.h \
+ C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/errors.h \
+ ../src/FRAM_FlightParameters.h \
  C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Storage/FRAM.h \
- ../src/SysI2CAddr.h ../src/SubSystemModules/PowerManagment/EPS.h \
- C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisEPS.h \
+ ../src/SysI2CAddr.h ../src/TestingConfigurations.h \
+ ../src/SubSystemModules/PowerManagment/EPS.h \
  C:\ISIS\workspace\GlobusSatProject\src/GlobalStandards.h \
+ ../src/SubSystemModules/PowerManagment/EPSOperationModes.h \
  ../src/SubSystemModules/Communication/TRXVU.h \
+ C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisTRXVU.h \
+ ../src/SubSystemModules/Communication/AckHandler.h \
  ../src/SubSystemModules/Communication/SatCommandHandler.h \
+ ../src/SubSystemModules/Communication/SPL.h \
  ../src/SubSystemModules/Housekepping/TelemetryCollector.h \
- ../src/InitSystem.h
+ ../src/SubSystemModules/Housekepping/TelemetryFiles.h \
+ C:\ISIS\workspace\GlobusSatProject\src/fileSystem.h \
+ C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Boolean.h \
+ ../src/SubSystemModules/Maintenance/Maintenance.h ../src/InitSystem.h \
+ ../src/main.h ../src/TestingDemos/MainTest.h \
+ C:\ISIS\workspace\GlobusSatProject\src/TestingDemos/EpsTestingDemo.h \
+ C:\ISIS\workspace\GlobusSatProject\src/TestingDemos/FileSystemTestingDemo.h \
+ C:\ISIS\workspace\GlobusSatProject\src/TestingDemos/MaintenanceTestingDemo.h \
+ C:\ISIS\workspace\GlobusSatProject\src/TestingDemos/TrxvuTestingDemo.h \
+ C:\ISIS\workspace\GlobusSatProject\src/TestingDemos/CommandsTestingDemo.h \
+ C:\ISIS\workspace\GlobusSatProject\src/TestingDemos/TelemetryTestingDemo.h
 
 C:/ISIS/workspace/GlobusSatProject/..//hal/freertos/include/freertos/FreeRTOS.h:
 
@@ -80,11 +104,29 @@ C:/ISIS/workspace/GlobusSatProject/..//hal/at91/include/at91/commons.h:
 
 C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Drivers/SPI.h:
 
+C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Timing/Time.h:
+
 C:/ISIS/workspace/GlobusSatProject/..//hal/at91/include/at91/peripherals/cp15/cp15.h:
 
 C:/ISIS/workspace/GlobusSatProject/..//hal/at91/include/at91/utility/exithandler.h:
 
+C:/ISIS/workspace/GlobusSatProject/..//hal/hcc/include/hcc/api_fat.h:
+
+C:/ISIS/workspace/GlobusSatProject/..//hal/hcc/include/hcc/../config/config_fat.h:
+
+C:/ISIS/workspace/GlobusSatProject/..//hal/hcc/include/hcc/../config/../version/ver_fat.h:
+
+C:/ISIS/workspace/GlobusSatProject/..//hal/hcc/include/hcc/api_mdriver.h:
+
+C:/ISIS/workspace/GlobusSatProject/..//hal/hcc/include/hcc/../version/ver_mdriver.h:
+
+C:/ISIS/workspace/GlobusSatProject/..//hal/hcc/include/hcc/../version/ver_fat.h:
+
+C:/ISIS/workspace/GlobusSatProject/..//hal/hcc/include/hcc/api_fs_err.h:
+
 ../src/GlobalStandards.h:
+
+C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/errors.h:
 
 ../src/FRAM_FlightParameters.h:
 
@@ -92,16 +134,48 @@ C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Storage/FRAM.h:
 
 ../src/SysI2CAddr.h:
 
-../src/SubSystemModules/PowerManagment/EPS.h:
+../src/TestingConfigurations.h:
 
-C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisEPS.h:
+../src/SubSystemModules/PowerManagment/EPS.h:
 
 C:\ISIS\workspace\GlobusSatProject\src/GlobalStandards.h:
 
+../src/SubSystemModules/PowerManagment/EPSOperationModes.h:
+
 ../src/SubSystemModules/Communication/TRXVU.h:
+
+C:/ISIS/workspace/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisTRXVU.h:
+
+../src/SubSystemModules/Communication/AckHandler.h:
 
 ../src/SubSystemModules/Communication/SatCommandHandler.h:
 
+../src/SubSystemModules/Communication/SPL.h:
+
 ../src/SubSystemModules/Housekepping/TelemetryCollector.h:
 
+../src/SubSystemModules/Housekepping/TelemetryFiles.h:
+
+C:\ISIS\workspace\GlobusSatProject\src/fileSystem.h:
+
+C:/ISIS/workspace/GlobusSatProject/..//hal/hal/include/hal/Boolean.h:
+
+../src/SubSystemModules/Maintenance/Maintenance.h:
+
 ../src/InitSystem.h:
+
+../src/main.h:
+
+../src/TestingDemos/MainTest.h:
+
+C:\ISIS\workspace\GlobusSatProject\src/TestingDemos/EpsTestingDemo.h:
+
+C:\ISIS\workspace\GlobusSatProject\src/TestingDemos/FileSystemTestingDemo.h:
+
+C:\ISIS\workspace\GlobusSatProject\src/TestingDemos/MaintenanceTestingDemo.h:
+
+C:\ISIS\workspace\GlobusSatProject\src/TestingDemos/TrxvuTestingDemo.h:
+
+C:\ISIS\workspace\GlobusSatProject\src/TestingDemos/CommandsTestingDemo.h:
+
+C:\ISIS\workspace\GlobusSatProject\src/TestingDemos/TelemetryTestingDemo.h:
