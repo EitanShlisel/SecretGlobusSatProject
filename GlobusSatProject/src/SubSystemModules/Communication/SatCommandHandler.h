@@ -45,8 +45,9 @@ int ParseDataToCommand(unsigned char * data, unsigned int length, sat_packet_t *
  * @param[in] id the id of the specific command
  * @param[out] cmd pointer to parsed command buffer
  * @return	errors according to CMD_ERR
+ * @note helpful when assembling assembling a cmd for downlink. assemble
  */
-int AssmbleCommand(unsigned char *data, unsigned int data_length, char type, char subtype,unsigned int id, sat_packet_t *cmd);
+int AssembleCommand(unsigned char *data, unsigned int data_length, char type, char subtype,unsigned int id, sat_packet_t *cmd);
 
 /*!
  * @brief returns a command to be executed if there is one in the delayed command buffer

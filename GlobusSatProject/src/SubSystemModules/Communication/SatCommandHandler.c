@@ -69,10 +69,10 @@ int ParseDataToCommand(unsigned char * data, unsigned int length, sat_packet_t *
 	unsigned int data_length = length - offset;
 	offset += sizeof(data_length);
 
-	return AssmbleCommand(data+offset,data_length,type,subtype,id,cmd);
+	return AssembleCommand(data+offset,data_length,type,subtype,id,cmd);
 }
 
-int AssmbleCommand(unsigned char *data, unsigned int data_length, char type,
+int AssembleCommand(unsigned char *data, unsigned int data_length, char type,
 		char subtype, unsigned int id, sat_packet_t *cmd)
 {
 	if (NULL == cmd) {
@@ -227,8 +227,7 @@ int GetOnlineCommand(sat_packet_t *cmd)
 
 	memcpy(&length,received_frame_data + offset,sizeof(length));
 	offset += sizeof(length);
-
-	err = AssmbleCommand(received_frame_data + offset, length-offset, type,subtype,id,cmd);
+	err = ParseDataToCommand(received_frame_data,length,cmd);
 	if (0 != err) {
 		return execution_error;
 	}

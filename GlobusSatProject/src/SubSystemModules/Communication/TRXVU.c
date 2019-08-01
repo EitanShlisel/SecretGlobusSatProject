@@ -226,7 +226,7 @@ void DumpTask(void *args) {
 		if (0 == availFrames)
 			vTaskDelay(10);
 
-		AssmbleCommand((unsigned char*)buffer, size_of_element,
+		AssembleCommand((unsigned char*)buffer, size_of_element,
 				(char) DUMP_SUBTYPE, (char) (task_args->dump_type),
 				task_args->cmd->ID, &dump_tlm);
 
@@ -289,7 +289,7 @@ void BeaconLogic() {
 	GetCurrentWODTelemetry(&wod);
 
 	sat_packet_t cmd = { 0 };
-	err = AssmbleCommand((unsigned char*) &wod, sizeof(wod), trxvu_cmd_type,
+	err = AssembleCommand((unsigned char*) &wod, sizeof(wod), trxvu_cmd_type,
 			BEACON_SUBTYPE, 0xFFFFFFFF, &cmd);
 	if (0 != err) {
 		return;
@@ -355,10 +355,10 @@ int TransmitDataAsSPL_Packet(sat_packet_t *cmd, unsigned char *data,
 	int err = 0;
 	sat_packet_t packet = { 0 };
 	if (NULL != cmd) {
-		err = AssmbleCommand(data, length, cmd->cmd_type, cmd->cmd_subtype,
+		err = AssembleCommand(data, length, cmd->cmd_type, cmd->cmd_subtype,
 				cmd->ID, &packet);
 	} else {
-		err = AssmbleCommand(data, length, 0xFF, 0xFF, 0xFFFFFFFF, &packet); //TODO: figure out what should be the 'FF'
+		err = AssembleCommand(data, length, 0xFF, 0xFF, 0xFFFFFFFF, &packet); //TODO: figure out what should be the 'FF'
 	}
 	if (err != 0) {
 		return err;

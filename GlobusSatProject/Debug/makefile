@@ -47,7 +47,7 @@ all: GlobusSatProject.elf secondary-outputs
 GlobusSatProject.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross ARM C Linker'
-	arm-none-eabi-gcc -mcpu=arm926ej-s -std=c99 -O0 -fmessage-length=0 -ffunction-sections -Wall -Wextra  -g -std=c99 -T C:/GlobusSatProject/GlobusSatProject/..//hal/at91/linker-scripts/sdram.lds -nostartfiles -Xlinker --gc-sections -L"C:/GlobusSatProject/GlobusSatProject/..//hal/at91/lib" -L"C:/ISIS/workspace/satellite-subsystems/satellite-subsystems/lib" -L"C:/GlobusSatProject/GlobusSatProject/..//hal/hcc/lib" -L"C:/GlobusSatProject/GlobusSatProject/..//hal/freertos/lib" -L"C:/GlobusSatProject/GlobusSatProject/..//hal/hal/lib" -Wl,-Map,"GlobusSatProject.map" --specs=nano.specs -lc -u _printf_float -u _scanf_float -o "GlobusSatProject.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-none-eabi-gcc -mcpu=arm926ej-s -std=c99 -O0 -fmessage-length=0 -ffunction-sections -Wall -Wextra  -g -std=c99 -T C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/at91/linker-scripts/sdram.lds -nostartfiles -Xlinker --gc-sections -L"C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/at91/lib" -L"C:/ISIS/workspace/satellite-subsystems/satellite-subsystems/lib" -L"C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/hcc/lib" -L"C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/freertos/lib" -L"C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/hal/lib" -Wl,-Map,"GlobusSatProject.map" --specs=nano.specs -lc -u _printf_float -u _scanf_float -o "GlobusSatProject.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
