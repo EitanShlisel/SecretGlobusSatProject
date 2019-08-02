@@ -1,9 +1,4 @@
-/*
- * TM_managment.h
- *
- *  Created on: Apr 8, 2019
- *      Author: Hoopoe3n
- */
+
 
 #ifndef TM_MANAGMENT_H_
 #define TM_MANAGMENT_H_

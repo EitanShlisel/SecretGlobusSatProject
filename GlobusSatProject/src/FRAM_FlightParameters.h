@@ -64,7 +64,7 @@
 #define DELAYED_CMD_BUFFER_ADDR			0x8000		//<! starting address of the delayed command buffer
 #define DELAYED_CMD_BUFFER_LENGTH		50			//<! number of commands the buffer is capable of saving(self defined, can be changed)
 
-#define DEFALUT_BEACON_BITRATE_CYCLE	3
+#define DEFALUT_BEACON_BITRATE_CYCLE	3			//<! default value
 #define BEACON_BITRATE_CYCLE_ADDR		0X4587		//<! saves the number of beacons with period of 3
 #define BEACON_BITRATE_CYCLE_SIZE		1			//<! length in bytes of BEACON_PERIOD
 

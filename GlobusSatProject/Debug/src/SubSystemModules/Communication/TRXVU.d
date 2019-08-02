@@ -38,7 +38,10 @@ src/SubSystemModules/Communication/TRXVU.d: \
  C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SubSystemModules/PowerManagment/EPSOperationModes.h \
  C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SubSystemModules/Maintenance/Maintenance.h \
  C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SubSystemModules/Housekepping/TelemetryCollector.h \
- C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SubSystemModules/Housekepping/TelemetryFiles.h
+ C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SubSystemModules/Housekepping/TelemetryFiles.h \
+ C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SubSystemModules/Communication/SatDataTx.h \
+ C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SubSystemModules/Communication/SatCommandHandler.h \
+ C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SubSystemModules/Communication/Beacon.h
 
 C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/freertos/include/freertos/FreeRTOS.h:
 
@@ -117,3 +120,9 @@ C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SubSystemM
 C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SubSystemModules/Housekepping/TelemetryCollector.h:
 
 C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SubSystemModules/Housekepping/TelemetryFiles.h:
+
+C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SubSystemModules/Communication/SatDataTx.h:
+
+C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SubSystemModules/Communication/SatCommandHandler.h:
+
+C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SubSystemModules/Communication/Beacon.h:

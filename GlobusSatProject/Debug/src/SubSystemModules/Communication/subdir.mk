@@ -6,22 +6,28 @@
 C_SRCS += \
 ../src/SubSystemModules/Communication/AckHandler.c \
 ../src/SubSystemModules/Communication/ActUponCommand.c \
+../src/SubSystemModules/Communication/Beacon.c \
 ../src/SubSystemModules/Communication/CommandDictionary.c \
 ../src/SubSystemModules/Communication/SatCommandHandler.c \
+../src/SubSystemModules/Communication/SatDataTx.c \
 ../src/SubSystemModules/Communication/TRXVU.c 
 
 OBJS += \
 ./src/SubSystemModules/Communication/AckHandler.o \
 ./src/SubSystemModules/Communication/ActUponCommand.o \
+./src/SubSystemModules/Communication/Beacon.o \
 ./src/SubSystemModules/Communication/CommandDictionary.o \
 ./src/SubSystemModules/Communication/SatCommandHandler.o \
+./src/SubSystemModules/Communication/SatDataTx.o \
 ./src/SubSystemModules/Communication/TRXVU.o 
 
 C_DEPS += \
 ./src/SubSystemModules/Communication/AckHandler.d \
 ./src/SubSystemModules/Communication/ActUponCommand.d \
+./src/SubSystemModules/Communication/Beacon.d \
 ./src/SubSystemModules/Communication/CommandDictionary.d \
 ./src/SubSystemModules/Communication/SatCommandHandler.d \
+./src/SubSystemModules/Communication/SatDataTx.d \
 ./src/SubSystemModules/Communication/TRXVU.d 
 
 
