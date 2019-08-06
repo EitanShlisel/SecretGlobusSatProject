@@ -17,6 +17,7 @@
 #ifndef FSFRAM
 #define FSFRAM 0x20000
 #endif
+
 typedef enum
 {
 	FS_SUCCSESS,
@@ -90,6 +91,7 @@ FileSystemResult c_fileDeleteElements(char* c_file_name, time_unix from_time,
  */
 int c_fileGetNumOfElements(char* c_file_name,time_unix from_time
 		,time_unix to_time);
+
 /*!
  * Read elements from c_file to buffer
  * @param c_file_name the name of the c_file.

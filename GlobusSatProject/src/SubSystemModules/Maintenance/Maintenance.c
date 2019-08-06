@@ -13,6 +13,7 @@
 
 #include "SubSystemModules/Communication/AckHandler.h"
 #include "SubSystemModules/Communication/TRXVU.h"
+#include "SubSystemModules/Communication/SatDataTx.h"
 #include "TLM_management.h"
 #include "Maintenance.h"
 

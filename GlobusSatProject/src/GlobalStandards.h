@@ -3,8 +3,9 @@
 #define GLOBALSTANDARDS_H_
 
 #include <hal/boolean.h>
-#include <at91/utility/exithandler.h>
 #include <hal/errors.h>
+
+#include <at91/utility/exithandler.h>
 
 #include "FRAM_FlightParameters.h"
 #include "SysI2CAddr.h"

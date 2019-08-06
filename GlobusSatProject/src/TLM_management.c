@@ -288,7 +288,8 @@ FileSystemResult c_fileWrite(char* c_file_name, void* element)
 	f_releaseFS();
 	return FS_SUCCSESS;
 }
-FileSystemResult fileWrite(char* file_name, void* element,int size)
+
+	FileSystemResult fileWrite(char* file_name, void* element,int size)
 {
 	F_FILE *file;
 	unsigned int curr_time;

@@ -19,9 +19,10 @@
 #ifdef ISISEPS
 	#include <satellite-subsystems/IsisEPS.h>
 #endif
+
 #define I2c_SPEED_Hz 100000
 #define I2c_Timeout 10
-#define I2c_TimeoutTest portMAX_DELAY
+
 
 Boolean isFirstActivation()
 {
@@ -50,15 +51,18 @@ void firstActivationProcedure()
 
 		SaveSatTimeInFRAM(MOST_UPDATED_SAT_TIME_ADDR,MOST_UPDATED_SAT_TIME_SIZE);
 
+		TelemetryCollectorLogic();
+
+
 		//TODO: add more to this...
 #ifdef ISISEPS
 		IsisEPS_resetWDT(EPS_I2C_BUS_INDEX, &eps_cmd);
 #endif
 #ifdef GOMEPS
 	GomEpsResetWDT(EPS_I2C_BUS_INDEX);
+
 #endif
 	}
-	//TODO: maybe save telemetry during deployment
 	//TODO: finish 'firstActivationProcedure'
 }
 
@@ -127,24 +131,30 @@ int StartTIME()
 	if (0 != error) {
 		return error;
 	}
+	time_unix time_before_wakeup = 0;
 	if (!isFirstActivation()) {
-		time_unix time_before_wakeup = 0;
 		FRAM_read((unsigned char*) &time_before_wakeup,
 		MOST_UPDATED_SAT_TIME_ADDR, MOST_UPDATED_SAT_TIME_SIZE);
 
-		FRAM_write((unsigned char*) &time_before_wakeup, LAST_WAKEUP_TIME_ADDR,
-		LAST_WAKEUP_TIME_SIZE);
 		Time_setUnixEpoch(time_before_wakeup);
+	}
+	else{
+		FRAM_write((unsigned char*) &time_before_wakeup, DEPLOYMENT_TIME_ADDR,
+						DEPLOYMENT_TIME_SIZE);
 	}
 	return 0;
 }
 
 int DeploySystem()
 {
-
 	Boolean first_activation = isFirstActivation();
 
 	if (first_activation) {
+
+		time_unix deploy_time = 0;
+		Time_getUnixEpoch(&deploy_time);
+		FRAM_write((unsigned char*) deploy_time, DEPLOYMENT_TIME_ADDR,
+		DEPLOYMENT_TIME_SIZE);
 
 		firstActivationProcedure();
 
@@ -152,10 +162,6 @@ int DeploySystem()
 		FRAM_write((unsigned char*) &first_activation,
 		FIRST_ACTIVATION_FLAG_ADDR, FIRST_ACTIVATION_FLAG_SIZE);
 
-		time_unix deploy_time = 0;
-		Time_getUnixEpoch(&deploy_time);
-		FRAM_write((unsigned char*) deploy_time, DEPLOYMENT_TIME_ADDR,
-		DEPLOYMENT_TIME_SIZE);
 	}
 	return 0;
 }

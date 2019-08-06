@@ -6,6 +6,7 @@
 #define MUTE_ON 		TRUE	///< mute is on flag
 #define MUTE_OFF 		FALSE	///< mute is off flag
 
+#include <satellite-subsystems/IsisTRXVU.h>
 #include "SubSystemModules/Communication/SatCommandHandler.h"
 
 /*!

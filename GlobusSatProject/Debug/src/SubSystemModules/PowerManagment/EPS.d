@@ -1,8 +1,5 @@
 src/SubSystemModules/PowerManagment/EPS.d: \
  ../src/SubSystemModules/PowerManagment/EPS.c \
- C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisSolarPanelv2.h \
- C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/hal/include/hal/Drivers/SPI.h \
- C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/at91/include/at91/commons.h \
  C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/freertos/include/freertos/FreeRTOS.h \
  C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/freertos/include/freertos/projdefs.h \
  C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/freertos/include/freertos/FreeRTOSConfig.h \
@@ -18,6 +15,11 @@ src/SubSystemModules/PowerManagment/EPS.d: \
  C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/freertos/include/freertos/mpu_wrappers.h \
  C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/freertos/include/freertos/semphr.h \
  C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/freertos/include/freertos/queue.h \
+ C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/freertos/include/freertos/task.h \
+ C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/freertos/include/freertos/list.h \
+ C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisSolarPanelv2.h \
+ C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/hal/include/hal/Drivers/SPI.h \
+ C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/at91/include/at91/commons.h \
  C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/hal/include/hal/errors.h \
  ../src/SubSystemModules/PowerManagment/EPS.h \
  C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/GlobalStandards.h \
@@ -29,12 +31,6 @@ src/SubSystemModules/PowerManagment/EPS.d: \
  C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/TestingConfigurations.h \
  ../src/SubSystemModules/PowerManagment/EPSOperationModes.h \
  C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/GomEPS.h
-
-C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisSolarPanelv2.h:
-
-C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/hal/include/hal/Drivers/SPI.h:
-
-C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/at91/include/at91/commons.h:
 
 C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/freertos/include/freertos/FreeRTOS.h:
 
@@ -65,6 +61,16 @@ C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/freert
 C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/freertos/include/freertos/semphr.h:
 
 C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/freertos/include/freertos/queue.h:
+
+C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/freertos/include/freertos/task.h:
+
+C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/freertos/include/freertos/list.h:
+
+C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisSolarPanelv2.h:
+
+C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/hal/include/hal/Drivers/SPI.h:
+
+C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/at91/include/at91/commons.h:
 
 C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/hal/include/hal/errors.h:
 
