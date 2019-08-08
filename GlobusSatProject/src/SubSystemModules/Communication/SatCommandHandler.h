@@ -8,14 +8,14 @@
 #define MAX_NUM_OF_DELAYED_CMD (100)
 
 
-typedef enum __attribute__ ((__packed__)) CMD_ERR{
+typedef enum __attribute__ ((__packed__)) CommandHandlerErr{
 	command_succsess = 0,				///< a successful operation. no errors
 	command_found = 0,					///< a command was found
 	no_command_found ,					///< no commands were found in command buffers
 	index_out_of_bound,					///< index out of bound error
 	null_pointer_error,					///< input parameter pointer is null
 	execution_error 					///< an execution error has occured
-}CMD_ERR;
+}CommandHandlerErr;
 
 typedef struct __attribute__ ((__packed__)) sat_packet_t
 {
@@ -30,11 +30,10 @@ typedef struct __attribute__ ((__packed__)) sat_packet_t
 /*!
  * @brief parses given frame from TRXVU into 'sat_command_t' structure.
  * @param[in] data raw data from which to parse the SPL packet
- * @param[in] data_length length of data packet in bytes
  * @param[out] cmd pointer to parsed command buffer
- * @return	errors according to CMD_ERR
+ * @return	errors according to CommandHandlerErr
  */
-int ParseDataToCommand(unsigned char * data, unsigned int length, sat_packet_t *cmd);
+CommandHandlerErr ParseDataToCommand(unsigned char * data, sat_packet_t *cmd);
 
 /*!
  * @brief parses given frame from TRXVU into 'sat_command_t' structure.
@@ -44,45 +43,46 @@ int ParseDataToCommand(unsigned char * data, unsigned int length, sat_packet_t *
  * @param[in] subtype command subtype
  * @param[in] id the id of the specific command
  * @param[out] cmd pointer to parsed command buffer
- * @return	errors according to CMD_ERR
+ * @return	errors according to CommandHandlerErr
  * @note helpful when assembling assembling a cmd for downlink. assemble
  */
-int AssembleCommand(unsigned char *data, unsigned int data_length, char type, char subtype,unsigned int id, sat_packet_t *cmd);
+CommandHandlerErr AssembleCommand(unsigned char *data, unsigned int data_length, char type,
+		char subtype,unsigned int id, sat_packet_t *cmd);
 
 /*!
  * @brief returns a command to be executed if there is one in the delayed command buffer
  * @param[out] cmd pointer to parsed command
- * @return	errors according to CMD_ERR
+ * @return	errors according to CommandHandlerErr
  */
-int GetDelayedCommand(sat_packet_t *cmd);
+CommandHandlerErr GetDelayedCommand(sat_packet_t *cmd);
 
 /*!
  * @brief sets the command to the first empty slot or the command with the farthest execution time
  * @param[in] cmd command to be added into the delated command buffer
- * @return	errors according to CMD_ERR
+ * @return	errors according to CommandHandlerErr
  */
-int AddDelayedCommand(sat_packet_t *cmd);
+CommandHandlerErr AddDelayedCommand(sat_packet_t *cmd);
 
 /*!
  * @brief returns number of commands in the delayed command buffer
  * @return	#number number of delayed commands in buffer
- * @return	errors according to CMD_ERR
+ * @return	errors according to CommandHandlerErr
  */
-int GetDelayedCommandBufferCount();
+CommandHandlerErr GetDelayedCommandBufferCount();
 
 /*!
- * @brief returns an online(immediate) command to be executed if there is one in the command buffer
+ * @brief returns an online command to be executed if there is one in the RX buffer.
  * @param[out] cmd pointer to parsed command from online TRXVU frame buffer
  * @note cmd is set
- * @return	errors according to CMD_ERR
+ * @return	errors according to CommandHandlerErr
  */
-int GetOnlineCommand(sat_packet_t *cmd);
+CommandHandlerErr GetOnlineCommand(sat_packet_t *cmd);
 
 //TODO: document
-int GetDelayedCommandByIndex(unsigned int index, sat_packet_t *cmd);
+CommandHandlerErr GetDelayedCommandByIndex(unsigned int index, sat_packet_t *cmd);
 
-int DeleteDelayedCommandByIndex(unsigned int index);
+CommandHandlerErr DeleteDelayedCommandByIndex(unsigned int index);
 
-int DeleteDelayedBuffer();
+CommandHandlerErr DeleteDelayedBuffer();
 
 #endif /* SATCOMMANDS_H_ */

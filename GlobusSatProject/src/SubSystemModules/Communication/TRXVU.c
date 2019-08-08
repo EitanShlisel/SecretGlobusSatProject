@@ -6,6 +6,7 @@
 #include <hal/errors.h>
 
 #include <satellite-subsystems/IsisTRXVU.h>
+#include <satellite-subsystems/IsisAntS.h>
 
 #include <stdlib.h>
 #include <string.h>
@@ -45,7 +46,6 @@ int InitTrxvu() {
 	int retValInt = 0;
 
 	//Buffer definition
-
 	myTRXVUBuffers.maxAX25frameLengthTX = SIZE_TXFRAME;//SIZE_TXFRAME;
 	myTRXVUBuffers.maxAX25frameLengthRX = SIZE_RXFRAME;
 
@@ -67,15 +67,24 @@ int InitTrxvu() {
 	IsisTrxvu_tcSetAx25Bitrate(ISIS_TRXVU_I2C_BUS_INDEX,myTRXVUBitrates);
 	vTaskDelay(100);
 
+	ISISantsI2Caddress myAntennaAddress;
+	myAntennaAddress.addressSideA = ANTS_I2C_SIDE_A_ADDR;
+	myAntennaAddress.addressSideB = ANTS_I2C_SIDE_B_ADDR;
+
+	//Initialize the AntS system
+	retValInt = IsisAntS_initialize(&myAntennaAddress, 1);
+	if (retValInt != 0) {
+		return retValInt;
+	}
+
 	InitTxModule();
 	InitBeaconParams();
 	InitSemaphores();
 
-
 	return 0;
 }
 
-int TRX_Logic() {
+CommandHandlerErr TRX_Logic() {
 	int err = 0;
 	int frame_count = GetNumberOfFramesInBuffer();
 	sat_packet_t cmd = { 0 };
@@ -90,7 +99,8 @@ int TRX_Logic() {
 	}
 	if (command_found == err) {
 		err = ActUponCommand(&cmd);
-		//TODO: send message to ground when a delayd command was not executed-> add to log
+		//TODO: log error
+		//TODO: send message to ground when a delayed command was not executed-> add to log
 	}
 	BeaconLogic();
 

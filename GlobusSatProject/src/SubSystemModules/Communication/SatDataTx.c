@@ -67,7 +67,10 @@ Boolean CheckTransmitionAllowed() {
 	if (g_mute_flag == MUTE_OFF && low_voltage_flag == FALSE) {
 		return TRUE;
 	}
-
+	if(pdTRUE == xSemaphoreTake(xIsTransmitting,0)){
+		xSemaphoreGive(xIsTransmitting);
+		return TRUE;
+	}
 	return FALSE;
 }
 

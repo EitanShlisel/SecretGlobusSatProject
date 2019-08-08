@@ -25,13 +25,11 @@ unsigned char g_beacon_change_baud_period = 0;	// every 'g_beacon_change_baud_pe
 
 void InitBeaconParams()
 {
-	if(0!= FRAM_read(&g_beacon_change_baud_period,BEACON_BITRATE_CYCLE_ADDR,BEACON_BITRATE_CYCLE_SIZE))
-	{
+	if(0!= FRAM_read(&g_beacon_change_baud_period,BEACON_BITRATE_CYCLE_ADDR,BEACON_BITRATE_CYCLE_SIZE)){
 		g_beacon_change_baud_period = DEFALUT_BEACON_BITRATE_CYCLE;
 	}
 
-	if (0	!= FRAM_read((unsigned char*) &g_beacon_interval_time,BEACON_INTERVAL_TIME_ADDR,BEACON_INTERVAL_TIME_SIZE))
-	{
+	if (0	!= FRAM_read((unsigned char*) &g_beacon_interval_time,BEACON_INTERVAL_TIME_ADDR,BEACON_INTERVAL_TIME_SIZE)){
 		g_beacon_interval_time = DEFAULT_BEACON_INTERVAL_TIME;
 	}
 }
@@ -56,8 +54,11 @@ int BeaconSetBitrate()
 
 void BeaconLogic()
 {
-	int err = 0;
+	if(!CheckTransmitionAllowed()){
+		return;
+	}
 
+	int err = 0;
 	if (!CheckExecutionTime(g_prev_beacon_time, g_beacon_interval_time)) {
 		return;
 	}
@@ -78,11 +79,6 @@ void BeaconLogic()
 
 	TransmitSplPacket(&cmd, NULL);
 	IsisTrxvu_tcSetAx25Bitrate(ISIS_TRXVU_I2C_BUS_INDEX, trxvu_bitrate_9600);
-
-#ifdef TESTING
-	printf("beacon was transmitted, timestamp: %lu\n", g_prev_beacon_time);
-#endif
-
 }
 
 int UpdateBeaconBaudCycle(unsigned char cycle)

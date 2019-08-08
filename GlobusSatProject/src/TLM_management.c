@@ -1,23 +1,19 @@
-/*
- * filesystem.c
- *
- *  Created on: 20 áîøõ 2019
- *      Author: Idan
- */
 
-
-#include <satellite-subsystems/GomEPS.h>
-#include <hal/Timing/Time.h>
-#include <hcc/api_fat.h>
-#include <hal/errors.h>
-#include <hcc/api_hcc_mem.h>
-#include <string.h>
 #include <hcc/api_mdriver_atmel_mcipdc.h>
+#include <hcc/api_hcc_mem.h>
+#include <hcc/api_fat.h>
+
 #include <hal/Storage/FRAM.h>
+#include <hal/Timing/Time.h>
+#include <hal/errors.h>
+
 #include <at91/utility/trace.h>
-#include "TLM_management.h"
+
+#include <string.h>
 #include <stdlib.h>
-#include <GlobalStandards.h>
+#include "GlobalStandards.h""
+
+#include "TLM_management.h"
 
 #define SKIP_FILE_TIME_SEC 1000000
 #define _SD_CARD 0
@@ -29,8 +25,6 @@ typedef struct
 {
 	int num_of_files;
 } FS;
-//TODO remove all 'PLZNORESTART' from code!!
-#define PLZNORESTART() gom_eps_hk_basic_t myEpsTelemetry_hk_basic;	(GomEpsGetHkData_basic(0, &myEpsTelemetry_hk_basic)); //todo delete
 
 //struct for chain file info
 typedef struct
@@ -88,7 +82,6 @@ static int setNumOfFilesInFS(int new_num_of_files)
 }
 FileSystemResult InitializeFS(Boolean first_time)
 {
-
 	int ret;
 	hcc_mem_init(); /* Initialize the memory to be used by filesystem */
 
@@ -180,8 +173,6 @@ FileSystemResult c_fileCreate(char* c_file_name,
 //write element with timestamp to file
 static void writewithEpochtime(F_FILE* file, byte* data, int size,unsigned int time)
 {
-	PLZNORESTART();
-
 	int number_of_writes;
 	number_of_writes = f_write( &time,sizeof(unsigned int),1, file );
 	number_of_writes += f_write( data, size,1, file );
@@ -196,9 +187,6 @@ static void writewithEpochtime(F_FILE* file, byte* data, int size,unsigned int t
 // get C_FILE struct from FRAM by name
 static Boolean get_C_FILE_struct(char* name,C_FILE* c_file,unsigned int *address)
 {
-
-	PLZNORESTART();
-
 	int i;
 	unsigned int c_file_address = 0;
 	int err_read=0;
@@ -227,13 +215,11 @@ static Boolean get_C_FILE_struct(char* name,C_FILE* c_file,unsigned int *address
 //calculate index of file in chain file by time
 static int getFileIndex(unsigned int creation_time, unsigned int current_time)
 {
-	PLZNORESTART();
 	return ((current_time-creation_time)/SKIP_FILE_TIME_SEC);
 }
 //write to curr_file_name
 void get_file_name_by_index(char* c_file_name,int index,char* curr_file_name)
 {
-	PLZNORESTART();
 	sprintf(curr_file_name,"%s%d.%s", c_file_name, index, FS_FILE_ENDING);
 }
 FileSystemResult c_fileReset(char* c_file_name)
@@ -265,7 +251,6 @@ FileSystemResult c_fileWrite(char* c_file_name, void* element)
 	unsigned int addr;//FRAM ADDRESS
 	F_FILE *file;
 	char curr_file_name[MAX_F_FILE_NAME_SIZE+sizeof(int)*2];
-	PLZNORESTART();
 	unsigned int curr_time;
 	Time_getUnixEpoch(&curr_time);
 	if(get_C_FILE_struct(c_file_name,&c_file,&addr)!=TRUE)//get c_file
@@ -508,7 +493,6 @@ void DeInitializeFS( void )
 	int err = f_delvolume( _SD_CARD ); /* delete the volID */
 
 	printf("1\n");
-	PLZNORESTART();
 	if(err != 0)
 	{
 		printf("f_delvolume err %d\n", err);

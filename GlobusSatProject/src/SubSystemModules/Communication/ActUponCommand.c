@@ -13,7 +13,7 @@ int ActUponCommand(sat_packet_t *cmd)
 		return E_NOT_INITIALIZED;
 	}
 
-	switch ((spl_command_type_t) cmd->cmd_type)
+	switch ((spl_command_type) cmd->cmd_type)
 	{
 	case trxvu_cmd_type:
 		err = trxvu_command_router(cmd);

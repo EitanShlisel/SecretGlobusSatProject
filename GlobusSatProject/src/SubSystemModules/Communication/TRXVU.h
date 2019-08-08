@@ -30,10 +30,10 @@ int InitTrxvu();
 /*!
  * @brief The TRXVU logic according to the sub-system flowchart
  * @return	command_succsess on success
- * 			errors according to CMD_ERR enumeration
+ * 			errors according to CommandHandlerErr enumeration
  * @see "SatCommandHandler.h"
  */
-int TRX_Logic();
+CommandHandlerErr TRX_Logic();
 
 
 /*!
