@@ -7,7 +7,7 @@
 #include <hal/errors.h>
 
 #include <satellite-subsystems/IsisTRXVU.h>
-
+#include "SubSystemModules/PowerManagment/EPSOperationModes.h"
 #include "GlobalStandards.h"
 #include "SatDataTx.h"
 

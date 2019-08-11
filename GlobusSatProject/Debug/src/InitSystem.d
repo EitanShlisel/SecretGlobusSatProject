@@ -35,9 +35,12 @@ src/InitSystem.d: ../src/InitSystem.c \
  ../src/SubSystemModules/Communication/AckHandler.h \
  ../src/SubSystemModules/Communication/SatCommandHandler.h \
  ../src/SubSystemModules/Communication/SPL.h \
- ../src/SubSystemModules/Maintenance/Maintenance.h ../src/InitSystem.h \
- ../src/TLM_management.h \
+ ../src/SubSystemModules/Maintenance/Maintenance.h \
+ ../src/SubSystemModules/Housekepping/TelemetryCollector.h \
+ ../src/SubSystemModules/Housekepping/TelemetryFiles.h \
+ C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/TLM_management.h \
  C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/hal/include/hal/Boolean.h \
+ ../src/InitSystem.h ../src/TLM_management.h \
  C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisEPS.h
 
 C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/freertos/include/freertos/FreeRTOS.h:
@@ -116,10 +119,16 @@ C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-
 
 ../src/SubSystemModules/Maintenance/Maintenance.h:
 
+../src/SubSystemModules/Housekepping/TelemetryCollector.h:
+
+../src/SubSystemModules/Housekepping/TelemetryFiles.h:
+
+C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/TLM_management.h:
+
+C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/hal/include/hal/Boolean.h:
+
 ../src/InitSystem.h:
 
 ../src/TLM_management.h:
-
-C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/hal/include/hal/Boolean.h:
 
 C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisEPS.h:

@@ -10,6 +10,7 @@
 #include "SubSystemModules/PowerManagment/EPS.h"
 #include "SubSystemModules/Communication/TRXVU.h"
 #include "SubSystemModules/Maintenance/Maintenance.h"
+#include "SubSystemModules/Housekepping/TelemetryCollector.h"
 #include "InitSystem.h"
 #include "TLM_management.h"
 

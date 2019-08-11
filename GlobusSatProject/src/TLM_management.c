@@ -11,7 +11,7 @@
 
 #include <string.h>
 #include <stdlib.h>
-#include "GlobalStandards.h""
+#include "GlobalStandards.h"
 
 #include "TLM_management.h"
 
@@ -228,7 +228,6 @@ FileSystemResult c_fileReset(char* c_file_name)
 	unsigned int addr;//FRAM ADDRESS
 	//F_FILE *file;
 	char curr_file_name[MAX_F_FILE_NAME_SIZE+sizeof(int)*2];
-	PLZNORESTART();
 	unsigned int curr_time;
 	Time_getUnixEpoch(&curr_time);
 	if(get_C_FILE_struct(c_file_name,&c_file,&addr)!=TRUE)//get c_file
@@ -315,7 +314,7 @@ FileSystemResult c_fileDeleteElements(char* c_file_name, time_unix from_time,
 	C_FILE c_file;
 	unsigned int addr;//FRAM ADDRESS
 	char curr_file_name[MAX_F_FILE_NAME_SIZE+sizeof(int)*2];
-	PLZNORESTART();
+
 	unsigned int curr_time;
 	Time_getUnixEpoch(&curr_time);
 	if(get_C_FILE_struct(c_file_name,&c_file,&addr)!=TRUE)//get c_file
@@ -390,7 +389,7 @@ FileSystemResult c_fileRead(char* c_file_name,byte* buffer, int size_of_buffer,
 	unsigned int addr;//FRAM ADDRESS
 	//F_FILE *file;
 	char curr_file_name[MAX_F_FILE_NAME_SIZE+sizeof(int)*2];
-	PLZNORESTART();
+
 
 	int buffer_index = 0;
 	void* element;
@@ -466,7 +465,7 @@ void print_file(char* c_file_name)
 	{
 		printf("print_file_error\n");
 	}
-	PLZNORESTART();
+
 	element = malloc(c_file.size_of_element+sizeof(unsigned int));//store element and his timestamp
 	for(i=0;i<c_file.num_of_files;i++)
 	{

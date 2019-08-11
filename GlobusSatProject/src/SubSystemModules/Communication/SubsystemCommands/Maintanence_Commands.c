@@ -23,6 +23,7 @@
 #include <hal/errors.h>
 #include "TLM_management.h"
 #include "SubSystemModules/Communication/TRXVU.h"
+#include "SubSystemModules/Communication/SatDataTx.h"
 #include "SubSystemModules/Communication/AckHandler.h"
 #include "SubSystemModules/Maintenance/Maintenance.h"
 #include "Maintanence_Commands.h"
