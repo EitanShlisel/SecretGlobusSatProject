@@ -48,7 +48,6 @@
 #define LAST_WOD_TLM_SAVE_TIME_ADDR		0x20		//<! time of last EPS TLM save inot files
 
 
-
 #define DEFAULT_NO_COMM_WDT_KICK_TIME  (15*24*60*60)	//<! number of seconds in 15 days
 #define NO_COMM_WDT_KICK_TIME_ADDR  	0x24		///< number of seconds of no communications before GS WDT kick
 #define NO_COMM_WDT_KICK_TIME_SIZE		4

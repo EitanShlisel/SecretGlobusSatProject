@@ -50,7 +50,10 @@ CommandHandlerErr ParseDataToCommand(unsigned char * data, sat_packet_t *cmd)
 	unsigned int offset = 0;
 
 	unsigned int id = 0;
-	memcpy(&id,data,sizeof(id));
+	err = memcpy(&id,data,sizeof(id));
+	if (NULL == err) {
+		return execution_error;
+	}
 	offset += sizeof(id);
 
 	char type;
@@ -66,7 +69,6 @@ CommandHandlerErr ParseDataToCommand(unsigned char * data, sat_packet_t *cmd)
 		return execution_error;
 	}
 	offset += sizeof(subtype);
-
 
 	unsigned int data_length = 0;
 	err = memcpy(&data_length, data + offset,sizeof(data_length));
@@ -219,6 +221,7 @@ CommandHandlerErr GetOnlineCommand(sat_packet_t *cmd)
 	}
 
 	err = ParseDataToCommand(received_frame_data,cmd);
+
 	if (0 != err) {
 		return execution_error;
 	}
@@ -227,7 +230,6 @@ CommandHandlerErr GetOnlineCommand(sat_packet_t *cmd)
 
 CommandHandlerErr GetDelayedCommandByIndex(unsigned int index, sat_packet_t *cmd)
 {
-	int err = 0;
 	if (NULL == cmd) {
 		return null_pointer_error;
 	}

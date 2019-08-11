@@ -21,6 +21,7 @@
 #include "SubSystemModules/PowerManagment/EPS.h"
 #include "SubSystemModules/Maintenance/Maintenance.h"
 #include "SubSystemModules/Housekepping/TelemetryCollector.h"
+#include "SubSystemModules/Communication/SatCommandHandler.h"
 #include "SubSystemModules/Communication/SatDataTx.h"
 #include "SubSystemModules/Communication/Beacon.h"
 
@@ -175,7 +176,7 @@ void DumpTask(void *args) {
 	unsigned char *buffer = NULL;
 	char filename[MAX_F_FILE_NAME_SIZE] = { 0 };
 
-	err = GetTelemetryFilenameByType((tlm_type_t) task_args->dump_type,
+	err = GetTelemetryFilenameByType((tlm_type) task_args->dump_type,
 			filename);
 	if (0 != err) {
 		FinishDump(task_args, buffer, ACK_DUMP_ABORT, (unsigned char*) &err,sizeof(err));

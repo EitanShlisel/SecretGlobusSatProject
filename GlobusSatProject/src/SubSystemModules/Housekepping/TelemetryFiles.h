@@ -32,5 +32,5 @@ typedef enum {
 	tlm_rx_revc,
 	tlm_rx_frame,
 	tlm_antenna
-}tlm_type_t;
+}tlm_type;
 #endif /* TELEMETRYFILES_H_ */

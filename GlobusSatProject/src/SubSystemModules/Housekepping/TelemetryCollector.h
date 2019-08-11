@@ -23,8 +23,21 @@ typedef struct __attribute__ ((__packed__)) WOD_Telemetry_t
 	unsigned short number_of_resets;///< counts the number of resets the satellite has gone through [#]
 } WOD_Telemetry_t;
 
+#define NUMBER_OF_TELEMETRIES 10	///< number of telemetries the satellite saves
 
-int GetTelemetryFilenameByType(tlm_type_t tlm_type,char filename[MAX_F_FILE_NAME_SIZE]);
+/*!
+ * @brief copies the corresponding filename into a buffer.
+ * @return	-1 on NULL input
+ * 			-2 on unknown  tlm_type
+ */
+int GetTelemetryFilenameByType(tlm_type tlm_type,char filename[MAX_F_FILE_NAME_SIZE]);
+
+
+/*!
+ * @brief Creates all telemetry files,
+ * @param[out]	tlms_created states whether the files were created successful
+ */
+void TelemetryCreateFiles(Boolean8bit tlms_created[NUMBER_OF_TELEMETRIES]);
 
 /*!
  * @brief saves all telemetries into the appropriate TLM files

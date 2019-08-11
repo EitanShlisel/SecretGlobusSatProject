@@ -38,7 +38,7 @@ src/InitSystem.d: ../src/InitSystem.c \
  ../src/SubSystemModules/Maintenance/Maintenance.h ../src/InitSystem.h \
  ../src/TLM_management.h \
  C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/hal/include/hal/Boolean.h \
- C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/GomEPS.h
+ C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisEPS.h
 
 C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/freertos/include/freertos/FreeRTOS.h:
 
@@ -122,4 +122,4 @@ C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-
 
 C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/hal/include/hal/Boolean.h:
 
-C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/GomEPS.h:
+C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisEPS.h:

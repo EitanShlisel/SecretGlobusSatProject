@@ -135,7 +135,6 @@ time_unix GetGsWdtKickTime()
 	FRAM_read((unsigned char*)&no_comm_thresh, NO_COMM_WDT_KICK_TIME_ADDR,
 	NO_COMM_WDT_KICK_TIME_SIZE);
 	return no_comm_thresh;
-
 }
 
 void Maintenance()

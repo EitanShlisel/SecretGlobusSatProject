@@ -30,7 +30,7 @@ src/SubSystemModules/PowerManagment/EPS.d: \
  C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SysI2CAddr.h \
  C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/TestingConfigurations.h \
  ../src/SubSystemModules/PowerManagment/EPSOperationModes.h \
- C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/GomEPS.h
+ C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisEPS.h
 
 C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/freertos/include/freertos/FreeRTOS.h:
 
@@ -92,4 +92,4 @@ C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/TestingCon
 
 ../src/SubSystemModules/PowerManagment/EPSOperationModes.h:
 
-C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/GomEPS.h:
+C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisEPS.h:

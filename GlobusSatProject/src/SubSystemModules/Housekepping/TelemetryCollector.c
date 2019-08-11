@@ -21,7 +21,7 @@
 #include "TLM_management.h"
 #include "SubSystemModules/Maintenance/Maintenance.h"
 
-int GetTelemetryFilenameByType(tlm_type_t tlm_type, char filename[MAX_F_FILE_NAME_SIZE])
+int GetTelemetryFilenameByType(tlm_type tlm_type, char filename[MAX_F_FILE_NAME_SIZE])
 {
 	if(NULL == filename){
 		return -1;
@@ -93,6 +93,46 @@ void TelemetryCollectorLogic()
 	if (CheckExecTimeFromFRAM(LAST_WOD_TLM_SAVE_TIME_ADDR,tlm_save_period))
 		TelemetrySaveWOD();
 
+}
+
+#define SAVE_FLAG_IF_FILE_CREATED(type)	if(FS_SUCCSESS != res &&NULL != tlms_created){tlms_created[(type)] = FALSE_8BIT;}
+
+void TelemetryCreateFiles(Boolean8bit tlms_created[NUMBER_OF_TELEMETRIES])
+{
+	FileSystemResult res;
+
+	// -- EPS files
+	res = c_fileCreate(FILENAME_EPS_RAW_MB_TLM,sizeof(ieps_rawhk_data_mb_t));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_eps_raw_mb)
+
+	res = c_fileCreate(FILENAME_EPS_ENG_MB_TLM,sizeof(ieps_enghk_data_mb_t));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_eps_eng_mb);
+
+	res = c_fileCreate(FILENAME_EPS_RAW_CDB_TLM,sizeof(ieps_rawhk_data_cdb_t));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_eps_raw_cdb);
+
+	res = c_fileCreate(FILENAME_EPS_ENG_CDB_TLM,sizeof(ieps_enghk_data_cdb_t));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_eps_raw_cdb);
+
+	// -- TRXVU files
+	res = c_fileCreate(FILENAME_TX_TLM,sizeof(ISIStrxvuTxTelemetry));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_tx);
+
+	res = c_fileCreate(FILENAME_TX_REVC,sizeof(ISIStrxvuTxTelemetry_revC));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_tx_revc);
+
+	res = c_fileCreate(FILENAME_RX_TLM,sizeof(ISIStrxvuRxTelemetry));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_eps_raw_mb);
+
+	res = c_fileCreate(FILENAME_RX_REVC,sizeof(ISIStrxvuRxTelemetry_revC));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_rx_revc);
+	// -- ANT files
+	res = c_fileCreate(FILENAME_ANTENNA_TLM,sizeof(ISISantsTelemetry));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_antenna);
+
+	//-- SOLAR PANEL files
+	res = c_fileCreate(FILENAME_SOLAR_PANELS_TLM,sizeof(int32_t)*ISIS_SOLAR_PANEL_COUNT);
+	SAVE_FLAG_IF_FILE_CREATED(tlm_solar);
 }
 
 void TelemetrySaveEPS()

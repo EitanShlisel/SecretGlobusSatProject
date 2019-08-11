@@ -15,7 +15,7 @@ src/SubSystemModules/Housekepping/TelemetryCollector.d: \
  C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/hal/include/hal/Storage/FRAM.h \
  C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SysI2CAddr.h \
  C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/TestingConfigurations.h \
- C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/GomEPS.h \
+ C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisEPS.h \
  C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisTRXVU.h \
  C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisAntS.h \
  C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisSolarPanelv2.h \
@@ -73,7 +73,7 @@ C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SysI2CAddr
 
 C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/TestingConfigurations.h:
 
-C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/GomEPS.h:
+C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisEPS.h:
 
 C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisTRXVU.h:
 

@@ -56,6 +56,4 @@ void AbortDump();
  */
 int DumpTelemetry(sat_packet_t *cmd);
 
-
-
 #endif
