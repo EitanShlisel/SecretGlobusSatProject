@@ -21,6 +21,18 @@
 #include "TLM_management.h"
 #include "SubSystemModules/Maintenance/Maintenance.h"
 
+
+typedef enum{
+	eps_tlm,
+	trxvu_tlm,
+	ant_tlm,
+	solar_panel_tlm,
+	wod_tlm
+}subsystem_tlm;
+
+time_unix tlm_save_periods[NUM_OF_SUBSYSTEMS_SAVE_FUNCTIONS] = {0};
+time_unix tlm_last_save_time[NUM_OF_SUBSYSTEMS_SAVE_FUNCTIONS]= {0};
+
 int GetTelemetryFilenameByType(tlm_type tlm_type, char filename[MAX_F_FILE_NAME_SIZE])
 {
 	if(NULL == filename){
@@ -69,29 +81,33 @@ int GetTelemetryFilenameByType(tlm_type tlm_type, char filename[MAX_F_FILE_NAME_
 	return 0;
 }
 
+
 void TelemetryCollectorLogic()
 {
-	time_unix tlm_save_period = 0;
-
-	FRAM_read((unsigned char*)&tlm_save_period,EPS_SAVE_TLM_PERIOD_ADDR,sizeof(tlm_save_period));
-	if (CheckExecTimeFromFRAM(LAST_EPS_TLM_SAVE_TIME_ADDR,tlm_save_period))
+	if (CheckExecutionTime(tlm_last_save_time[eps_tlm],tlm_save_periods[eps_tlm])){
 		TelemetrySaveEPS();
+		Time_getUnixEpoch(tlm_last_save_time[eps_tlm]);
+	}
 
-	FRAM_read((unsigned char*)&tlm_save_period,TRXVU_SAVE_TLM_PERIOD_ADDR,sizeof(tlm_save_period));
-	if (CheckExecTimeFromFRAM(LAST_TRXVU_TLM_SAVE_TIME_ADDR,tlm_save_period))
+	if (CheckExecutionTime(tlm_last_save_time[trxvu_tlm],tlm_save_periods[trxvu_tlm])){
 		TelemetrySaveTRXVU();
+		Time_getUnixEpoch(tlm_last_save_time[trxvu_tlm]);
+	}
 
-	FRAM_read((unsigned char*)&tlm_save_period,ANT_SAVE_TLM_PERIOD_ADDR,sizeof(tlm_save_period));
-	if (CheckExecTimeFromFRAM(LAST_ANT_TLM_SAVE_TIME_ADDR,tlm_save_period))
+	if (CheckExecutionTime(tlm_last_save_time[ant_tlm],tlm_save_periods[ant_tlm])){
 		TelemetrySaveANT();
+		Time_getUnixEpoch(tlm_last_save_time[ant_tlm]);
+	}
 
-	FRAM_read((unsigned char*)&tlm_save_period,SOLAR_SAVE_TLM_PERIOD_ADDR,sizeof(tlm_save_period));
-	if (CheckExecTimeFromFRAM(LAST_EPS_TLM_SAVE_TIME_ADDR,tlm_save_period))
+	if (CheckExecutionTime(tlm_last_save_time[solar_panel_tlm],tlm_save_periods[solar_panel_tlm])){
 		TelemetrySaveSolarPanels();
+		Time_getUnixEpoch(tlm_last_save_time[solar_panel_tlm]);
+	}
 
-	FRAM_read((unsigned char*)&tlm_save_period,WOD_SAVE_TLM_PERIOD_ADDR,sizeof(tlm_save_period));
-	if (CheckExecTimeFromFRAM(LAST_WOD_TLM_SAVE_TIME_ADDR,tlm_save_period))
+	if (CheckExecutionTime(tlm_last_save_time[wod_tlm],tlm_save_periods[wod_tlm])){
 		TelemetrySaveWOD();
+		Time_getUnixEpoch(tlm_last_save_time[wod_tlm]);
+	}
 
 }
 
@@ -100,6 +116,7 @@ void TelemetryCollectorLogic()
 void TelemetryCreateFiles(Boolean8bit tlms_created[NUMBER_OF_TELEMETRIES])
 {
 	FileSystemResult res;
+	FRAM_read((unsigned char*)tlm_save_periods,TLM_SAVE_PERIOD_START_ADDR,NUM_OF_SUBSYSTEMS_SAVE_FUNCTIONS*sizeof(time_unix));
 
 	// -- EPS files
 	res = c_fileCreate(FILENAME_EPS_RAW_MB_TLM,sizeof(ieps_rawhk_data_mb_t));

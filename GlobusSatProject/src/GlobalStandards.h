@@ -46,6 +46,16 @@
 .year = 0,			\
 .secondsOfYear = 0} 					///< Time structure of the date 1/1/2000 at 00:00
 
+#define UNIX_DEPLOY_DATE_JAN_D1_Y2020 {\
+.seconds = 0,		\
+.minutes = 0,		\
+.hours = 0,			\
+.day = 1,			\
+.date = 1,			\
+.month = 1,			\
+.year = 20,			\
+.secondsOfYear = 0}
+
 #define UNIX_SECS_FROM_Y1970_TO_Y2000	946681200				///< number of seconds from 1 JAN 1970 to 1 JAN 2000
 
 typedef unsigned long int time_unix; 	///< in seconds

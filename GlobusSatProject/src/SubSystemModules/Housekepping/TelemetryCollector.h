@@ -24,7 +24,7 @@ typedef struct __attribute__ ((__packed__)) WOD_Telemetry_t
 } WOD_Telemetry_t;
 
 #define NUMBER_OF_TELEMETRIES 10	///< number of telemetries the satellite saves
-
+#define NUM_OF_SUBSYSTEMS_SAVE_FUNCTIONS 5			///<
 /*!
  * @brief copies the corresponding filename into a buffer.
  * @return	-1 on NULL input

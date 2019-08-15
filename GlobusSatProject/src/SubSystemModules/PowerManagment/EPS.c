@@ -21,8 +21,6 @@ voltage_t prev_filtered_voltage = 0;		// y[i-1]
 float alpha = DEFAULT_ALPHA_VALUE;			//<! smoothing constant
 EpsThreshVolt_t eps_threshold_voltages = {.raw = DEFAULT_EPS_THRESHOLD_VOLTAGES};	// saves the current EPS logic threshold voltages
 
-
-
 int EPS_Init()
 {
 	unsigned char i2c_address = EPS_I2C_ADDR;
