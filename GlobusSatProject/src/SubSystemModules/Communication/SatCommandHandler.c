@@ -43,7 +43,7 @@ CommandHandlerErr ClearDelayedCMD_FromBuffer(unsigned int start_addr, unsigned i
 CommandHandlerErr ParseDataToCommand(unsigned char * data, sat_packet_t *cmd)
 {
 	if(NULL == data || NULL == cmd){
-		return null_pointer_error;
+		return cmd_null_pointer_error;
 	}
 	void *err = NULL;
 
@@ -52,28 +52,28 @@ CommandHandlerErr ParseDataToCommand(unsigned char * data, sat_packet_t *cmd)
 	unsigned int id = 0;
 	err = memcpy(&id,data,sizeof(id));
 	if (NULL == err) {
-		return execution_error;
+		return cmd_execution_error;
 	}
 	offset += sizeof(id);
 
 	char type;
 	err = memcpy(&type,data+offset,sizeof(type));
 	if (NULL == err) {
-		return execution_error;
+		return cmd_execution_error;
 	}
 	offset += sizeof(type);
 
 	char subtype;
 	err = memcpy(&subtype, data + offset,sizeof(subtype));
 	if (NULL == err) {
-		return execution_error;
+		return cmd_execution_error;
 	}
 	offset += sizeof(subtype);
 
 	unsigned int data_length = 0;
 	err = memcpy(&data_length, data + offset,sizeof(data_length));
 		if (NULL == err) {
-			return execution_error;
+			return cmd_execution_error;
 		}
 	offset += sizeof(data_length);
 
@@ -84,7 +84,7 @@ CommandHandlerErr AssembleCommand(unsigned char *data, unsigned int data_length,
 		char subtype, unsigned int id, sat_packet_t *cmd)
 {
 	if (NULL == cmd) {
-		return null_pointer_error;
+		return cmd_null_pointer_error;
 	}
 	cmd->ID = id;
 	cmd->cmd_type = type;
@@ -98,10 +98,10 @@ CommandHandlerErr AssembleCommand(unsigned char *data, unsigned int data_length,
 		void *err = memcpy(cmd->data, data, data_length);
 
 		if (NULL == err) {
-			return execution_error;
+			return cmd_execution_error;
 		}
 	}
-	return command_succsess;
+	return cmd_command_succsess;
 }
 
 // checks if a cmd time is valid for execution -> execution time has passed and command not expired
@@ -131,7 +131,7 @@ Boolean isDelayedCommandDue(time_unix cmd_time, Boolean *expired)
 CommandHandlerErr GetDelayedCommand(sat_packet_t *cmd)
 {
 	if (NULL == cmd) {
-		return null_pointer_error;
+		return cmd_null_pointer_error;
 	}
 
 	unsigned int current_fram_addr = DELAYED_CMD_BUFFER_ADDR;
@@ -155,13 +155,13 @@ CommandHandlerErr GetDelayedCommand(sat_packet_t *cmd)
 		}
 		current_fram_addr += sizeof(delayed_cmd_t);
 	}
-	return command_found;
+	return cmd_command_found;
 }
 
 CommandHandlerErr AddDelayedCommand(sat_packet_t *cmd)
 {
 	if (NULL == cmd) {
-		return null_pointer_error;
+		return cmd_null_pointer_error;
 	}
 
 	time_unix max_time = 0, temp_time = 0;
@@ -183,7 +183,7 @@ CommandHandlerErr AddDelayedCommand(sat_packet_t *cmd)
 	}
 	FRAM_write((unsigned char*) cmd, max_time_cmd_addr,
 			sizeof(delayed_cmd_t));
-	return command_succsess;
+	return cmd_command_succsess;
 }
 
 CommandHandlerErr GetDelayedCommandBufferCount()
@@ -198,7 +198,7 @@ CommandHandlerErr GetDelayedCommandBufferCount()
 CommandHandlerErr GetOnlineCommand(sat_packet_t *cmd)
 {
 	if (NULL == cmd) {
-		return null_pointer_error;
+		return cmd_null_pointer_error;
 	}
 	int err = 0;
 
@@ -207,48 +207,48 @@ CommandHandlerErr GetOnlineCommand(sat_packet_t *cmd)
 
 	err = IsisTrxvu_rcGetFrameCount(0, &frame_count);
 	if (0 != err) {
-		return execution_error;
+		return cmd_execution_error;
 	}
 	if (0 == frame_count) {
-		return no_command_found;
+		return cmd_no_command_found;
 	}
 	ISIStrxvuRxFrame rxFrameCmd = { 0, 0, 0,
 			(unsigned char*) received_frame_data }; // for getting raw data from Rx, nullify values
 
 	err = IsisTrxvu_rcGetCommandFrame(0, &rxFrameCmd); //get the frame from the Rx buffer
 	if (0 != err) {
-		return execution_error;
+		return cmd_execution_error;
 	}
 
 	err = ParseDataToCommand(received_frame_data,cmd);
 
 	if (0 != err) {
-		return execution_error;
+		return cmd_execution_error;
 	}
-	return command_found;
+	return cmd_command_found;
 }
 
 CommandHandlerErr GetDelayedCommandByIndex(unsigned int index, sat_packet_t *cmd)
 {
 	if (NULL == cmd) {
-		return null_pointer_error;
+		return cmd_null_pointer_error;
 	}
 	if (index > MAX_NUM_OF_DELAYED_CMD) {
-		return index_out_of_bound;
+		return cmd_index_out_of_bound;
 	}
 	if(0 != FRAM_read((unsigned char*) cmd,
 			index * sizeof(delayed_cmd_t) + DELAYED_CMD_BUFFER_ADDR
 					+ sizeof(time_unix), sizeof(delayed_cmd_t))){
-		return execution_error;
+		return cmd_execution_error;
 	}
-	return command_succsess;
+	return cmd_command_succsess;
 }
 
 CommandHandlerErr DeleteDelayedCommandByIndex(unsigned int index)
 {
 	int err = 0;
 	if (index > MAX_NUM_OF_DELAYED_CMD) {
-		return index_out_of_bound;
+		return cmd_index_out_of_bound;
 	}
 	unsigned int end_addr = DELAYED_CMD_BUFFER_ADDR
 			+ (index + 1) * sizeof(delayed_cmd_t);

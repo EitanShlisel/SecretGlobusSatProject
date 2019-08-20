@@ -31,7 +31,7 @@ Boolean TestActUponCommand()
 	{
 		curr_time = xTaskGetTickCount();
 		err = GetOnlineCommand(&cmd);
-		if(command_found == err){
+		if(cmd_command_found == err){
 			printf("Online Command Found!!\n");
 			err = ActUponCommand(&cmd);
 			if(0 != err){
@@ -76,7 +76,7 @@ Boolean TestGetDelayedCommand()
 {
 	sat_packet_t cmd = {0};
 	int err = GetDelayedCommand(&cmd);
-	if(err == command_found)
+	if(err == cmd_command_found)
 	{
 		printf("command found:\n");
 		for(unsigned int i = 0; i < sizeof(sat_packet_t);i++){
@@ -118,7 +118,7 @@ Boolean TestGetOnlineCommand()
 	sat_packet_t cmd = {0};
 	int err = 0;
 	err = GetOnlineCommand(&cmd);
-	if(command_found != err){
+	if(cmd_command_found != err){
 		printf("error in 'GetOnlineCommand' = %d",err);
 		return TRUE;
 	}

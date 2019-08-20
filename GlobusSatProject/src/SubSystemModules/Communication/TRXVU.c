@@ -98,17 +98,17 @@ CommandHandlerErr TRX_Logic() {
 	} else if (GetDelayedCommandBufferCount() > 0) {
 		err = GetDelayedCommand(&cmd);
 	}
-	if (command_found == err) {
+	if (cmd_command_found == err) {
 		err = ActUponCommand(&cmd);
 		//TODO: log error
 		//TODO: send message to ground when a delayed command was not executed-> add to log
 	}
 	BeaconLogic();
 
-	if (command_found != err)
+	if (cmd_command_found != err)
 		return err;
 
-	return command_succsess;
+	return cmd_command_succsess;
 }
 
 void FinishDump(dump_arguments_t *task_args,unsigned char *buffer, ack_subtype_t acktype,
