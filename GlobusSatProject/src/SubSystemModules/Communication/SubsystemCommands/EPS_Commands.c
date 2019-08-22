@@ -15,30 +15,31 @@
 #include  "SubSystemModules/Communication/TRXVU.h"
 #include "SubSystemModules/PowerManagment/EPS.h"
 #include "SubSystemModules/PowerManagment/EPSOperationModes.h"
+#include "SubSystemModules/Communication/SatDataTx.h"
 #include "EPS_Commands.h"
-
+#include <hal/errors.h>
 int CMD_UpdateThresholdVoltages(sat_packet_t *cmd)
 {
 	int err = 0;
 	if (NULL == cmd || cmd->data == NULL){
 		return E_INPUT_POINTER_NULL;
 	}
-	voltage_t thresh_voltages[NUMBER_OF_THRESHOLD_VOLTAGES];
-	memcpy(thresh_voltages, cmd->data,
-			sizeof(thresh_voltages[0]) * NUMBER_OF_THRESHOLD_VOLTAGES);
-	err = UpdateThresholdVoltages(thresh_voltages);
+	EpsThreshVolt_t thresh_voltages;;
+	memcpy(thresh_voltages.raw, cmd->data,
+			sizeof(thresh_voltages));
+	err = UpdateThresholdVoltages(&thresh_voltages);
 	return err;
 }
 
 int CMD_GetThresholdVoltages(sat_packet_t *cmd)
 {
 	int err = 0;
-	voltage_t thresh_voltages[NUMBER_OF_THRESHOLD_VOLTAGES];
-	err = GetThresholdVoltages(thresh_voltages);
+	EpsThreshVolt_t thresh_voltages;
+	err = GetThresholdVoltages(&thresh_voltages);
 	if (err == 0)
 	{
-		TransmitDataAsSPL_Packet(cmd, (unsigned char*) thresh_voltages,
-				sizeof(thresh_voltages[0]) * NUMBER_OF_THRESHOLD_VOLTAGES);
+		TransmitDataAsSPL_Packet(cmd, (unsigned char*) thresh_voltages.raw,
+				sizeof(thresh_voltages));	//TODO: check if correct
 	}
 	return err;
 }

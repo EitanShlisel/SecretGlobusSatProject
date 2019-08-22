@@ -18,10 +18,22 @@
 
 #include "TelemetryCollector.h"
 #include "TelemetryFiles.h"
-#include "fileSystem.h"
+#include "TLM_management.h"
 #include "SubSystemModules/Maintenance/Maintenance.h"
 
-int GetTelemetryFilenameByType(tlm_type_t tlm_type, char filename[MAX_F_FILE_NAME_SIZE])
+
+typedef enum{
+	eps_tlm,
+	trxvu_tlm,
+	ant_tlm,
+	solar_panel_tlm,
+	wod_tlm
+}subsystem_tlm;
+
+time_unix tlm_save_periods[NUM_OF_SUBSYSTEMS_SAVE_FUNCTIONS] = {0};
+time_unix tlm_last_save_time[NUM_OF_SUBSYSTEMS_SAVE_FUNCTIONS]= {0};
+
+int GetTelemetryFilenameByType(tlm_type tlm_type, char filename[MAX_F_FILE_NAME_SIZE])
 {
 	if(NULL == filename){
 		return -1;
@@ -69,30 +81,75 @@ int GetTelemetryFilenameByType(tlm_type_t tlm_type, char filename[MAX_F_FILE_NAM
 	return 0;
 }
 
+
 void TelemetryCollectorLogic()
 {
-	time_unix tlm_save_period = 0;
-
-	FRAM_read((unsigned char*)&tlm_save_period,EPS_SAVE_TLM_PERIOD_ADDR,sizeof(tlm_save_period));
-	if (CheckExecTimeFromFRAM(LAST_EPS_TLM_SAVE_TIME_ADDR,tlm_save_period))
+	if (CheckExecutionTime(tlm_last_save_time[eps_tlm],tlm_save_periods[eps_tlm])){
 		TelemetrySaveEPS();
+		Time_getUnixEpoch(tlm_last_save_time[eps_tlm]);
+	}
 
-	FRAM_read((unsigned char*)&tlm_save_period,TRXVU_SAVE_TLM_PERIOD_ADDR,sizeof(tlm_save_period));
-	if (CheckExecTimeFromFRAM(LAST_TRXVU_TLM_SAVE_TIME_ADDR,tlm_save_period))
+	if (CheckExecutionTime(tlm_last_save_time[trxvu_tlm],tlm_save_periods[trxvu_tlm])){
 		TelemetrySaveTRXVU();
+		Time_getUnixEpoch(tlm_last_save_time[trxvu_tlm]);
+	}
 
-	FRAM_read((unsigned char*)&tlm_save_period,ANT_SAVE_TLM_PERIOD_ADDR,sizeof(tlm_save_period));
-	if (CheckExecTimeFromFRAM(LAST_ANT_TLM_SAVE_TIME_ADDR,tlm_save_period))
+	if (CheckExecutionTime(tlm_last_save_time[ant_tlm],tlm_save_periods[ant_tlm])){
 		TelemetrySaveANT();
+		Time_getUnixEpoch(tlm_last_save_time[ant_tlm]);
+	}
 
-	FRAM_read((unsigned char*)&tlm_save_period,SOLAR_SAVE_TLM_PERIOD_ADDR,sizeof(tlm_save_period));
-	if (CheckExecTimeFromFRAM(LAST_EPS_TLM_SAVE_TIME_ADDR,tlm_save_period))
+	if (CheckExecutionTime(tlm_last_save_time[solar_panel_tlm],tlm_save_periods[solar_panel_tlm])){
 		TelemetrySaveSolarPanels();
+		Time_getUnixEpoch(tlm_last_save_time[solar_panel_tlm]);
+	}
 
-	FRAM_read((unsigned char*)&tlm_save_period,WOD_SAVE_TLM_PERIOD_ADDR,sizeof(tlm_save_period));
-	if (CheckExecTimeFromFRAM(LAST_WOD_TLM_SAVE_TIME_ADDR,tlm_save_period))
+	if (CheckExecutionTime(tlm_last_save_time[wod_tlm],tlm_save_periods[wod_tlm])){
 		TelemetrySaveWOD();
+		Time_getUnixEpoch(tlm_last_save_time[wod_tlm]);
+	}
 
+}
+
+#define SAVE_FLAG_IF_FILE_CREATED(type)	if(FS_SUCCSESS != res &&NULL != tlms_created){tlms_created[(type)] = FALSE_8BIT;}
+
+void TelemetryCreateFiles(Boolean8bit tlms_created[NUMBER_OF_TELEMETRIES])
+{
+	FileSystemResult res;
+	FRAM_read((unsigned char*)tlm_save_periods,TLM_SAVE_PERIOD_START_ADDR,NUM_OF_SUBSYSTEMS_SAVE_FUNCTIONS*sizeof(time_unix));
+
+	// -- EPS files
+	res = c_fileCreate(FILENAME_EPS_RAW_MB_TLM,sizeof(ieps_rawhk_data_mb_t));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_eps_raw_mb)
+
+	res = c_fileCreate(FILENAME_EPS_ENG_MB_TLM,sizeof(ieps_enghk_data_mb_t));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_eps_eng_mb);
+
+	res = c_fileCreate(FILENAME_EPS_RAW_CDB_TLM,sizeof(ieps_rawhk_data_cdb_t));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_eps_raw_cdb);
+
+	res = c_fileCreate(FILENAME_EPS_ENG_CDB_TLM,sizeof(ieps_enghk_data_cdb_t));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_eps_raw_cdb);
+
+	// -- TRXVU files
+	res = c_fileCreate(FILENAME_TX_TLM,sizeof(ISIStrxvuTxTelemetry));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_tx);
+
+	res = c_fileCreate(FILENAME_TX_REVC,sizeof(ISIStrxvuTxTelemetry_revC));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_tx_revc);
+
+	res = c_fileCreate(FILENAME_RX_TLM,sizeof(ISIStrxvuRxTelemetry));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_eps_raw_mb);
+
+	res = c_fileCreate(FILENAME_RX_REVC,sizeof(ISIStrxvuRxTelemetry_revC));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_rx_revc);
+	// -- ANT files
+	res = c_fileCreate(FILENAME_ANTENNA_TLM,sizeof(ISISantsTelemetry));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_antenna);
+
+	//-- SOLAR PANEL files
+	res = c_fileCreate(FILENAME_SOLAR_PANELS_TLM,sizeof(int32_t)*ISIS_SOLAR_PANEL_COUNT);
+	SAVE_FLAG_IF_FILE_CREATED(tlm_solar);
 }
 
 void TelemetrySaveEPS()

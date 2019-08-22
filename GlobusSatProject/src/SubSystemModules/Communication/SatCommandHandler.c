@@ -13,7 +13,7 @@ typedef struct __attribute__ ((__packed__)) delayed_cmd_t
 	sat_packet_t cmd;		///< command data
 } delayed_cmd_t;
 
-int ClearDelayedCMD_FromBuffer(unsigned int start_addr, unsigned int end_addr)
+CommandHandlerErr ClearDelayedCMD_FromBuffer(unsigned int start_addr, unsigned int end_addr)
 {
 	if (end_addr <= start_addr || end_addr >= FRAM_MAX_ADDRESS) {
 		return -1;
@@ -40,43 +40,51 @@ int ClearDelayedCMD_FromBuffer(unsigned int start_addr, unsigned int end_addr)
 	return 0;
 }
 
-int ParseDataToCommand(unsigned char * data, unsigned int length, sat_packet_t *cmd)
+CommandHandlerErr ParseDataToCommand(unsigned char * data, sat_packet_t *cmd)
 {
 	if(NULL == data || NULL == cmd){
-		return null_pointer_error;
+		return cmd_null_pointer_error;
 	}
 	void *err = NULL;
 
 	unsigned int offset = 0;
+
 	unsigned int id = 0;
-	memcpy(&id,data,sizeof(id));
+	err = memcpy(&id,data,sizeof(id));
+	if (NULL == err) {
+		return cmd_execution_error;
+	}
 	offset += sizeof(id);
 
 	char type;
 	err = memcpy(&type,data+offset,sizeof(type));
 	if (NULL == err) {
-		return execution_error;
+		return cmd_execution_error;
 	}
 	offset += sizeof(type);
 
 	char subtype;
 	err = memcpy(&subtype, data + offset,sizeof(subtype));
 	if (NULL == err) {
-		return execution_error;
+		return cmd_execution_error;
 	}
 	offset += sizeof(subtype);
 
-	unsigned int data_length = length - offset;
+	unsigned int data_length = 0;
+	err = memcpy(&data_length, data + offset,sizeof(data_length));
+		if (NULL == err) {
+			return cmd_execution_error;
+		}
 	offset += sizeof(data_length);
 
-	return AssmbleCommand(data+offset,data_length,type,subtype,id,cmd);
+	return AssembleCommand(data+offset,data_length,type,subtype,id,cmd);
 }
 
-int AssmbleCommand(unsigned char *data, unsigned int data_length, char type,
+CommandHandlerErr AssembleCommand(unsigned char *data, unsigned int data_length, char type,
 		char subtype, unsigned int id, sat_packet_t *cmd)
 {
 	if (NULL == cmd) {
-		return null_pointer_error;
+		return cmd_null_pointer_error;
 	}
 	cmd->ID = id;
 	cmd->cmd_type = type;
@@ -90,15 +98,17 @@ int AssmbleCommand(unsigned char *data, unsigned int data_length, char type,
 		void *err = memcpy(cmd->data, data, data_length);
 
 		if (NULL == err) {
-			return execution_error;
+			return cmd_execution_error;
 		}
 	}
-	return command_succsess;
+	return cmd_command_succsess;
 }
 
 // checks if a cmd time is valid for execution -> execution time has passed and command not expired
 // @param[in] cmd_time command execution time to check
 // @param[out] expired if command is expired the flag will be raised
+// @return TRUE is success
+//			FALSE if fail
 Boolean isDelayedCommandDue(time_unix cmd_time, Boolean *expired)
 {
 	int err = 0;
@@ -118,10 +128,10 @@ Boolean isDelayedCommandDue(time_unix cmd_time, Boolean *expired)
 }
 
 //TOOD: move delayed cmd logic to the SD and write 'checked/uncheked' bits in the FRAM
-int GetDelayedCommand(sat_packet_t *cmd)
+CommandHandlerErr GetDelayedCommand(sat_packet_t *cmd)
 {
 	if (NULL == cmd) {
-		return null_pointer_error;
+		return cmd_null_pointer_error;
 	}
 
 	unsigned int current_fram_addr = DELAYED_CMD_BUFFER_ADDR;
@@ -145,13 +155,13 @@ int GetDelayedCommand(sat_packet_t *cmd)
 		}
 		current_fram_addr += sizeof(delayed_cmd_t);
 	}
-	return command_found;
+	return cmd_command_found;
 }
 
-int AddDelayedCommand(sat_packet_t *cmd)
+CommandHandlerErr AddDelayedCommand(sat_packet_t *cmd)
 {
 	if (NULL == cmd) {
-		return null_pointer_error;
+		return cmd_null_pointer_error;
 	}
 
 	time_unix max_time = 0, temp_time = 0;
@@ -173,10 +183,10 @@ int AddDelayedCommand(sat_packet_t *cmd)
 	}
 	FRAM_write((unsigned char*) cmd, max_time_cmd_addr,
 			sizeof(delayed_cmd_t));
-	return command_succsess;
+	return cmd_command_succsess;
 }
 
-int GetDelayedCommandBufferCount()
+CommandHandlerErr GetDelayedCommandBufferCount()
 {
 	unsigned char frame_count = 0;
 	int err = FRAM_read(&frame_count, DELAYED_CMD_FRAME_COUNT_ADDR,
@@ -185,76 +195,60 @@ int GetDelayedCommandBufferCount()
 
 }
 
-int GetOnlineCommand(sat_packet_t *cmd)
+CommandHandlerErr GetOnlineCommand(sat_packet_t *cmd)
 {
 	if (NULL == cmd) {
-		return null_pointer_error;
+		return cmd_null_pointer_error;
 	}
 	int err = 0;
-	int offset = 0;
-	unsigned char type = 0;
-	unsigned char subtype = 0;
-	unsigned int id = 0;
-	unsigned int length = 0;
+
 	unsigned short frame_count = 0;
 	unsigned char received_frame_data[MAX_COMMAND_DATA_LENGTH];
 
 	err = IsisTrxvu_rcGetFrameCount(0, &frame_count);
 	if (0 != err) {
-		return execution_error;
+		return cmd_execution_error;
 	}
 	if (0 == frame_count) {
-		return no_command_found;
+		return cmd_no_command_found;
 	}
 	ISIStrxvuRxFrame rxFrameCmd = { 0, 0, 0,
 			(unsigned char*) received_frame_data }; // for getting raw data from Rx, nullify values
 
 	err = IsisTrxvu_rcGetCommandFrame(0, &rxFrameCmd); //get the frame from the Rx buffer
 	if (0 != err) {
-		return execution_error;
+		return cmd_execution_error;
 	}
 
-	length = (unsigned int) rxFrameCmd.rx_length;
+	err = ParseDataToCommand(received_frame_data,cmd);
 
-	type = received_frame_data[offset];
-	offset += sizeof(type);
-
-	subtype = received_frame_data[offset];
-	offset += sizeof(subtype);
-
-	memcpy(&id,received_frame_data + offset,sizeof(id));
-	offset += sizeof(id);
-
-	memcpy(&length,received_frame_data + offset,sizeof(length));
-	offset += sizeof(length);
-
-	err = AssmbleCommand(received_frame_data + offset, length-offset, type,subtype,id,cmd);
 	if (0 != err) {
-		return execution_error;
+		return cmd_execution_error;
 	}
-	return command_found;
+	return cmd_command_found;
 }
 
-int GetDelayedCommandByIndex(unsigned int index, sat_packet_t *cmd)
+CommandHandlerErr GetDelayedCommandByIndex(unsigned int index, sat_packet_t *cmd)
 {
-	int err = 0;
 	if (NULL == cmd) {
-		return null_pointer_error;
+		return cmd_null_pointer_error;
 	}
 	if (index > MAX_NUM_OF_DELAYED_CMD) {
-		return index_out_of_bound;
+		return cmd_index_out_of_bound;
 	}
-	FRAM_read((unsigned char*) cmd,
+	if(0 != FRAM_read((unsigned char*) cmd,
 			index * sizeof(delayed_cmd_t) + DELAYED_CMD_BUFFER_ADDR
-					+ sizeof(time_unix), sizeof(delayed_cmd_t));
-	return err;
+					+ sizeof(time_unix), sizeof(delayed_cmd_t))){
+		return cmd_execution_error;
+	}
+	return cmd_command_succsess;
 }
 
-int DeleteDelayedCommandByIndex(unsigned int index)
+CommandHandlerErr DeleteDelayedCommandByIndex(unsigned int index)
 {
 	int err = 0;
 	if (index > MAX_NUM_OF_DELAYED_CMD) {
-		return -1;
+		return cmd_index_out_of_bound;
 	}
 	unsigned int end_addr = DELAYED_CMD_BUFFER_ADDR
 			+ (index + 1) * sizeof(delayed_cmd_t);
@@ -264,7 +258,7 @@ int DeleteDelayedCommandByIndex(unsigned int index)
 	return err;
 }
 
-int DeleteDelayedBuffer()
+CommandHandlerErr DeleteDelayedBuffer()
 {
 	unsigned int max_addr = DELAYED_CMD_BUFFER_ADDR
 			+ MAX_NUM_OF_DELAYED_CMD * sizeof(delayed_cmd_t);

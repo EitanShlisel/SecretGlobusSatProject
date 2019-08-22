@@ -8,8 +8,8 @@
 
 #include "SubSystemModules/Housekepping/TelemetryCollector.h"
 #include "SubSystemModules/PowerManagment/EPS.h"
-#include "fileSystem.h"
-
+#include "TLM_management.h"
+#include <stdio.h>
 #include "CommandDictionary.h"
 
 int trxvu_command_router(sat_packet_t *cmd)
@@ -75,7 +75,7 @@ int trxvu_command_router(sat_packet_t *cmd)
 		err = CMD_GetNumOfOnlineCommands(cmd);
 		break;
 	case ADD_DELAYED_COMMAND_CMD:
-		ParseDataToCommand(cmd->data,cmd->length,&delayed_cmd);
+		ParseDataToCommand(cmd->data,&delayed_cmd);
 		err = AddDelayedCommand(&delayed_cmd);
 		break;
 	case DELETE_DELAYED_CMD:

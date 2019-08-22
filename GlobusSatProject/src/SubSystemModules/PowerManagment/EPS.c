@@ -1,3 +1,6 @@
+#include <freertos/FreeRTOS.h>
+#include <freertos/semphr.h>
+#include <freertos/task.h>
 
 #include <satellite-subsystems/IsisSolarPanelv2.h>
 #include <hal/errors.h>
@@ -13,10 +16,88 @@
 #endif
 
 // y[i] = a * x[i] +(1-a) * y[i-1]
-voltage_t prev_avg = 0;		// y[i-1]
-float alpha = 0;			//<! smoothing constant
+voltage_t prev_filtered_voltage = 0;		// y[i-1]
 
-voltage_t eps_threshold_voltages[NUMBER_OF_THRESHOLD_VOLTAGES];	// saves the current EPS logic threshold voltages
+float alpha = DEFAULT_ALPHA_VALUE;			//<! smoothing constant
+EpsThreshVolt_t eps_threshold_voltages = {.raw = DEFAULT_EPS_THRESHOLD_VOLTAGES};	// saves the current EPS logic threshold voltages
+
+int EPS_Init()
+{
+	unsigned char i2c_address = EPS_I2C_ADDR;
+	int rv;
+#ifdef ISISEPS
+	rv = IsisEPS_initialize(&i2c_address, 1);
+#endif
+#ifdef GOMEPS
+	rv = GomEpsInitialize(&i2c_address, 1);
+#endif
+
+	if (rv != E_NO_SS_ERR) {
+		return -1;
+	}
+	rv = IsisSolarPanelv2_initialize(slave0_spi);
+	if (rv != 0) {
+		return -2;
+	}
+	IsisSolarPanelv2_sleep();
+
+	rv = GetThresholdVoltages(&eps_threshold_voltages);
+	if (0 != rv) {
+		return -3;
+	}
+
+	rv= GetAlpha(&alpha);
+	if (0 != rv) {
+		alpha = DEFAULT_ALPHA_VALUE;
+		return -4;
+	}
+	prev_filtered_voltage = 0;	//y[i-1]
+	GetBatteryVoltage(&prev_filtered_voltage);
+
+	EPS_Conditioning();
+
+	return 0;
+}
+#define GetFilterdVoltage(curr_voltage) (voltage_t) (alpha * curr_voltage + (1 - alpha) * prev_filtered_voltage)
+
+int EPS_Conditioning()
+{
+	voltage_t curr_voltage = 0;				// x[i]
+	GetBatteryVoltage(&curr_voltage);
+
+	voltage_t filtered_voltage = 0;					// the currently filtered voltage; y[i]
+
+	filtered_voltage = GetFilterdVoltage(curr_voltage);
+
+	// discharging
+	if (filtered_voltage < prev_filtered_voltage) {
+		if (filtered_voltage < eps_threshold_voltages.fields.Vdown_safe) {
+			EnterCriticalMode();
+		}
+		else if (filtered_voltage < eps_threshold_voltages.fields.Vdown_cruise) {
+			EnterSafeMode();
+		}
+		else if (filtered_voltage < eps_threshold_voltages.fields.Vdown_full) {
+			EnterCruiseMode();
+		}
+
+	}
+	// charging
+	else if (filtered_voltage > prev_filtered_voltage) {
+
+		if (filtered_voltage > eps_threshold_voltages.fields.Vup_full) {
+			EnterFullMode();
+		}
+		else if (filtered_voltage > eps_threshold_voltages.fields.Vup_cruise) {
+			EnterCruiseMode();
+		}
+		else if (filtered_voltage > eps_threshold_voltages.fields.Vup_safe) {
+			EnterSafeMode();
+		}
+	}
+	prev_filtered_voltage = filtered_voltage;
+	return 0;
+}
 
 int GetBatteryVoltage(voltage_t *vbatt)
 {
@@ -36,84 +117,6 @@ int GetBatteryVoltage(voltage_t *vbatt)
 	return err;
 }
 
-int EPS_Init()
-{
-	unsigned char i2c_address = EPS_I2C_ADDR;
-	int rv;
-#ifdef ISISEPS
-	rv = IsisEPS_initialize(&i2c_address, 1);
-#endif
-#ifdef GOMEPS
-	rv = GomEpsInitialize(&i2c_address, 1);
-#endif
-
-	if (rv != E_NO_SS_ERR && rv != E_IS_INITIALIZED) {
-		return -1;
-	}
-	rv = IsisSolarPanelv2_initialize(slave0_spi);
-	if (rv != 0) {
-		return -2;
-	}
-	IsisSolarPanelv2_sleep();
-
-	rv = FRAM_read((unsigned char*) eps_threshold_voltages,
-			EPS_THRESH_VOLTAGES_ADDR, EPS_THRESH_VOLTAGES_SIZE);
-	if (0 != rv) {
-		return -1;
-	}
-
-	rv = FRAM_read((unsigned char*) &alpha,
-			EPS_ALPHA_FILTER_VALUE_ADDR, sizeof(alpha));
-	if (0 != rv) {
-		return -1;
-	}
-	prev_avg = 0;	//y[i-1]
-	GetBatteryVoltage(&prev_avg);
-
-	EPS_Conditioning();
-
-	return 0;
-}
-
-int EPS_Conditioning()
-{
-	voltage_t curr_voltage = 0;				// x[i]
-	GetBatteryVoltage(&curr_voltage);
-
-	voltage_t curr_avg = 0;					// the currently filtered voltage; y[i]
-
-	curr_avg = (voltage_t) (alpha * curr_voltage + (1 - alpha) * prev_avg);
-
-	// discharging
-	if (curr_avg < prev_avg) {
-		if (curr_avg < eps_threshold_voltages[INDEX_DOWN_SAFE]) {
-			EnterCriticalMode();
-		}
-		else if (curr_avg < eps_threshold_voltages[INDEX_DOWN_CRUISE]) {
-			EnterSafeMode();
-		}
-		else if (curr_avg < eps_threshold_voltages[INDEX_DOWN_FULL]) {
-			EnterCruiseMode();
-		}
-
-	}
-	// charging
-	else if (curr_avg > prev_avg) {
-
-		if (curr_avg > eps_threshold_voltages[INDEX_UP_FULL]) {
-			EnterFullMode();
-		}
-		else if (curr_avg > eps_threshold_voltages[INDEX_UP_CRUISE]) {
-			EnterCruiseMode();
-		}
-		else if (curr_avg > eps_threshold_voltages[INDEX_UP_SAFE]) {
-			EnterSafeMode();
-		}
-	}
-	prev_avg = curr_avg;
-	return 0;
-}
-
 int UpdateAlpha(float new_alpha)
 {
 	if (new_alpha > 1 || new_alpha < 0) {
@@ -129,18 +132,18 @@ int UpdateAlpha(float new_alpha)
 	return 0;
 }
 
-int UpdateThresholdVoltages(voltage_t thresh_volts[NUMBER_OF_THRESHOLD_VOLTAGES])
+int UpdateThresholdVoltages(EpsThreshVolt_t *thresh_volts)
 {
 	if (NULL == thresh_volts) {
 		return E_INPUT_POINTER_NULL;
 	}
 
-	Boolean valid_dependancies = (thresh_volts[INDEX_UP_SAFE] 	< thresh_volts[INDEX_UP_CRUISE]
-	                           && thresh_volts[INDEX_UP_CRUISE] < thresh_volts[INDEX_UP_FULL]);
+	Boolean valid_dependancies = (thresh_volts->fields.Vup_safe 	< thresh_volts->fields.Vup_cruise
+	                           && thresh_volts->fields.Vup_cruise	< thresh_volts->fields.Vup_full);
 
-	Boolean valid_regions = (thresh_volts[INDEX_DOWN_FULL] 		< thresh_volts[INDEX_UP_FULL])
-						&&  (thresh_volts[INDEX_DOWN_CRUISE]	< thresh_volts[INDEX_UP_CRUISE])
-						&&  (thresh_volts[INDEX_DOWN_SAFE]		< thresh_volts[INDEX_UP_SAFE]);
+	Boolean valid_regions = (thresh_volts->fields.Vdown_full 	< thresh_volts->fields.Vup_full)
+						&&  (thresh_volts->fields.Vdown_cruise	< thresh_volts->fields.Vup_cruise)
+						&&  (thresh_volts->fields.Vdown_safe	< thresh_volts->fields.Vup_safe);
 
 	if (!(valid_dependancies && valid_regions)) {
 		return -2;
@@ -150,11 +153,11 @@ int UpdateThresholdVoltages(voltage_t thresh_volts[NUMBER_OF_THRESHOLD_VOLTAGES]
 	if (0 != err) {
 		return err;
 	}
-	memcpy(eps_threshold_voltages, thresh_volts, EPS_THRESH_VOLTAGES_SIZE);
+	memcpy(eps_threshold_voltages.raw, thresh_volts, EPS_THRESH_VOLTAGES_SIZE);
 	return E_NO_SS_ERR;
 }
 
-int GetThresholdVoltages(voltage_t thresh_volts[NUMBER_OF_THRESHOLD_VOLTAGES])
+int GetThresholdVoltages(EpsThreshVolt_t *thresh_volts)
 {
 	if (NULL == thresh_volts) {
 		return E_INPUT_POINTER_NULL;
@@ -185,9 +188,9 @@ int RestoreDefaultAlpha()
 int RestoreDefaultThresholdVoltages()
 {
 	int err = 0;
-	voltage_t def_thresh[NUMBER_OF_THRESHOLD_VOLTAGES] =
-			DEFAULT_EPS_THRESHOLD_VOLTAGES;
-	err = UpdateThresholdVoltages(def_thresh);
+	EpsThreshVolt_t def_thresh =
+	{.raw = DEFAULT_EPS_THRESHOLD_VOLTAGES};
+	err = UpdateThresholdVoltages(&def_thresh);
 	return err;
 }
 

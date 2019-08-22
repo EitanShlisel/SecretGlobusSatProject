@@ -13,7 +13,8 @@
 
 #include "SubSystemModules/Communication/AckHandler.h"
 #include "SubSystemModules/Communication/TRXVU.h"
-#include "fileSystem.h"
+#include "SubSystemModules/Communication/SatDataTx.h"
+#include "TLM_management.h"
 #include "Maintenance.h"
 
 Boolean CheckExecutionTime(time_unix prev_time, time_unix period)
@@ -134,7 +135,6 @@ time_unix GetGsWdtKickTime()
 	FRAM_read((unsigned char*)&no_comm_thresh, NO_COMM_WDT_KICK_TIME_ADDR,
 	NO_COMM_WDT_KICK_TIME_SIZE);
 	return no_comm_thresh;
-
 }
 
 void Maintenance()
