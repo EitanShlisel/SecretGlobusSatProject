@@ -166,5 +166,9 @@ void Maintenance()
 		printf("unmuted\n");
 #endif
 	}
+
+	if(CheckForGsModeEnd()){
+		ExitGS_Mode();
+	}
 	//TODO: if(current_time < FRAM_sat_time) maybe update 'sat_time' to be 'first_wakeup_'
 }

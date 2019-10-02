@@ -27,10 +27,10 @@
 
 
 
-xQueueHandle xDumpQueue = NULL;
-xSemaphoreHandle xDumpLock = NULL;
-xTaskHandle xDumpHandle = NULL;			 //task handle for dump task
-
+xQueueHandle 		xDumpQueue 	= NULL;
+xSemaphoreHandle 	xDumpLock 	= NULL;
+xTaskHandle 		xDumpHandle = NULL;			 //task handle for dump task
+time_unix			g_gs_start_time = 0;		// time since last online command received.
 void InitSemaphores()
 {
 	if(NULL == xDumpLock)
@@ -77,7 +77,10 @@ int InitTrxvu() {
 	if (retValInt != 0) {
 		return retValInt;
 	}
-
+	retValInt = IsisTrxvu_tcSetIdlestate(ISIS_TRXVU_I2C_BUS_INDEX,trxvu_idle_state_off);
+	if (retValInt != 0) {
+		return retValInt;
+	}
 	InitTxModule();
 	InitBeaconParams();
 	InitSemaphores();
@@ -93,6 +96,7 @@ CommandHandlerErr TRX_Logic() {
 	if (frame_count > 0) {
 		err = GetOnlineCommand(&cmd);
 		ResetGroundCommWDT();
+		EnterGS_Mode();
 		SendAckPacket(ACK_RECEIVE_COMM, &cmd, NULL, 0);
 
 	} else if (GetDelayedCommandBufferCount() > 0) {
@@ -230,6 +234,34 @@ int DumpTelemetry(sat_packet_t *cmd) {
 			(void* )dmp_pckt, configMAX_PRIORITIES - 2, xDumpHandle);
 
 	return 0;
+}
+
+Boolean CheckForGsModeEnd(){
+	time_unix curr_time = 0;
+	Time_getUnixEpoch(&curr_time);
+	time_unix gs_duaration =  curr_time - g_gs_start_time;
+	if(gs_duaration >= GS_MODE_TIME){
+		return TRUE;
+	}
+	return FALSE;
+}
+
+int EnterGS_Mode(){
+	if(MUTE_ON == GetMuteFlag()){
+		return 0;
+	}
+	Time_getUnixEpoch(&g_gs_start_time);
+	int err = 0;
+	err = IsisTrxvu_tcSetIdlestate(ISIS_TRXVU_I2C_BUS_INDEX,trxvu_idle_state_on);
+	vTaskDelay(100);
+	return err;
+}
+
+int ExitGS_Mode(){
+	int err = 0;
+	err = IsisTrxvu_tcSetIdlestate(ISIS_TRXVU_I2C_BUS_INDEX,trxvu_idle_state_on);
+	vTaskDelay(100);
+	return err;
 }
 
 

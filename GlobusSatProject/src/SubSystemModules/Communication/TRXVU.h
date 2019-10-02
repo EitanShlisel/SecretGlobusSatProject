@@ -56,4 +56,24 @@ void AbortDump();
  */
 int DumpTelemetry(sat_packet_t *cmd);
 
+/*!
+ * @breif checks if GS mode has finished.
+ * @return	TRUE if GS mode has ended.
+ * 			FALSE if GS mode has yet to end
+ */
+Boolean CheckForGsModeEnd();
+
+/*!
+ *	@breif Starts the GS mode
+ *	@return errors according to <hal/errors.h>
+ */
+int EnterGS_Mode();
+
+/*!
+ *	@breif Stops the GS mode.
+ *	@return errors according to <hal/errors.h>
+ */
+int ExitGS_Mode();
+
+
 #endif

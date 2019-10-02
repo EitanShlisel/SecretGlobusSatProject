@@ -39,7 +39,7 @@ int CMD_GetThresholdVoltages(sat_packet_t *cmd)
 	if (err == 0)
 	{
 		TransmitDataAsSPL_Packet(cmd, (unsigned char*) thresh_voltages.raw,
-				sizeof(thresh_voltages));	//TODO: check if correct
+				sizeof(thresh_voltages));
 	}
 	return err;
 }

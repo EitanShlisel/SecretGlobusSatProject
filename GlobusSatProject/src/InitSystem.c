@@ -9,6 +9,7 @@
 #include "GlobalStandards.h"
 #include "SubSystemModules/PowerManagment/EPS.h"
 #include "SubSystemModules/Communication/TRXVU.h"
+#include "SubSystemModules/Communication/ActUponCommand.h"
 #include "SubSystemModules/Maintenance/Maintenance.h"
 #include "SubSystemModules/Housekepping/TelemetryCollector.h"
 #include "InitSystem.h"
@@ -39,8 +40,9 @@ void firstActivationProcedure()
 #endif
 
 	int err = 0;
-
+	sat_packet_t cmd = {0};
 	time_unix seconds_since_deploy = 0;
+
 	err = FRAM_read((unsigned char*) seconds_since_deploy,
 			SECONDS_SINCE_DEPLOY_ADDR,
 			SECONDS_SINCE_DEPLOY_SIZE);
@@ -56,9 +58,12 @@ void firstActivationProcedure()
 		if (0 != err) {
 			break;
 		}
+		seconds_since_deploy += 10;
+
 		TelemetryCollectorLogic();
 
-		seconds_since_deploy += 10;
+		GetOnlineCommand(&cmd);
+		ActUponCommand(&cmd);
 
 		//TODO: add more to this...
 #ifdef ISISEPS

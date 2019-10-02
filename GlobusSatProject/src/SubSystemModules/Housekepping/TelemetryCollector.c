@@ -86,27 +86,27 @@ void TelemetryCollectorLogic()
 {
 	if (CheckExecutionTime(tlm_last_save_time[eps_tlm],tlm_save_periods[eps_tlm])){
 		TelemetrySaveEPS();
-		Time_getUnixEpoch(tlm_last_save_time[eps_tlm]);
+		Time_getUnixEpoch(&tlm_last_save_time[eps_tlm]);
 	}
 
 	if (CheckExecutionTime(tlm_last_save_time[trxvu_tlm],tlm_save_periods[trxvu_tlm])){
 		TelemetrySaveTRXVU();
-		Time_getUnixEpoch(tlm_last_save_time[trxvu_tlm]);
+		Time_getUnixEpoch(&tlm_last_save_time[trxvu_tlm]);
 	}
 
 	if (CheckExecutionTime(tlm_last_save_time[ant_tlm],tlm_save_periods[ant_tlm])){
 		TelemetrySaveANT();
-		Time_getUnixEpoch(tlm_last_save_time[ant_tlm]);
+		Time_getUnixEpoch(&tlm_last_save_time[ant_tlm]);
 	}
 
 	if (CheckExecutionTime(tlm_last_save_time[solar_panel_tlm],tlm_save_periods[solar_panel_tlm])){
 		TelemetrySaveSolarPanels();
-		Time_getUnixEpoch(tlm_last_save_time[solar_panel_tlm]);
+		Time_getUnixEpoch(&tlm_last_save_time[solar_panel_tlm]);
 	}
 
 	if (CheckExecutionTime(tlm_last_save_time[wod_tlm],tlm_save_periods[wod_tlm])){
 		TelemetrySaveWOD();
-		Time_getUnixEpoch(tlm_last_save_time[wod_tlm]);
+		Time_getUnixEpoch(&tlm_last_save_time[wod_tlm]);
 	}
 
 }
@@ -186,9 +186,6 @@ void TelemetrySaveEPS()
 	{
 		c_fileWrite(FILENAME_EPS_ENG_CDB_TLM, &tlm_cdb_eng);
 	}
-#endif
-#ifdef GOMEPS
-	//TODO: Collect GomEPS TLM
 #endif
 }
 
@@ -322,9 +319,7 @@ void GetCurrentWODTelemetry(WOD_Telemetry_t *wod)
 		wod->consumed_power = hk_tlm.fields.pwr_delivering;
 	}
 #endif
-#ifdef GOMEPS
-	//TODO: get GomEpsWod TLM
-#endif
+
 	FRAM_read((unsigned char*)&wod->number_of_resets,
 	NUMBER_OF_RESETS_ADDR, NUMBER_OF_RESETS_SIZE);
 }

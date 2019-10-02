@@ -68,33 +68,21 @@ int EPS_Conditioning()
 	voltage_t filtered_voltage = 0;					// the currently filtered voltage; y[i]
 
 	filtered_voltage = GetFilterdVoltage(curr_voltage);
-
-	// discharging
-	if (filtered_voltage < prev_filtered_voltage) {
-		if (filtered_voltage < eps_threshold_voltages.fields.Vdown_safe) {
-			EnterCriticalMode();
-		}
-		else if (filtered_voltage < eps_threshold_voltages.fields.Vdown_cruise) {
-			EnterSafeMode();
-		}
-		else if (filtered_voltage < eps_threshold_voltages.fields.Vdown_full) {
-			EnterCruiseMode();
-		}
-
+	if(	eps_threshold_voltages.fields.Vup_full <= filtered_voltage){
+		EnterFullMode();
 	}
-	// charging
-	else if (filtered_voltage > prev_filtered_voltage) {
-
-		if (filtered_voltage > eps_threshold_voltages.fields.Vup_full) {
-			EnterFullMode();
-		}
-		else if (filtered_voltage > eps_threshold_voltages.fields.Vup_cruise) {
-			EnterCruiseMode();
-		}
-		else if (filtered_voltage > eps_threshold_voltages.fields.Vup_safe) {
-			EnterSafeMode();
-		}
+	if(	eps_threshold_voltages.fields.Vup_cruise <= filtered_voltage &&
+		filtered_voltage <= eps_threshold_voltages.fields.Vdown_full){
+		EnterCruiseMode();
 	}
+	if(	eps_threshold_voltages.fields.Vup_safe <= filtered_voltage &&
+		filtered_voltage <= eps_threshold_voltages.fields.Vdown_cruise){
+		EnterSafeMode();
+	}
+	if(	filtered_voltage <= eps_threshold_voltages.fields.Vdown_safe){
+		EnterCriticalMode();
+	}
+
 	prev_filtered_voltage = filtered_voltage;
 	return 0;
 }
