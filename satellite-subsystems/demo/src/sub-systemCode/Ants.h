@@ -27,7 +27,7 @@ typedef struct __attribute__ ((__packed__))
 
 int ARM_ants();
 int DISARM_ants();
-int deploye_ants(ISISantsSide side);
+int deploy_ants(ISISantsSide side);
 void init_Ants();
 
 void Auto_Deploy();

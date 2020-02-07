@@ -275,7 +275,7 @@ void cmd_deploy_ants(Ack_type* type, ERR_type* err)
 	(void)err;
 	/*type = ACK_REDEPLOY;
 #ifndef ANTS_DO_NOT_DEPLOY
-	int error = deploye_ants();
+	int error = deploy_ants();
 	if (error == -2)
 	{
 		*err = ERR_NOT_INITIALIZED;

@@ -82,7 +82,7 @@ int DISARM_ants()
 	return 0;
 }
 
-int deploye_ants(ISISantsSide side)
+int deploy_ants(ISISantsSide side)
 {
 	(void)side;
 #ifndef ANTS_DO_NOT_DEPLOY
@@ -144,7 +144,7 @@ void Auto_Deploy()
 	if (time_out_before_deploy(DEPLOY_ATTEMPT_NUMBER_1) == 0)
 	{
 		printf("starts deployment 1, side A\n");
-		deploye_ants(isisants_sideA);
+		deploy_ants(isisants_sideA);
 
 		deploy_status.isAtemptDone = 1;
 		deploy_status.minutesToAttempt = START_MUTE_TIME_MIN;
@@ -156,7 +156,7 @@ void Auto_Deploy()
 	/*if (time_out_before_deploy(DEPLOY_ATTEMPT_NUMBER_1) == 0)
 	{
 		printf("starts deployment 2, side B\n");
-		deploye_ants(isisants_sideB);
+		deploy_ants(isisants_sideB);
 
 		deploy_status.isAtemptDone = TRUE;
 		deploy_status.minutesToAttempt = START_MUTE_TIME_MIN;
@@ -168,7 +168,7 @@ void Auto_Deploy()
 	if (time_out_before_deploy(DEPLOY_ATTEMPT_NUMBER_1) == 0)
 	{
 		printf("starts deployment 3, side A\n");
-		deploye_ants(isisants_sideA);
+		deploy_ants(isisants_sideA);
 
 		deploy_status.isAtemptDone = TRUE;
 		deploy_status.minutesToAttempt = START_MUTE_TIME_MIN;

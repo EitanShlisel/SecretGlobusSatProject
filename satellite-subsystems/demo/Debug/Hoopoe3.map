@@ -448,7 +448,7 @@ Discarded input sections
  .bss           0x00000000        0x0 ./src/sub-systemCode/Main/Ants.o
  .text.init_Ants
                 0x00000000       0x50 ./src/sub-systemCode/Main/Ants.o
- .text.deploye_ants
+ .text.deploy_ants
                 0x00000000       0x34 ./src/sub-systemCode/Main/Ants.o
  .text.time_out_before_deploy
                 0x00000000      0x16c ./src/sub-systemCode/Main/Ants.o

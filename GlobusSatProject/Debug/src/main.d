@@ -50,7 +50,13 @@ src/main.d: ../src/main.c \
  C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/TLM_management.h \
  C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/hal/include/hal/Boolean.h \
  ../src/SubSystemModules/Maintenance/Maintenance.h ../src/InitSystem.h \
- ../src/main.h
+ ../src/main.h ../src/TestingDemos/MainTest.h \
+ C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/TestingDemos/EpsTestingDemo.h \
+ C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/TestingDemos/FileSystemTestingDemo.h \
+ C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/TestingDemos/MaintenanceTestingDemo.h \
+ C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/TestingDemos/TrxvuTestingDemo.h \
+ C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/TestingDemos/CommandsTestingDemo.h \
+ C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/TestingDemos/TelemetryTestingDemo.h
 
 C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/freertos/include/freertos/FreeRTOS.h:
 
@@ -159,3 +165,17 @@ C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/hal/in
 ../src/InitSystem.h:
 
 ../src/main.h:
+
+../src/TestingDemos/MainTest.h:
+
+C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/TestingDemos/EpsTestingDemo.h:
+
+C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/TestingDemos/FileSystemTestingDemo.h:
+
+C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/TestingDemos/MaintenanceTestingDemo.h:
+
+C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/TestingDemos/TrxvuTestingDemo.h:
+
+C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/TestingDemos/CommandsTestingDemo.h:
+
+C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/TestingDemos/TelemetryTestingDemo.h:
