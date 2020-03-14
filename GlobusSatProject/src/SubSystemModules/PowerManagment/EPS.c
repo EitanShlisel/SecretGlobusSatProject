@@ -8,12 +8,7 @@
 #include <string.h>
 
 #include "EPS.h"
-#ifdef ISISEPS
-	#include <satellite-subsystems/IsisEPS.h>
-#endif
-#ifdef GOMEPS
-	#include <satellite-subsystems/GomEPS.h>
-#endif
+#include <satellite-subsystems/isis_eps_driver.h>
 
 // y[i] = a * x[i] +(1-a) * y[i-1]
 voltage_t prev_filtered_voltage = 0;		// y[i-1]
@@ -23,18 +18,14 @@ EpsThreshVolt_t eps_threshold_voltages = {.raw = DEFAULT_EPS_THRESHOLD_VOLTAGES}
 
 int EPS_Init()
 {
-	unsigned char i2c_address = EPS_I2C_ADDR;
-	int rv;
-#ifdef ISISEPS
-	rv = IsisEPS_initialize(&i2c_address, 1);
-#endif
-#ifdef GOMEPS
-	rv = GomEpsInitialize(&i2c_address, 1);
-#endif
-
-	if (rv != E_NO_SS_ERR) {
-		return -1;
+	int rv = 0;
+	ISIS_EPS_t subsystem; // One instance to be initialised.
+	subsystem.i2cAddr = EPS_I2C_ADDR;
+	rv = ISIS_EPS_Init(&subsystem, 1);
+	if(isis_eps__error__reinit != rv || isis_eps__error__none != rv){
+		return  -1;
 	}
+
 	rv = IsisSolarPanelv2_initialize(slave0_spi);
 	if (rv != 0) {
 		return -2;
@@ -90,18 +81,6 @@ int EPS_Conditioning()
 int GetBatteryVoltage(voltage_t *vbatt)
 {
 	int err = 0;
-#ifdef ISISEPS
-	ieps_enghk_data_cdb_t hk_tlm;
-	ieps_statcmd_t cmd;
-	ieps_board_t board = ieps_board_cdb1;
-	err = IsisEPS_getEngHKDataCDB(EPS_I2C_BUS_INDEX, board, &hk_tlm, &cmd);
-	*vbatt = hk_tlm.fields.bat_voltage;
-#endif
-#ifdef GOMEPS
-	gom_eps_hk_t hk_tlm;
-	err = GomEpsGetHkData_general(EPS_I2C_BUS_INDEX,&hk_tlm);
-	*vbatt = hk_tlm.fields.vbatt;
-#endif
 	return err;
 }
 

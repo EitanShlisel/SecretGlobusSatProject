@@ -9,7 +9,7 @@ src/SubSystemModules/PowerManagment/EPSOperationModes.d: \
  C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/hal/include/hal/Storage/FRAM.h \
  C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SysI2CAddr.h \
  C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/TestingConfigurations.h \
- C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisEPS.h
+ C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/isis_eps_driver.h
 
 ../src/SubSystemModules/PowerManagment/EPSOperationModes.h:
 
@@ -29,4 +29,4 @@ C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SysI2CAddr
 
 C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/TestingConfigurations.h:
 
-C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisEPS.h:
+C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/isis_eps_driver.h:

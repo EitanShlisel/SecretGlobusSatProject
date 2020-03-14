@@ -8,7 +8,8 @@ typedef enum __attribute__ ((__packed__)) spl_command_type_t {
 	telemetry_cmd_type,
 	filesystem_cmd_type,
 	managment_cmd_type,
-	ack_type
+	ack_type,
+	freertos_type
 }spl_command_type;
 
 //TODO: set all sub-types to be different from one another
@@ -108,6 +109,12 @@ typedef enum __attribute__ ((__packed__)) management_subtypes_t
 	EPS_RESET_SUBTYPE =			0xBB,		//0b10111011
 	FS_RESET_SUBTYPE =			0xCC		//0b11001100
 }management_subtypes_t;
+
+typedef enum __attribute__ ((__packed__)) freertos_subtypes_t{
+	FREERTOS_DELAY_SUBTYPE
+
+}freertos_subtypes_t;
+
 //-----------------
 
 #endif /* SPL_H_ */

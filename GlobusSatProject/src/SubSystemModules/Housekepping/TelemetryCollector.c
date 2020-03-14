@@ -2,13 +2,7 @@
 
 #include "GlobalStandards.h"
 
-#ifdef ISISEPS
-	#include <satellite-subsystems/IsisEPS.h>
-#endif
-#ifdef GOMEPS
-	#include <satellite-subsystems/GomEPS.h>
-#endif
-
+#include <satellite-subsystems/isis_eps_driver.h>
 #include <satellite-subsystems/IsisTRXVU.h>
 #include <satellite-subsystems/IsisAntS.h>
 #include <satellite-subsystems/IsisSolarPanelv2.h>
@@ -33,6 +27,12 @@ typedef enum{
 time_unix tlm_save_periods[NUM_OF_SUBSYSTEMS_SAVE_FUNCTIONS] = {0};
 time_unix tlm_last_save_time[NUM_OF_SUBSYSTEMS_SAVE_FUNCTIONS]= {0};
 
+/*
+
+
+
+
+	*/
 int GetTelemetryFilenameByType(tlm_type tlm_type, char filename[MAX_F_FILE_NAME_SIZE])
 {
 	if(NULL == filename){
@@ -42,17 +42,23 @@ int GetTelemetryFilenameByType(tlm_type tlm_type, char filename[MAX_F_FILE_NAME_
 	case tlm_wod:
 		strcpy(filename,FILENAME_WOD_TLM);
 		break;
-	case tlm_eps_raw_mb:
-		strcpy(filename,FILENAME_EPS_RAW_MB_TLM);
-		break;
-	case tlm_eps_eng_mb:
-		strcpy(filename,FILENAME_EPS_ENG_MB_TLM);
+	case tlm_eps_raw_hk:
+		strcpy(filename,FILENAME_EPS_HK_RAW_TLM);
 		break;
 	case tlm_eps_raw_cdb:
-		strcpy(filename,FILENAME_EPS_RAW_CDB_TLM);
+		strcpy(filename,FILENAME_EPS_HK_RAW_CDB_TLM);
+		break;
+	case tlm_eps_eng:
+		strcpy(filename,FILENAME_EPS_ENG_TLM);
 		break;
 	case tlm_eps_eng_cdb:
 		strcpy(filename,FILENAME_EPS_ENG_CDB_TLM);
+		break;
+	case tlm_eps_running_avg:
+		strcpy(filename,FILENAME_EPS_RUN_AVG_TLM);
+		break;
+	case tlm_eps_eng_avg:
+		strcpy(filename,FILENAME_EPS_ENG_AVG_CDB);
 		break;
 	case tlm_solar:
 		strcpy(filename,FILENAME_SOLAR_PANELS_TLM);
@@ -113,23 +119,29 @@ void TelemetryCollectorLogic()
 
 #define SAVE_FLAG_IF_FILE_CREATED(type)	if(FS_SUCCSESS != res &&NULL != tlms_created){tlms_created[(type)] = FALSE_8BIT;}
 
-void TelemetryCreateFiles(Boolean8bit tlms_created[NUMBER_OF_TELEMETRIES])
-{
+void TelemetryCreateFiles(Boolean8bit tlms_created[NUMBER_OF_TELEMETRIES]){
 	FileSystemResult res;
 	FRAM_read((unsigned char*)tlm_save_periods,TLM_SAVE_PERIOD_START_ADDR,NUM_OF_SUBSYSTEMS_SAVE_FUNCTIONS*sizeof(time_unix));
 
 	// -- EPS files
-	res = c_fileCreate(FILENAME_EPS_RAW_MB_TLM,sizeof(ieps_rawhk_data_mb_t));
-	SAVE_FLAG_IF_FILE_CREATED(tlm_eps_raw_mb)
+	res = c_fileCreate(FILENAME_EPS_HK_RAW_TLM,sizeof(isis_eps__gethousekeepingraw__from_t));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_eps_raw_hk)
 
-	res = c_fileCreate(FILENAME_EPS_ENG_MB_TLM,sizeof(ieps_enghk_data_mb_t));
-	SAVE_FLAG_IF_FILE_CREATED(tlm_eps_eng_mb);
+	res = c_fileCreate(FILENAME_EPS_HK_RAW_CDB_TLM,sizeof(isis_eps__gethousekeepingrawincdb__from_t));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_eps_raw_cdb)
 
-	res = c_fileCreate(FILENAME_EPS_RAW_CDB_TLM,sizeof(ieps_rawhk_data_cdb_t));
-	SAVE_FLAG_IF_FILE_CREATED(tlm_eps_raw_cdb);
+	res = c_fileCreate(FILENAME_EPS_ENG_TLM,sizeof(isis_eps__gethousekeepingeng__from_t));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_eps_eng)
 
-	res = c_fileCreate(FILENAME_EPS_ENG_CDB_TLM,sizeof(ieps_enghk_data_cdb_t));
-	SAVE_FLAG_IF_FILE_CREATED(tlm_eps_raw_cdb);
+	res = c_fileCreate(FILENAME_EPS_ENG_CDB_TLM,sizeof(isis_eps__gethousekeepingengincdb__from_t));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_eps_eng_cdb)
+
+	res = c_fileCreate(FILENAME_EPS_RUN_AVG_TLM,sizeof(isis_eps__gethousekeepingrunningavg__from_t));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_eps_running_avg)
+
+	res = c_fileCreate(FILENAME_EPS_ENG_AVG_CDB,sizeof(isis_eps__gethousekeepingengrunningavgincdb__from_t));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_eps_eng_avg)
+
 
 	// -- TRXVU files
 	res = c_fileCreate(FILENAME_TX_TLM,sizeof(ISIStrxvuTxTelemetry));
@@ -139,7 +151,7 @@ void TelemetryCreateFiles(Boolean8bit tlms_created[NUMBER_OF_TELEMETRIES])
 	SAVE_FLAG_IF_FILE_CREATED(tlm_tx_revc);
 
 	res = c_fileCreate(FILENAME_RX_TLM,sizeof(ISIStrxvuRxTelemetry));
-	SAVE_FLAG_IF_FILE_CREATED(tlm_eps_raw_mb);
+	SAVE_FLAG_IF_FILE_CREATED(tlm_rx);
 
 	res = c_fileCreate(FILENAME_RX_REVC,sizeof(ISIStrxvuRxTelemetry_revC));
 	SAVE_FLAG_IF_FILE_CREATED(tlm_rx_revc);
@@ -152,41 +164,32 @@ void TelemetryCreateFiles(Boolean8bit tlms_created[NUMBER_OF_TELEMETRIES])
 	SAVE_FLAG_IF_FILE_CREATED(tlm_solar);
 }
 
-void TelemetrySaveEPS()
-{
-#ifdef ISISEPS
-	int err = 0;
-	ieps_statcmd_t cmd;
-	ieps_board_t brd = ieps_board_cdb1;
+void TelemetrySaveEPS(){
+	 isis_eps__gethousekeepingraw__from_t tlm_raw;
+	 isis_eps__gethousekeepingrawincdb__from_t tlm_raw_cdb;
+	 isis_eps__gethousekeepingeng__from_t tlm_eng;
+	 isis_eps__gethousekeepingengincdb__from_t tlm_eng_cdb;
+	 isis_eps__gethousekeepingrunningavg__from_t tlm_run_avg;
+	 isis_eps__gethousekeepingengrunningavgincdb__from_t tlm_eng_avg_cdb;
 
-	ieps_rawhk_data_mb_t tlm_mb_raw;
-	err = IsisEPS_getRawHKDataMB(EPS_I2C_BUS_INDEX, &tlm_mb_raw, &cmd);
-	if (err == 0)
-	{
-		c_fileWrite(FILENAME_EPS_RAW_MB_TLM, &tlm_mb_raw);
-	}
-
-	ieps_enghk_data_mb_t tlm_mb_eng;
-	err = IsisEPS_getEngHKDataMB(EPS_I2C_BUS_INDEX, &tlm_mb_eng, &cmd);
-	if (err == 0)
-	{
-		c_fileWrite(FILENAME_EPS_ENG_MB_TLM, &tlm_mb_eng);
-	}
-
-	ieps_rawhk_data_cdb_t tlm_cdb_raw;
-	err = IsisEPS_getRawHKDataCDB(EPS_I2C_BUS_INDEX, brd, &tlm_cdb_raw, &cmd);
-	if (err == 0)
-	{
-		c_fileWrite(FILENAME_EPS_RAW_CDB_TLM, &tlm_cdb_raw);
-	}
-
-	ieps_enghk_data_cdb_t tlm_cdb_eng;
-	err = IsisEPS_getEngHKDataCDB(EPS_I2C_BUS_INDEX, brd, &tlm_cdb_eng, &cmd);
-	if (err == 0)
-	{
-		c_fileWrite(FILENAME_EPS_ENG_CDB_TLM, &tlm_cdb_eng);
-	}
-#endif
+	 if(0 != isis_eps__gethousekeepingengrunningavgincdb__tm(EPS_I2C_BUS_INDEX,&tlm_raw)){
+		 c_fileWrite(FILENAME_EPS_HK_RAW_TLM, &tlm_raw);
+	 }
+	 if(0 != isis_eps__gethousekeepingraw__tm(EPS_I2C_BUS_INDEX,&tlm_raw_cdb)){
+		 c_fileWrite(FILENAME_EPS_HK_RAW_CDB_TLM, &tlm_raw_cdb);
+	 }
+	 if(0 != isis_eps__gethousekeepingeng__tm(EPS_I2C_BUS_INDEX,&tlm_eng)){
+		 c_fileWrite(FILENAME_EPS_ENG_TLM, &tlm_eng);
+	 }
+	 if(0 != isis_eps__gethousekeepingengincdb__tm(EPS_I2C_BUS_INDEX,&tlm_eng_cdb)){
+		 c_fileWrite(FILENAME_EPS_ENG_CDB_TLM, &tlm_eng_cdb);
+	 }
+	 if(0 != isis_eps__gethousekeepingrunningavg__tm(EPS_I2C_BUS_INDEX,&tlm_run_avg)){
+		 c_fileWrite(FILENAME_EPS_RUN_AVG_TLM, &tlm_run_avg);
+	 }
+	 if(0 != isis_eps__gethousekeepingengrunningavgincdb__tm(EPS_I2C_BUS_INDEX,&tlm_eng_avg_cdb)){
+		 c_fileWrite(FILENAME_EPS_ENG_AVG_CDB, &tlm_eng_avg_cdb);
+	 }
 }
 
 void TelemetrySaveTRXVU()
@@ -280,12 +283,10 @@ void TelemetrySaveWOD()
 	c_fileWrite(FILENAME_WOD_TLM, &wod);
 }
 
-void GetCurrentWODTelemetry(WOD_Telemetry_t *wod)
-{
+void GetCurrentWODTelemetry(WOD_Telemetry_t *wod){
 	if (NULL == wod){
 		return;
 	}
-
 	memset(wod,0,sizeof(*wod));
 	int err = 0;
 
@@ -300,25 +301,32 @@ void GetCurrentWODTelemetry(WOD_Telemetry_t *wod)
 	time_unix current_time = 0;
 	Time_getUnixEpoch(&current_time);
 	wod->sat_time = current_time;
-#ifdef ISISEPS
-	ieps_statcmd_t cmd;
-	ieps_enghk_data_mb_t hk_tlm;
-	ieps_enghk_data_cdb_t hk_tlm_cdb;
-	ieps_board_t board = ieps_board_cdb1;
 
-	err =  IsisEPS_getEngHKDataCDB(EPS_I2C_BUS_INDEX, board, &hk_tlm_cdb, &cmd);
-	err += IsisEPS_getRAEngHKDataMB(EPS_I2C_BUS_INDEX, &hk_tlm, &cmd);
 
-	if(err == 0){
-		wod->vbat = hk_tlm_cdb.fields.bat_voltage;
-		wod->current_3V3 = hk_tlm.fields.obus3V3_curr;
-		wod->current_5V = hk_tlm.fields.obus5V_curr;
-		wod->volt_3V3 = hk_tlm.fields.obus3V3_volt;
-		wod->volt_5V = hk_tlm.fields.obus5V_volt;
-		wod->charging_power = hk_tlm.fields.pwr_generating;
-		wod->consumed_power = hk_tlm.fields.pwr_delivering;
+	isis_eps__gethousekeepingrunningavg__from_t tlm_eng;
+	err = isis_eps__gethousekeepingrunningavg__tm(EPS_I2C_BUS_INDEX,&tlm_eng);
+	if(0 == err){
+		wod->vbat = tlm_eng.fields.batt_input.fields.volt;
+		wod->charging_power = tlm_eng.fields.batt_input.fields.power;
+		wod->voltage_channel_0 = tlm_eng.fields.vip_obc00.fields.volt;
+		wod->voltage_channel_1 = tlm_eng.fields.vip_obc01.fields.volt;
+		wod->voltage_channel_2 = tlm_eng.fields.vip_obc02.fields.volt;
+		wod->voltage_channel_3 = tlm_eng.fields.vip_obc03.fields.volt;
+		wod->voltage_channel_4 = tlm_eng.fields.vip_obc04.fields.volt;
+		wod->voltage_channel_5 = tlm_eng.fields.vip_obc05.fields.volt;
+		wod->voltage_channel_6 = tlm_eng.fields.vip_obc06.fields.volt;
+		wod->voltage_channel_7 = tlm_eng.fields.vip_obc07.fields.volt;
+
+		wod->current_channel_0 = tlm_eng.fields.vip_obc00.fields.current;
+		wod->current_channel_1 = tlm_eng.fields.vip_obc01.fields.current;
+		wod->current_channel_2 = tlm_eng.fields.vip_obc02.fields.current;
+		wod->current_channel_3 = tlm_eng.fields.vip_obc03.fields.current;
+		wod->current_channel_4 = tlm_eng.fields.vip_obc04.fields.current;
+		wod->current_channel_5 = tlm_eng.fields.vip_obc05.fields.current;
+		wod->current_channel_6 = tlm_eng.fields.vip_obc06.fields.current;
+		wod->current_channel_7 = tlm_eng.fields.vip_obc07.fields.current;
+
 	}
-#endif
 
 	FRAM_read((unsigned char*)&wod->number_of_resets,
 	NUMBER_OF_RESETS_ADDR, NUMBER_OF_RESETS_SIZE);

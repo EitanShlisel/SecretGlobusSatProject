@@ -1,15 +1,16 @@
 #include <satellite-subsystems/IsisAntS.h>
+#include <stdio.h>
 
 
 #include "SubSystemModules/Communication/SubsystemCommands/TRXVU_Commands.h"
 #include "SubSystemModules/Communication/SubsystemCommands/Maintanence_Commands.h"
 #include "SubSystemModules/Communication/SubsystemCommands/FS_Commands.h"
 #include "SubSystemModules/Communication/SubsystemCommands/EPS_Commands.h"
+#include "SubSystemModules/Communication/SubsystemCommands/Freertos_Commands.h"
 
 #include "SubSystemModules/Housekepping/TelemetryCollector.h"
 #include "SubSystemModules/PowerManagment/EPS.h"
 #include "TLM_management.h"
-#include <stdio.h>
 #include "CommandDictionary.h"
 
 int trxvu_command_router(sat_packet_t *cmd)
@@ -195,6 +196,18 @@ int filesystem_command_router(sat_packet_t *cmd)
 
 		break;
 
+	default:
+		SendAckPacket(ACK_UNKNOWN_SUBTYPE,cmd,NULL,0);
+		break;
+	}
+	return err;
+}
+
+int freertos_command_router(sat_packet_t *cmd){
+	int err = 0;
+	switch(cmd->cmd_subtype){
+	case 0:
+		break;
 	default:
 		SendAckPacket(ACK_UNKNOWN_SUBTYPE,cmd,NULL,0);
 		break;

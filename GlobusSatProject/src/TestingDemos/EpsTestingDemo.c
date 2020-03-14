@@ -2,6 +2,8 @@
 #include <freertos/semphr.h>
 #include <freertos/task.h>
 
+#include <satellite-subsystems/isis_eps_driver.h>
+
 #include "EpsTestingDemo.h"
 
 #include <hal/Utility/util.h>
@@ -9,13 +11,6 @@
 #include <SubSystemModules/PowerManagment/EPS.h>
 #include <SubSystemModules/PowerManagment/EPSOperationModes.h>
 #include <stdlib.h>
-
-#ifdef ISISEPS
-	#include <satellite-subsystems/IsisEPS.h>
-#endif
-#ifdef GOMEPS
-	#include <satellite-subsystems/GomEPS.h>
-#endif
 
 Boolean TestEpsConditioning()
 {

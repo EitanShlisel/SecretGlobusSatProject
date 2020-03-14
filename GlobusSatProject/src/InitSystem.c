@@ -15,12 +15,7 @@
 #include "InitSystem.h"
 #include "TLM_management.h"
 
-#ifdef GOMEPS
-#include <satellite-subsystems/GomEPS.h>
-#endif
-#ifdef ISISEPS
-#include <satellite-subsystems/IsisEPS.h>
-#endif
+#include <satellite-subsystems/isis_eps_driver.h>
 
 #define I2c_SPEED_Hz 100000
 #define I2c_Timeout 10
@@ -33,13 +28,10 @@ Boolean isFirstActivation()
 	return flag;
 }
 
-void firstActivationProcedure()
-{
-#ifdef ISISEPS
-	ieps_statcmd_t eps_cmd;
-#endif
-
+void firstActivationProcedure(){
 	int err = 0;
+
+
 	sat_packet_t cmd = {0};
 	time_unix seconds_since_deploy = 0;
 
@@ -49,6 +41,7 @@ void firstActivationProcedure()
 	if (0 != err) {
 		seconds_since_deploy = MINUTES_TO_SECONDS(30);	// deploy immediately. No mercy
 	}
+	isis_eps__watchdog__from_t response;
 
 	while (seconds_since_deploy < MINUTES_TO_SECONDS(30)) {
 		vTaskDelay(SECONDS_TO_TICKS(10));
@@ -65,14 +58,7 @@ void firstActivationProcedure()
 		GetOnlineCommand(&cmd);
 		ActUponCommand(&cmd);
 
-		//TODO: add more to this...
-#ifdef ISISEPS
-		IsisEPS_resetWDT(EPS_I2C_BUS_INDEX, &eps_cmd);
-#endif
-#ifdef GOMEPS
-		GomEpsResetWDT(EPS_I2C_BUS_INDEX);
-
-#endif
+		isis_eps__watchdog__tm(EPS_I2C_BUS_INDEX,&response);
 	}
 
 #ifndef TESTING

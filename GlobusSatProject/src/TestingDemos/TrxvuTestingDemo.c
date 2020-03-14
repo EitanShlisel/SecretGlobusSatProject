@@ -10,12 +10,7 @@
 #include <hal/Utility/util.h>
 #include <hal/Timing/Time.h>
 
-#ifdef ISISEPS
-	#include <satellite-subsystems/IsisEPS.h>
-#endif
-#ifdef GOMEPS
-	#include <satellite-subsystems/GomEPS.h>
-#endif
+#include <satellite-subsystems/isis_eps_driver.h>
 
 #include "SubSystemModules/PowerManagment/EPS.h"	// for EPS_Conditioning
 
@@ -308,19 +303,14 @@ Boolean TestMuteTrxvu()
 	time_unix curr = 0;
 	Time_getUnixEpoch(&curr);
 
-#ifdef ISISEPS
-	ieps_statcmd_t cmd;
-#endif
+	isis_eps__watchdog__from_t response;
+
 	while(!CheckForMuteEnd()){
 
 		printf("current tick = %d\n",(int)xTaskGetTickCount());
 
-#ifdef ISISEPS
-		IsisEPS_resetWDT(EPS_I2C_BUS_INDEX,&cmd);
-#endif
-#ifdef GOMEPS
-		GomEpsResetWDT(EPS_I2C_BUS_INDEX);
-#endif
+		isis_eps__watchdog__tm(EPS_I2C_BUS_INDEX,&response);
+
 		printf("sending ACK(if transmission was heard then error :/ )\n");
 		SendAckPacket(ACK_MUTE,NULL,NULL,0);
 		vTaskDelay(1000);

@@ -26,5 +26,4 @@
 #define E_TRXUV_FRAME_LENGTH    -33 ///< Input frame lenght was greater than the maximum frame length of TRXUV.
 #define E_INPUT_POINTER_NULL    -34 ///< A pointer input to the function is NULL.
 #define E_COMMAND_NACKED    	-35 ///< A pointer input to the function is NULL.
-
 #endif /* ERRORS_H_ */

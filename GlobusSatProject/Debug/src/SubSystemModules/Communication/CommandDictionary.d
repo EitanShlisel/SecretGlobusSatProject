@@ -20,6 +20,7 @@ src/SubSystemModules/Communication/CommandDictionary.d: \
  C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SubSystemModules/Communication/SubsystemCommands/Maintanence_Commands.h \
  C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SubSystemModules/Communication/SubsystemCommands/FS_Commands.h \
  C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SubSystemModules/Communication/SubsystemCommands/EPS_Commands.h \
+ C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SubSystemModules/Communication/SubsystemCommands/Freertos_Commands.h \
  C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SubSystemModules/Housekepping/TelemetryCollector.h \
  C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SubSystemModules/Housekepping/TelemetryFiles.h \
  C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/TLM_management.h \
@@ -69,6 +70,8 @@ C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SubSystemM
 C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SubSystemModules/Communication/SubsystemCommands/FS_Commands.h:
 
 C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SubSystemModules/Communication/SubsystemCommands/EPS_Commands.h:
+
+C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SubSystemModules/Communication/SubsystemCommands/Freertos_Commands.h:
 
 C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/SubSystemModules/Housekepping/TelemetryCollector.h:
 

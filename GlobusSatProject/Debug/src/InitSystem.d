@@ -42,7 +42,7 @@ src/InitSystem.d: ../src/InitSystem.c \
  C:\Users\97250\Documents\GitHub\GlobusSatProject\GlobusSatProject\src/TLM_management.h \
  C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/hal/include/hal/Boolean.h \
  ../src/InitSystem.h ../src/TLM_management.h \
- C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisEPS.h
+ C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/isis_eps_driver.h
 
 C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/freertos/include/freertos/FreeRTOS.h:
 
@@ -134,4 +134,4 @@ C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//hal/hal/in
 
 ../src/TLM_management.h:
 
-C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/IsisEPS.h:
+C:/Users/97250/Documents/GitHub/GlobusSatProject/GlobusSatProject/..//satellite-subsystems/satellite-subsystems/include/satellite-subsystems/isis_eps_driver.h:
