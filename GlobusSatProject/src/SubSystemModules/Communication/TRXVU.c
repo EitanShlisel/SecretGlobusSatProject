@@ -195,8 +195,9 @@ void DumpTask(void *args) {
 		if (CheckDumpAbort() || CheckTransmitionAllowed()) {
 			FinishDump(task_args, buffer, ACK_DUMP_ABORT, NULL, 0);
 		}
-		if (0 == availFrames)
+		if (0 == availFrames) {
 			vTaskDelay(10);
+		}
 
 		AssembleCommand((unsigned char*)buffer, size_of_element,
 				(char) DUMP_SUBTYPE, (char) (task_args->dump_type),
