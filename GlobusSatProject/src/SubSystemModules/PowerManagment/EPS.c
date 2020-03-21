@@ -85,7 +85,6 @@ int GetBatteryVoltage(voltage_t *vbatt)
 	isis_eps__gethousekeepingeng__from_t response;
 
 	int err = isis_eps__gethousekeepingeng__tm(_index,&response);
-	//printf("Battery voltage: %d mW\n\r", response.fields.batt_input.fields.volt);
 	*vbatt = response.fields.batt_input.fields.volt;
 
 	return err;
