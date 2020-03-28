@@ -178,7 +178,9 @@ int managment_command_router(sat_packet_t *cmd)
 	case FS_RESET_SUBTYPE:
 		CMD_ResetComponent(reset_filesystem);
 		break;
-
+	case UPDATE_TIME_SUBTYPE:
+		CMD_UpdateSatTime(cmd);
+		break;
 	default:
 		SendAckPacket(ACK_UNKNOWN_SUBTYPE,cmd,NULL,0);
 		break;
