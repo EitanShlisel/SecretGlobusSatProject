@@ -24,7 +24,7 @@ int EPS_Init()
 	ISIS_EPS_t subsystem; // One instance to be initialised.
 	subsystem.i2cAddr = EPS_I2C_ADDR;
 	rv = ISIS_EPS_Init(&subsystem, 1);
-	if(isis_eps__error__reinit != rv || isis_eps__error__none != rv){
+	if(isis_eps__error__reinit != rv && isis_eps__error__none != rv){
 		return  -1;
 	}
 
