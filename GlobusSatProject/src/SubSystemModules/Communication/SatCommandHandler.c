@@ -195,6 +195,7 @@ CommandHandlerErr GetDelayedCommandBufferCount()
 
 }
 
+// TODO: Finish GetOnlineCommand with ack
 CommandHandlerErr GetOnlineCommand(sat_packet_t *cmd)
 {
 	if (NULL == cmd) {
