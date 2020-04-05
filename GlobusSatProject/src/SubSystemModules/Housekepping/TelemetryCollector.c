@@ -165,8 +165,6 @@ void TelemetryCreateFiles(Boolean8bit tlms_created[NUMBER_OF_TELEMETRIES]){
 }
 
 void TelemetrySaveEPS(){
-	//TODO fix
-
 	 isis_eps__gethousekeepingraw__from_t tlm_raw;
 	 isis_eps__gethousekeepingrawincdb__from_t tlm_raw_cdb;
 	 isis_eps__gethousekeepingeng__from_t tlm_eng;
