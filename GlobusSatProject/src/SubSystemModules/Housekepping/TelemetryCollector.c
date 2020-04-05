@@ -166,7 +166,7 @@ void TelemetryCreateFiles(Boolean8bit tlms_created[NUMBER_OF_TELEMETRIES]){
 
 void TelemetrySaveEPS(){
 	//TODO fix
-	/*
+
 	 isis_eps__gethousekeepingraw__from_t tlm_raw;
 	 isis_eps__gethousekeepingrawincdb__from_t tlm_raw_cdb;
 	 isis_eps__gethousekeepingeng__from_t tlm_eng;
@@ -174,10 +174,10 @@ void TelemetrySaveEPS(){
 	 isis_eps__gethousekeepingrunningavg__from_t tlm_run_avg;
 	 isis_eps__gethousekeepingengrunningavgincdb__from_t tlm_eng_avg_cdb;
 
-	 if(0 != isis_eps__gethousekeepingengrunningavgincdb__tm(EPS_I2C_BUS_INDEX,&tlm_raw)){
+	 if(0 != isis_eps__gethousekeepingraw__tm(EPS_I2C_BUS_INDEX,&tlm_raw)){
 		 c_fileWrite(FILENAME_EPS_HK_RAW_TLM, &tlm_raw);
 	 }
-	 if(0 != isis_eps__gethousekeepingraw__tm(EPS_I2C_BUS_INDEX,&tlm_raw_cdb)){
+	 if(0 != isis_eps__gethousekeepingrawincdb__tm(EPS_I2C_BUS_INDEX,&tlm_raw_cdb)){
 		 c_fileWrite(FILENAME_EPS_HK_RAW_CDB_TLM, &tlm_raw_cdb);
 	 }
 	 if(0 != isis_eps__gethousekeepingeng__tm(EPS_I2C_BUS_INDEX,&tlm_eng)){
@@ -192,7 +192,7 @@ void TelemetrySaveEPS(){
 	 if(0 != isis_eps__gethousekeepingengrunningavgincdb__tm(EPS_I2C_BUS_INDEX,&tlm_eng_avg_cdb)){
 		 c_fileWrite(FILENAME_EPS_ENG_AVG_CDB, &tlm_eng_avg_cdb);
 	 }
-	 */
+
 }
 
 void TelemetrySaveTRXVU()
