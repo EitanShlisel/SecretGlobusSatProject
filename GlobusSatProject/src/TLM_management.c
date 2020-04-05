@@ -157,7 +157,7 @@ FileSystemResult c_fileCreate(char* c_file_name,
 	{
 		return FS_FRAM_FAIL;
 	}
-	int c_file_address =C_FILES_BASE_ADDR+num_of_files_in_FS*sizeof(C_FILE);
+	int c_file_address = C_FILES_BASE_ADDR+num_of_files_in_FS*sizeof(C_FILE);
 	if(FRAM_write((unsigned char*)&c_file,
 			c_file_address,sizeof(C_FILE))!=0)//write c_file struct in FRAM
 	{
@@ -174,8 +174,8 @@ FileSystemResult c_fileCreate(char* c_file_name,
 static void writewithEpochtime(F_FILE* file, byte* data, int size,unsigned int time)
 {
 	int number_of_writes;
-	number_of_writes = f_write( &time,sizeof(unsigned int),1, file );
-	number_of_writes += f_write( data, size,1, file );
+	number_of_writes = f_write(&time, sizeof(unsigned int), 1, file);
+	number_of_writes += f_write(data, size, 1, file);
 	//printf("writing element, time is: %u\n",time);
 	if(number_of_writes!=2)
 	{
