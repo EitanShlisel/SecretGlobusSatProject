@@ -50,13 +50,7 @@ src/main.d: ../src/main.c \
  C:\ISIS\workspace\SecretGlobusSatProject\GlobusSatProject\src/TLM_management.h \
  C:/ISIS/workspace/SecretGlobusSatProject/GlobusSatProject/..//hal/hal/include/hal/Boolean.h \
  ../src/SubSystemModules/Maintenance/Maintenance.h ../src/InitSystem.h \
- ../src/main.h ../src/TestingDemos/MainTest.h \
- C:\ISIS\workspace\SecretGlobusSatProject\GlobusSatProject\src/TestingDemos/EpsTestingDemo.h \
- C:\ISIS\workspace\SecretGlobusSatProject\GlobusSatProject\src/TestingDemos/FileSystemTestingDemo.h \
- C:\ISIS\workspace\SecretGlobusSatProject\GlobusSatProject\src/TestingDemos/MaintenanceTestingDemo.h \
- C:\ISIS\workspace\SecretGlobusSatProject\GlobusSatProject\src/TestingDemos/TrxvuTestingDemo.h \
- C:\ISIS\workspace\SecretGlobusSatProject\GlobusSatProject\src/TestingDemos/CommandsTestingDemo.h \
- C:\ISIS\workspace\SecretGlobusSatProject\GlobusSatProject\src/TestingDemos/TelemetryTestingDemo.h
+ ../src/main.h
 
 C:/ISIS/workspace/SecretGlobusSatProject/GlobusSatProject/..//hal/freertos/include/freertos/FreeRTOS.h:
 
@@ -165,17 +159,3 @@ C:/ISIS/workspace/SecretGlobusSatProject/GlobusSatProject/..//hal/hal/include/ha
 ../src/InitSystem.h:
 
 ../src/main.h:
-
-../src/TestingDemos/MainTest.h:
-
-C:\ISIS\workspace\SecretGlobusSatProject\GlobusSatProject\src/TestingDemos/EpsTestingDemo.h:
-
-C:\ISIS\workspace\SecretGlobusSatProject\GlobusSatProject\src/TestingDemos/FileSystemTestingDemo.h:
-
-C:\ISIS\workspace\SecretGlobusSatProject\GlobusSatProject\src/TestingDemos/MaintenanceTestingDemo.h:
-
-C:\ISIS\workspace\SecretGlobusSatProject\GlobusSatProject\src/TestingDemos/TrxvuTestingDemo.h:
-
-C:\ISIS\workspace\SecretGlobusSatProject\GlobusSatProject\src/TestingDemos/CommandsTestingDemo.h:
-
-C:\ISIS\workspace\SecretGlobusSatProject\GlobusSatProject\src/TestingDemos/TelemetryTestingDemo.h:
