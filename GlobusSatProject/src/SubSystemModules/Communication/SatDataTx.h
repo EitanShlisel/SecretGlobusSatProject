@@ -24,6 +24,13 @@ void InitTxModule();
  */
 Boolean CheckTransmitionAllowed();
 
+/*!
+ * @brief checks if currently transmissiting
+ * @return	TRUE if transmistting
+ * 			FALSE if NOT transmission
+ */
+Boolean IsTransmitting();
+
 
 /*!
  * @brief	mutes the TRXVU for a specified time frame

@@ -10,6 +10,8 @@
 #define SIZE_RXFRAME	200		///< max size of data field in uplink
 #define SIZE_TXFRAME	235		///< max size of data field in downlink
 
+#define SIZE_DUMP_BUFFER (4096) ///< buffer size for dump operations
+
 
 typedef struct __attribute__ ((__packed__))
 {
