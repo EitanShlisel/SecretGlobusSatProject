@@ -157,7 +157,8 @@ void Maintenance()
 		printf("GS was kicked. now restarting...\n");
 		vTaskDelay(5000);
 #endif
-		restart();
+		//restart();
+		//TODO use ieps ground wdt
 	}
 
 	if(CheckForMuteEnd()){
