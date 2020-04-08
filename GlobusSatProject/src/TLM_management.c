@@ -42,20 +42,24 @@ typedef struct
 void delete_allTMFilesFromSD()
 {
 	F_FIND find;
-	if (!f_findfirst("A:/*.*",&find))
+	//the first file in directory
+	if (!f_findfirst("A:/*.*",&find)) //path : A ->path to Drive,:/ -> main directory, . -> here (from user manual)
 	{
 		do
 		{
 			int count = 0;
+			// check for file ending
+			// 30 - define as maximum lenght of name
 			while (find.filename[count] != '.' && find.filename[count] != '\0' && count < 30)
 				count++;
 			count++;
+			// look for extention
 			if (!memcmp(find.filename + count, FS_FILE_ENDING, (int)FS_FILE_ENDING_SIZE))
 			{
 				f_delete(find.filename);
 			}
 
-		} while (!f_findnext(&find));
+		} while (!f_findnext(&find)); //As long there is another file
 	}
 }
 // return -1 for FRAM fail
@@ -272,7 +276,7 @@ FileSystemResult c_fileWrite(char* c_file_name, void* element)
 	f_releaseFS();
 	return FS_SUCCSESS;
 }
-
+// TODO: Ask idan what he meant by that
 	FileSystemResult fileWrite(char* file_name, void* element,int size)
 {
 	F_FILE *file;
@@ -322,7 +326,7 @@ int c_fileGetSizeOfElement(char* c_file_name,int* size_of_element)
 	return FS_SUCCSESS;
 }
 
-
+// TODO: Ask idan what he meant by that
 FileSystemResult c_fileDeleteElements(char* c_file_name, time_unix from_time,
 		time_unix to_time)
 {
