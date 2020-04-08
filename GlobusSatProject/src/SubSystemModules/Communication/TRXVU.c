@@ -165,7 +165,7 @@ Boolean CheckDumpAbort() {
 	return FALSE;
 }
 
-int getTelemetryMetaData(tlm_type type, char* filename, int* size_of_element) {
+int getTelemetryMetaData(tlm_type type, char* filename, unsigned int* size_of_element) {
 	int err = 0;
 	err = GetTelemetryFilenameByType(type, filename);
 	if (0 != err) {

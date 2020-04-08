@@ -19,7 +19,7 @@
 #define _SD_CARD 0
 #define FIRST_TIME -1
 #define FILE_NAME_WITH_INDEX_SIZE MAX_F_FILE_NAME_SIZE+sizeof(int)*2
-
+#define MAXMIMUM_FILE_NAME_LENGTH 30
 //struct for filesystem info
 typedef struct
 {
@@ -49,8 +49,7 @@ void delete_allTMFilesFromSD()
 		{
 			int count = 0;
 			// check for file ending
-			// 30 - define as maximum lenght of name
-			while (find.filename[count] != '.' && find.filename[count] != '\0' && count < 30)
+			while (find.filename[count] != '.' && find.filename[count] != '\0' && count < MAXMIMUM_FILE_NAME_LENGTH)
 				count++;
 			count++;
 			// look for extention
