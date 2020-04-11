@@ -19,7 +19,7 @@
 #define _SD_CARD 0
 #define FIRST_TIME -1
 #define FILE_NAME_WITH_INDEX_SIZE MAX_F_FILE_NAME_SIZE+sizeof(int)*2
-
+#define MAXMIMUM_FILE_NAME_LENGTH 30
 //struct for filesystem info
 typedef struct
 {
@@ -42,20 +42,23 @@ typedef struct
 void delete_allTMFilesFromSD()
 {
 	F_FIND find;
-	if (!f_findfirst("A:/*.*",&find))
+	//the first file in directory
+	if (!f_findfirst("A:/*.*",&find)) //path : A ->path to Drive,:/ -> main directory, . -> here (from user manual)
 	{
 		do
 		{
 			int count = 0;
-			while (find.filename[count] != '.' && find.filename[count] != '\0' && count < 30)
+			// check for file ending
+			while (find.filename[count] != '.' && find.filename[count] != '\0' && count < MAXMIMUM_FILE_NAME_LENGTH)
 				count++;
 			count++;
+			// look for extention
 			if (!memcmp(find.filename + count, FS_FILE_ENDING, (int)FS_FILE_ENDING_SIZE))
 			{
 				f_delete(find.filename);
 			}
 
-		} while (!f_findnext(&find));
+		} while (!f_findnext(&find)); //As long there is another file
 	}
 }
 // return -1 for FRAM fail
@@ -157,7 +160,7 @@ FileSystemResult c_fileCreate(char* c_file_name,
 	{
 		return FS_FRAM_FAIL;
 	}
-	int c_file_address =C_FILES_BASE_ADDR+num_of_files_in_FS*sizeof(C_FILE);
+	int c_file_address = C_FILES_BASE_ADDR+num_of_files_in_FS*sizeof(C_FILE);
 	if(FRAM_write((unsigned char*)&c_file,
 			c_file_address,sizeof(C_FILE))!=0)//write c_file struct in FRAM
 	{
@@ -174,8 +177,8 @@ FileSystemResult c_fileCreate(char* c_file_name,
 static void writewithEpochtime(F_FILE* file, byte* data, int size,unsigned int time)
 {
 	int number_of_writes;
-	number_of_writes = f_write( &time,sizeof(unsigned int),1, file );
-	number_of_writes += f_write( data, size,1, file );
+	number_of_writes = f_write(&time, sizeof(unsigned int), 1, file);
+	number_of_writes += f_write(data, size, 1, file);
 	//printf("writing element, time is: %u\n",time);
 	if(number_of_writes!=2)
 	{
@@ -272,7 +275,7 @@ FileSystemResult c_fileWrite(char* c_file_name, void* element)
 	f_releaseFS();
 	return FS_SUCCSESS;
 }
-
+// TODO: Ask idan what he meant by that
 	FileSystemResult fileWrite(char* file_name, void* element,int size)
 {
 	F_FILE *file;
@@ -322,7 +325,7 @@ int c_fileGetSizeOfElement(char* c_file_name,int* size_of_element)
 	return FS_SUCCSESS;
 }
 
-
+// TODO: Ask idan what he meant by that
 FileSystemResult c_fileDeleteElements(char* c_file_name, time_unix from_time,
 		time_unix to_time)
 {

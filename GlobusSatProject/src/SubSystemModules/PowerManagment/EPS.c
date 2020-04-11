@@ -16,13 +16,15 @@ voltage_t prev_filtered_voltage = 0;		// y[i-1]
 float alpha = DEFAULT_ALPHA_VALUE;			//<! smoothing constant
 EpsThreshVolt_t eps_threshold_voltages = {.raw = DEFAULT_EPS_THRESHOLD_VOLTAGES};	// saves the current EPS logic threshold voltages
 
+static uint8_t _index;
+
 int EPS_Init()
 {
 	int rv = 0;
 	ISIS_EPS_t subsystem; // One instance to be initialised.
 	subsystem.i2cAddr = EPS_I2C_ADDR;
 	rv = ISIS_EPS_Init(&subsystem, 1);
-	if(isis_eps__error__reinit != rv || isis_eps__error__none != rv){
+	if(isis_eps__error__reinit != rv && isis_eps__error__none != rv){
 		return  -1;
 	}
 
@@ -80,7 +82,11 @@ int EPS_Conditioning()
 
 int GetBatteryVoltage(voltage_t *vbatt)
 {
-	int err = 0;
+	isis_eps__gethousekeepingeng__from_t response;
+
+	int err = isis_eps__gethousekeepingeng__tm(_index,&response);
+	*vbatt = response.fields.batt_input.fields.volt;
+
 	return err;
 }
 

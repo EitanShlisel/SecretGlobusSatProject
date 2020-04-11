@@ -89,7 +89,7 @@ int InitTrxvu() {
 }
 
 CommandHandlerErr TRX_Logic() {
-	int err = 0;
+	int err = cmd_no_command_found;
 	int frame_count = GetNumberOfFramesInBuffer();
 	sat_packet_t cmd = { 0 };
 
@@ -165,7 +165,7 @@ Boolean CheckDumpAbort() {
 	return FALSE;
 }
 
-int getTelemetryMetaData(tlm_type type, char* filename, int* size_of_element) {
+int getTelemetryMetaData(tlm_type type, char* filename, unsigned int* size_of_element) {
 	int err = 0;
 	err = GetTelemetryFilenameByType(type, filename);
 	if (0 != err) {
@@ -221,7 +221,7 @@ void DumpTask(void *args) {
 		result = c_fileRead(filename, buffer, SIZE_DUMP_BUFFER, 
 		last_sent_time, task_args->t_end, &num_packets_read, &last_read_time);
 
-		if(FS_SUCCSESS == result) {
+		if(result != FS_BUFFER_OVERFLOW) {
 			is_last_read = TRUE;
 		}
 

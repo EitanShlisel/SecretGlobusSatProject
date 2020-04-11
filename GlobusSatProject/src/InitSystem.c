@@ -31,7 +31,6 @@ Boolean isFirstActivation()
 void firstActivationProcedure(){
 	int err = 0;
 
-
 	sat_packet_t cmd = {0};
 	time_unix seconds_since_deploy = 0;
 
@@ -62,8 +61,8 @@ void firstActivationProcedure(){
 	}
 
 #ifndef TESTING
-	IsisAntS_autoDeployment(0, isisants_sideA, 10);
-	IsisAntS_autoDeployment(0, isisants_sideB, 10);
+	//IsisAntS_autoDeployment(0, isisants_sideA, 10);
+	//IsisAntS_autoDeployment(0, isisants_sideB, 10);
 #endif
 	//TODO: log
 }

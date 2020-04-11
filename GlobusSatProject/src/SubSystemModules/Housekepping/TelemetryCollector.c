@@ -172,24 +172,25 @@ void TelemetrySaveEPS(){
 	 isis_eps__gethousekeepingrunningavg__from_t tlm_run_avg;
 	 isis_eps__gethousekeepingengrunningavgincdb__from_t tlm_eng_avg_cdb;
 
-	 if(0 != isis_eps__gethousekeepingengrunningavgincdb__tm(EPS_I2C_BUS_INDEX,&tlm_raw)){
+	 if(0 == isis_eps__gethousekeepingraw__tm(EPS_I2C_BUS_INDEX,&tlm_raw)){
 		 c_fileWrite(FILENAME_EPS_HK_RAW_TLM, &tlm_raw);
 	 }
-	 if(0 != isis_eps__gethousekeepingraw__tm(EPS_I2C_BUS_INDEX,&tlm_raw_cdb)){
+	 if(0 == isis_eps__gethousekeepingrawincdb__tm(EPS_I2C_BUS_INDEX,&tlm_raw_cdb)){
 		 c_fileWrite(FILENAME_EPS_HK_RAW_CDB_TLM, &tlm_raw_cdb);
 	 }
-	 if(0 != isis_eps__gethousekeepingeng__tm(EPS_I2C_BUS_INDEX,&tlm_eng)){
+	 if(0 == isis_eps__gethousekeepingeng__tm(EPS_I2C_BUS_INDEX,&tlm_eng)){
 		 c_fileWrite(FILENAME_EPS_ENG_TLM, &tlm_eng);
 	 }
-	 if(0 != isis_eps__gethousekeepingengincdb__tm(EPS_I2C_BUS_INDEX,&tlm_eng_cdb)){
+	 if(0 == isis_eps__gethousekeepingengincdb__tm(EPS_I2C_BUS_INDEX,&tlm_eng_cdb)){
 		 c_fileWrite(FILENAME_EPS_ENG_CDB_TLM, &tlm_eng_cdb);
 	 }
-	 if(0 != isis_eps__gethousekeepingrunningavg__tm(EPS_I2C_BUS_INDEX,&tlm_run_avg)){
+	 if(0 == isis_eps__gethousekeepingrunningavg__tm(EPS_I2C_BUS_INDEX,&tlm_run_avg)){
 		 c_fileWrite(FILENAME_EPS_RUN_AVG_TLM, &tlm_run_avg);
 	 }
-	 if(0 != isis_eps__gethousekeepingengrunningavgincdb__tm(EPS_I2C_BUS_INDEX,&tlm_eng_avg_cdb)){
+	 if(0 == isis_eps__gethousekeepingengrunningavgincdb__tm(EPS_I2C_BUS_INDEX,&tlm_eng_avg_cdb)){
 		 c_fileWrite(FILENAME_EPS_ENG_AVG_CDB, &tlm_eng_avg_cdb);
 	 }
+
 }
 
 void TelemetrySaveTRXVU()
