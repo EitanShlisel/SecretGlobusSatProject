@@ -89,7 +89,7 @@ Boolean TestTrxvuLogic()
 		curr_time = xTaskGetTickCount();
 
 		err = TRX_Logic();
-		if(0 != err){
+		if(cmd_command_found != err && cmd_no_command_found != err){
 			printf("error in TRX_Logic = %d\n exiting\n",err);
 			return TRUE;
 		}
