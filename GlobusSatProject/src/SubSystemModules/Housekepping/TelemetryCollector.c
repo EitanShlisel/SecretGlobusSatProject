@@ -203,7 +203,7 @@ void TelemetrySaveTRXVU()
 		c_fileWrite(FILENAME_TX_TLM, &tx_tlm);
 	}
 
-	ISIStrxvuTxTelemetry_revC revc_tx_tlm;
+	ISIStrxvuTxTelemetry_revC revc_tx_tlm; //TODO REVD
 	err = IsisTrxvu_tcGetTelemetryAll_revC(ISIS_TRXVU_I2C_BUS_INDEX,
 			&revc_tx_tlm);
 	if (err == 0)

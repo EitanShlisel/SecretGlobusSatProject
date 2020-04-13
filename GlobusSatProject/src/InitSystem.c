@@ -15,6 +15,7 @@
 #include "InitSystem.h"
 #include "TLM_management.h"
 
+
 #include <satellite-subsystems/isis_eps_driver.h>
 
 #define I2c_SPEED_Hz 100000
@@ -169,7 +170,7 @@ int DeploySystem()
 	}
 	return 0;
 }
-
+Boolean8bit tlms_created[NUMBER_OF_TELEMETRIES];
 #define PRINT_IF_ERR(method) if(0 != err)printf("error in '" #method  "' err = %d\n",err);
 int InitSubsystems()
 {
@@ -196,7 +197,11 @@ int InitSubsystems()
 
 	err = InitTrxvu();
 	PRINT_IF_ERR(InitTrxvu)
-
+	int first_activation =isFirstActivation();
+	if(first_activation)
+	{
+		TelemetryCreateFiles(tlms_created);
+	}
 	err = DeploySystem();
 	PRINT_IF_ERR(DeploySystem)
 	return 0;

@@ -55,7 +55,6 @@ void TelemetryCreateFiles(Boolean8bit tlms_created[NUMBER_OF_TELEMETRIES]);
  * @brief saves all telemetries into the appropriate TLM files
  */
 void TelemetryCollectorLogic();
-
 /*!
  *  @brief saves current EPS telemetry into file
  */
