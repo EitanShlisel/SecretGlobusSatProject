@@ -219,7 +219,7 @@ void DumpTask(void *args) {
 		num_packets_read = 0;
 
 		result = c_fileRead(filename, buffer, SIZE_DUMP_BUFFER, 
-		last_sent_time, task_args->t_end, &num_packets_read, &last_read_time);
+		last_sent_time, task_args->t_end, &num_packets_read, &last_read_time,1);
 
 		if(result != FS_BUFFER_OVERFLOW) {
 			is_last_read = TRUE;
@@ -292,7 +292,7 @@ int EnterGS_Mode(){
 
 int ExitGS_Mode(){
 	int err = 0;
-	err = IsisTrxvu_tcSetIdlestate(ISIS_TRXVU_I2C_BUS_INDEX,trxvu_idle_state_on);
+	err = IsisTrxvu_tcSetIdlestate(ISIS_TRXVU_I2C_BUS_INDEX,trxvu_idle_state_off);
 	vTaskDelay(100);
 	return err;
 }

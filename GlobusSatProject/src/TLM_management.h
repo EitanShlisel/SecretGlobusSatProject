@@ -1,9 +1,17 @@
+/*
+ * TM_managment.h
+ *
+ *  Created on: Apr 8, 2019
+ *      Author: Hoopoe3n
+ */
+
 #ifndef TM_MANAGMENT_H_
 #define TM_MANAGMENT_H_
 
-#include <hal/Boolean.h>
+#include <hcc/api_fat.h>
 #include <GlobalStandards.h>
 
+typedef unsigned int time_unix;
 #define MAX_F_FILE_NAME_SIZE 7
 #define FIRST_ELEMENT_IN_C_FILE 0
 #define LAST_ELEMENT_IN_C_FILE 0
@@ -13,8 +21,14 @@
 #define FS_FILE_ENDING_SIZE	3
 
 #ifndef FSFRAM
-#define FSFRAM 0x20000
+#define FSFRAM 0x10000
 #endif
+#define FS_MAX_OPENFILES	F_MAXFILES - 2
+#define FS_MAX_TASK_TETER	FAT_MAXTASK - 1
+
+#define COULD_NOT_TAKE_SEMAPHORE_ERROR 	-1
+#define COULD_NOT_GIVE_SEMAPHORE_ERROR 	-2
+#define FILE_NULL_ERROR					-3
 
 typedef enum
 {
@@ -27,13 +41,25 @@ typedef enum
 	FS_ALLOCATION_ERROR,
 	FS_FRAM_FAIL,
 	FS_FAT_API_FAIL,
-	FS_FAIL
+	FS_FAIL,
+	FS_COULD_NOT_CREATE_SEMAPHORE,
+	FS_COULD_NOT_TAKE_SEMAPHORE,
+	FS_COULD_NOT_GIVE_SEMAPHORE
 } FileSystemResult;
 
+int f_managed_enterFS();
+int f_managed_releaseFS();
+
+int f_managed_open(char* file_name, char* config, F_FILE** fileHandler);
+int f_managed_close(F_FILE** fileHandler);
+
+FileSystemResult reset_FRAM_FS();
+
+void sd_format(int index);
 /*
  *
  */
-void delete_allTMFilesFromSD();
+void deleteDir(char* name, Boolean delete_folder);
 /*!
  * Initializes the file system.
  * @note call once for boot and after DeInitializeFS.
@@ -110,8 +136,8 @@ FileSystemResult c_fileGetSizeOfElement(char* c_file_name,int* size_of_element);
  * FS_SUCCSESS on success.
  */
 FileSystemResult c_fileRead(char* c_file_name, byte* buffer, int size_of_buffer,
-		time_unix from_time, time_unix to_time, int* read,time_unix* last_read_time);
-
+		time_unix from_time, time_unix to_time, int* read,time_unix* last_read_time, unsigned int resolution);
+FileSystemResult c_fileGetSizeOfElement(char* c_file_name,int* element_size);
 //print c_file for testing
 void print_file(char* c_file_name);
 FileSystemResult c_fileReset(char* c_file_name);

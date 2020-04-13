@@ -18,9 +18,7 @@
 
 //	---trxvu
 #define FILENAME_TX_TLM					"tx"
-#define FILENAME_TX_REVC				"txRevc"
 #define FILENAME_RX_TLM					"rx"
-#define FILENAME_RX_REVC				"rxRevC"
 #define FILENAME_RX_FRAME				"rxFrame"
 #define FILENAME_ANTENNA_TLM			"ant"
 

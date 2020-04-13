@@ -14,8 +14,10 @@
 #include "SubSystemModules/Housekepping/TelemetryCollector.h"
 #include "InitSystem.h"
 #include "TLM_management.h"
+#include "SubSystemModules/Housekepping/TelemetryFiles.h"
 
 #include <satellite-subsystems/isis_eps_driver.h>
+Boolean8bit tlms_created[NUMBER_OF_TELEMETRIES];
 
 #define I2c_SPEED_Hz 100000
 #define I2c_Timeout 10
@@ -109,6 +111,10 @@ void WriteDefaultValuesToFRAM()
 	beacon_interval = DEFAULT_BEACON_INTERVAL_TIME;
 	FRAM_write((unsigned char*) &beacon_interval, BEACON_INTERVAL_TIME_ADDR,
 			BEACON_INTERVAL_TIME_SIZE);
+//TODO: find a proper solution for interval defualt problems
+	time_unix tlm_save_periods[NUM_OF_SUBSYSTEMS_SAVE_FUNCTIONS] = {1,1,1,1,1};
+	FRAM_write((unsigned char*) &tlm_save_periods, TLM_SAVE_PERIOD_START_ADDR,
+			NUM_OF_SUBSYSTEMS_SAVE_FUNCTIONS*sizeof(time_unix));
 
 }
 
@@ -153,7 +159,7 @@ int DeploySystem()
 	Boolean first_activation = isFirstActivation();
 
 	if (first_activation) {
-
+		TelemetryCreateFiles(tlms_created);
 		firstActivationProcedure();
 
 		time_unix deploy_time = 0;
@@ -166,10 +172,10 @@ int DeploySystem()
 		FIRST_ACTIVATION_FLAG_ADDR, FIRST_ACTIVATION_FLAG_SIZE);
 
 		WriteDefaultValuesToFRAM();
+
 	}
 	return 0;
 }
-
 #define PRINT_IF_ERR(method) if(0 != err)printf("error in '" #method  "' err = %d\n",err);
 int InitSubsystems()
 {
@@ -188,7 +194,9 @@ int InitSubsystems()
 	err = StartTIME();
 	PRINT_IF_ERR(StartTIME)
 
-	err = InitializeFS(isFirstActivation());
+	int first_activation =isFirstActivation();
+
+	err = InitializeFS(first_activation);
 	PRINT_IF_ERR(InitializeFS)
 
 	err = EPS_Init();
@@ -196,6 +204,9 @@ int InitSubsystems()
 
 	err = InitTrxvu();
 	PRINT_IF_ERR(InitTrxvu)
+
+	err = InitTelemetryCollrctor();
+	PRINT_IF_ERR(InitTelemetryCollrctor);
 
 	err = DeploySystem();
 	PRINT_IF_ERR(DeploySystem)
