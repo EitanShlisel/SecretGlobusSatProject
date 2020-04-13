@@ -85,5 +85,11 @@ void TelemetrySaveWOD();
  * @param[out] output WOD telemetry. If an error occurred while getting TLM the fields will be zero
  */
 void GetCurrentWODTelemetry(WOD_Telemetry_t *wod);
+/*!
+ *
+ * @brief Init Telemetry Collrctor Fram
+ * @param[out] fram error
+ */
+int InitTelemetryCollrctor();
 
 #endif /* TELEMETRYCOLLECTOR_H_ */
