@@ -15,10 +15,10 @@
 
 typedef struct __attribute__ ((__packed__))
 {
-	sat_packet_t *cmd;
 	unsigned char dump_type;
 	time_unix t_start;
 	time_unix t_end;
+	sat_packet_t cmd;
 } dump_arguments_t;
 
 

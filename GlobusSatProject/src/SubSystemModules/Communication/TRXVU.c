@@ -118,7 +118,7 @@ CommandHandlerErr TRX_Logic() {
 void FinishDump(dump_arguments_t *task_args,unsigned char *buffer, ack_subtype_t acktype,
 		unsigned char *err, unsigned int size) {
 
-	SendAckPacket(acktype, task_args->cmd, err, size);
+	SendAckPacket(acktype, &(task_args->cmd), err, size);
 	if (NULL != task_args) {
 		free(task_args);
 	}
@@ -211,7 +211,7 @@ void DumpTask(void *args) {
 
 	// TODO: consider if we actually want to know the number of packets that will be sent,
 	// as it won't be exactly easy.
-	SendAckPacket(ACK_DUMP_START, task_args->cmd,
+	SendAckPacket(ACK_DUMP_START, &(task_args->cmd),
 			(unsigned char*) &num_of_elements, sizeof(num_of_elements));
 
 	while(!is_last_read) {
@@ -239,7 +239,7 @@ void DumpTask(void *args) {
 			AssembleCommand((unsigned char*)buffer + size_of_element_with_timestamp * i, 
 				size_of_element_with_timestamp,
 				(char) DUMP_SUBTYPE, (char) (task_args->dump_type),
-				task_args->cmd->ID, &dump_tlm);
+				task_args->cmd.ID, &dump_tlm);
 			TransmitSplPacket(&dump_tlm, &availFrames);
 		}
 	}
@@ -254,20 +254,11 @@ int DumpTelemetry(sat_packet_t *cmd) {
 	}
 
 	dump_arguments_t *dmp_pckt = malloc(sizeof(*dmp_pckt));
-	unsigned int offset = 0;
 
-	dmp_pckt->cmd = cmd;
 	dmp_pckt->dump_type = ((dump_arguments_t*)cmd->data)->dump_type;
 	dmp_pckt->t_start = ((dump_arguments_t*)cmd->data)->t_start;
 	dmp_pckt->t_end = ((dump_arguments_t*)cmd->data)->t_end;
-
-	memcpy(&dmp_pckt->dump_type, cmd->data, sizeof(dmp_pckt->dump_type));
-	offset += sizeof(dmp_pckt->dump_type);
-
-	memcpy(&dmp_pckt->t_start, cmd->data + offset, sizeof(dmp_pckt->t_start));
-	offset += sizeof(dmp_pckt->t_start);
-
-	memcpy(&dmp_pckt->t_end, cmd->data + offset, sizeof(dmp_pckt->t_end));
+	dmp_pckt->cmd = *cmd;
 
 	if (xSemaphoreTake(xDumpLock,SECONDS_TO_TICKS(1)) != pdTRUE) {
 		return E_GET_SEMAPHORE_FAILED;
