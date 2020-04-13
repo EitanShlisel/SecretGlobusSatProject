@@ -312,11 +312,10 @@ static FileSystemResult deleteElementsFromFile(char* file_name,unsigned long fro
 
 }
 
-int c_fileGetSizeOfElement(char* c_file_name,int* size_of_element)
+FileSystemResult c_fileGetSizeOfElement(char* c_file_name,int* size_of_element)
 {
 	C_FILE c_file;
 	unsigned int addr;//FRAM ADDRESS
-	char curr_file_name[MAX_F_FILE_NAME_SIZE+sizeof(int)*2];
 	if(get_C_FILE_struct(c_file_name,&c_file,&addr)!=TRUE)//get c_file
 	{
 		return FS_NOT_EXIST;

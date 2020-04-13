@@ -95,7 +95,7 @@ int c_fileGetNumOfElements(char* c_file_name,time_unix from_time
  * @param c_file_name the name of the c_file.
  * @return size of element.
  */
-int c_fileGetSizeOfElement(char* c_file_name,int* size_of_element);
+FileSystemResult c_fileGetSizeOfElement(char* c_file_name,int* size_of_element);
 
 /*!
  * Read elements from c_file to buffer
