@@ -165,13 +165,13 @@ Boolean CheckDumpAbort() {
 	return FALSE;
 }
 
-int getTelemetryMetaData(tlm_type type, char* filename, unsigned int* size_of_element) {
+int getTelemetryMetaData(tlm_type type, char* filename, int* size_of_element) {
 	int err = 0;
 	err = GetTelemetryFilenameByType(type, filename);
 	if (0 != err) {
 		return err;
 	}
-	if(c_fileGetSizeOfElement(filename,size_of_element)!=TRUE) {
+	if(c_fileGetSizeOfElement(filename,size_of_element) != FS_SUCCSESS) {
 		return -1;
 	}
 	return err;
@@ -192,8 +192,8 @@ void DumpTask(void *args) {
 	int num_packets_read = 0; //number of packets read from buffer (single_time)
 	int total_packets_read = 0; //total number of packets read from buffer
 	unsigned int num_of_elements = 0;
-	unsigned int size_of_element = 0;
-	unsigned int size_of_element_with_timestamp;
+	int size_of_element = 0;
+	int size_of_element_with_timestamp;
 	time_unix last_read_time; // this is the last time we have on the buffer
 	time_unix last_sent_time = task_args->t_start; // this is the last we actually sent(where we want to search next)
 
