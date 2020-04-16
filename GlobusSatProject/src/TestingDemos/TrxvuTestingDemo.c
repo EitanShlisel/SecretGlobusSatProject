@@ -81,8 +81,8 @@ Boolean TestTrxvuLogic()
 	int err = 0;
 	while(UTIL_DbguGetIntegerMinMax((unsigned int*)&minutes,0,10) == 0);
 
-	portTickType curr_time = xTaskGetTickCount();
-	portTickType end_time = MINUTES_TO_TICKS(minutes) + curr_time;
+	portLONG curr_time = xTaskGetTickCount();
+	portLONG end_time = MINUTES_TO_TICKS(minutes) + curr_time;
 
 	while(end_time - curr_time > 0)
 	{

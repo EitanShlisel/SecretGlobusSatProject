@@ -1,9 +1,11 @@
 #include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+#include <hal/Utility/util.h>
 
 #include "TelemetryTestingDemo.h"
 #include "SubSystemModules/Housekepping/TelemetryCollector.h"
 
-Boolean MainTelemetryTestBench()
+Boolean PrintWodTest()
 {
 	WOD_Telemetry_t wod = { 0 };
 	GetCurrentWODTelemetry(&wod);
@@ -33,4 +35,92 @@ Boolean MainTelemetryTestBench()
 	printf("Number of currpted bytes in the memory	[bytes]: %d\n\r", wod.corrupt_bytes);
 	printf("Counts the number of resets the satellite has gone through [#]: %d\n\r", wod.number_of_resets);
 	return TRUE;
+}
+
+static Boolean TestTelemetryLogic()
+{
+	printf("\nPlease insert number of minutes to test(0 to 10)\n");
+	int minutes = 0;
+	while(UTIL_DbguGetIntegerMinMax((unsigned int*)&minutes,0,10) == 0);
+
+	portLONG curr_time = xTaskGetTickCount();
+	portLONG end_time = MINUTES_TO_TICKS(minutes) + curr_time;
+
+	while(end_time - curr_time > 0)
+	{
+		curr_time = xTaskGetTickCount();
+
+		TelemetryCollectorLogic();
+		vTaskDelay(500);
+		printf("time left: %d", end_time - curr_time);
+	}
+	return TRUE;
+}
+
+static Boolean PrintFile()
+{
+	printf("\nPlease insert number matching c file (just like dump requests)\n");
+	int err;
+	int type = 0;
+	char filename[MAX_F_FILE_NAME_SIZE] = { 0 };
+	while(UTIL_DbguGetIntegerMinMax((unsigned int*)&type,0,12) == 0);
+
+	err = GetTelemetryFilenameByType(type, filename);
+	if (0 != err) {
+		printf("could not get filename for type %d \n", type);
+		return TRUE;
+	}
+	printf("---START PRINT---\n");
+	print_file(filename);
+	printf("---END PRINT---\n");
+	return TRUE;
+}
+
+Boolean selectAndExecuteTelemetryDemoTest()
+{
+	unsigned int selection = 0;
+	Boolean offerMoreTests = TRUE;
+
+	printf( "\n\r Select a test to perform: \n\r");
+	printf("\t 0) Return to main menu \n\r");
+	printf("\t 1) Print WOD \n\r");
+	printf("\t 2) Test Telemetry Collector Logic \n\r");
+	printf("\t 3) Print c_file \n\r");
+
+	unsigned int number_of_tests = 3;
+	while(UTIL_DbguGetIntegerMinMax(&selection, 0, number_of_tests) == 0);
+
+	switch(selection) {
+	case 0:
+		offerMoreTests = FALSE;
+		break;
+	case 1:
+		offerMoreTests = PrintWodTest();
+		break;
+	case 2:
+		offerMoreTests = TestTelemetryLogic();
+		break;
+	case 3:
+		offerMoreTests = PrintFile();
+		break;
+	default:
+		break;
+	}
+	return offerMoreTests;
+}
+
+Boolean MainTelemetryTestBench()
+{
+	Boolean offerMoreTests = FALSE;
+
+	while(1)
+	{
+		offerMoreTests = selectAndExecuteTelemetryDemoTest();
+
+		if(offerMoreTests == FALSE)
+		{
+			break;
+		}
+	}
+	return FALSE;
 }
