@@ -26,6 +26,8 @@
 #include "SubSystemModules/Communication/Beacon.h"
 
 
+#define LOGD(f_, ...) printf(("D: " f_ "\n"), ##__VA_ARGS__)
+#define LOGE(f_, ...) printf(("E: " f_ "\n"), ##__VA_ARGS__)
 
 xQueueHandle 		xDumpQueue 	= NULL;
 xSemaphoreHandle 	xDumpLock 	= NULL;
@@ -120,16 +122,20 @@ void FinishDump(dump_arguments_t *task_args,unsigned char *buffer, ack_subtype_t
 
 	SendAckPacket(acktype, &(task_args->cmd), err, size);
 	if (NULL != task_args) {
+		LOGD("free args");
 		free(task_args);
 	}
 	if (NULL != xDumpLock) {
+		LOGD("release lock");
 		xSemaphoreGive(xDumpLock);
 	}
 	if (xDumpHandle != NULL) {
+		LOGD("delete handle");
 		vTaskDelete(xDumpHandle);
 		xDumpHandle = NULL;
 	}
 	if(NULL != buffer){
+		LOGD("free buffer");
 		free(buffer);
 	}
 }
@@ -186,6 +192,7 @@ void DumpTask(void *args) {
 	sat_packet_t dump_tlm = { 0 };
 
 	int err = 0;
+	int ack_return_code = ACK_DUMP_FINISHED;
 	Boolean is_last_read = FALSE;
 	FileSystemResult result = 0;
 	int availFrames = 1;
@@ -197,41 +204,52 @@ void DumpTask(void *args) {
 	time_unix last_read_time; // this is the last time we have on the buffer
 	time_unix last_sent_time = task_args->t_start; // this is the last we actually sent(where we want to search next)
 
+
 	unsigned char *buffer = NULL;
 	char filename[MAX_F_FILE_NAME_SIZE] = { 0 };
 
 	buffer = malloc(SIZE_DUMP_BUFFER);
 
 	err = getTelemetryMetaData(task_args->dump_type, filename, &size_of_element);
-	size_of_element_with_timestamp = size_of_element + sizeof(time_unix);
 	if(0 != err) {
+		// TODO: see if this can fit into our goto
+		LOGE("problem during dump init with err %d", err);
 		FinishDump(task_args, buffer, ACK_DUMP_ABORT, (unsigned char*) &err,sizeof(err));
 		return;
 	}
+
+	size_of_element_with_timestamp = size_of_element + sizeof(time_unix);
+	f_managed_enterFS();
+	LOGD("\nfilename: %s, size of element: %d t_start: %d t_end: %d", filename, size_of_element, task_args->t_start, task_args->t_end);
 
 	// TODO: consider if we actually want to know the number of packets that will be sent,
 	// as it won't be exactly easy.
 	SendAckPacket(ACK_DUMP_START, &(task_args->cmd),
 			(unsigned char*) &num_of_elements, sizeof(num_of_elements));
 
+	time_unix curr = 0;
+	Time_getUnixEpoch(&curr);
+	LOGD("starting dump loop at time: %u", curr);
 	while(!is_last_read) {
 		// read
 		num_packets_read = 0;
 
+		// TODO: consider different resolution
 		result = c_fileRead(filename, buffer, SIZE_DUMP_BUFFER, 
 		last_sent_time, task_args->t_end, &num_packets_read, &last_read_time,1);
-
 		if(result != FS_BUFFER_OVERFLOW) {
+			LOGD("c_fileRead returned not buffer overflow but: %d", result);
 			is_last_read = TRUE;
 		}
-
+		LOGD("read from buffer, num_packets_read: %d", num_packets_read);
 		last_sent_time = last_read_time;
 		total_packets_read += num_packets_read;
 		// send packets
 		for(int i = 0; i < num_packets_read; i++) {
-			if (CheckDumpAbort() || CheckTransmitionAllowed()) {
-				FinishDump(task_args, buffer, ACK_DUMP_ABORT, NULL, 0);
-				return;
+			if (CheckDumpAbort() || !CheckTransmitionAllowed()) {
+				LOGE("got dump abort");
+				ack_return_code = ACK_DUMP_ABORT;
+				goto cleanup;
 			}
 			if (0 == availFrames) {
 				vTaskDelay(10);
@@ -240,12 +258,23 @@ void DumpTask(void *args) {
 				size_of_element_with_timestamp,
 				(char) DUMP_SUBTYPE, (char) (task_args->dump_type),
 				task_args->cmd.ID, &dump_tlm);
-			TransmitSplPacket(&dump_tlm, &availFrames);
+			err = TransmitSplPacket(&dump_tlm, &availFrames);
+			if(err != 0) {
+				LOGD("transmitsplpacket error: %d", err);
+			}
+			// availFrames isn't set!! we lose frames without this delay
+			vTaskDelay(100);
 		}
 	}
-		
-	FinishDump(task_args, buffer, ACK_DUMP_FINISHED, NULL, 0);
-
+	LOGD("finish dump gracefully %d transmitted", total_packets_read);
+cleanup:
+	f_managed_releaseFS();
+	FinishDump(task_args, buffer, ack_return_code, NULL, 0);
+	while(1) {
+		// TODO: figure out why this task keeps running
+		LOGD("at end of dump task");
+		vTaskDelay(5000);
+	};
 }
 
 int DumpTelemetry(sat_packet_t *cmd) {
