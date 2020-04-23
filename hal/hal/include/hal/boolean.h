@@ -37,20 +37,10 @@
 typedef unsigned int  Boolean;
 typedef unsigned char Boolean8bit;
 
-#ifndef TRUE
-	#define TRUE		0xFFFFFFFF
-#endif
+#define TRUE		0xFFFFFFFF
+#define FALSE		0
 
-#ifndef FALSE
-	#define FALSE		0
-#endif
-
-#ifndef TRUE_8BIT
-	#define TRUE_8BIT	0xFF
-#endif
-
-#ifndef FALSE_8BIT
-	#define FALSE_8BIT	0
-#endif
+#define TRUE_8BIT	0xFF
+#define FALSE_8BIT	0
 
 #endif /* BOOLEAN_H_ */
