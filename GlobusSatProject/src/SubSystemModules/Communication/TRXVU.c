@@ -182,7 +182,7 @@ int getTelemetryMetaData(tlm_type type, char* filename, int* size_of_element) {
 	}
 	return err;
 }
-
+char dump_arr[SIZE_DUMP_BUFFER];
 void DumpTask(void *args) {
 	if (NULL == args) {
 		FinishDump(NULL, NULL, ACK_DUMP_ABORT, NULL, 0);
@@ -208,7 +208,7 @@ void DumpTask(void *args) {
 	unsigned char *buffer = NULL;
 	char filename[MAX_F_FILE_NAME_SIZE] = { 0 };
 
-	buffer = malloc(SIZE_DUMP_BUFFER);
+	buffer = dump_arr;
 
 	err = getTelemetryMetaData(task_args->dump_type, filename, &size_of_element);
 	if(0 != err) {
@@ -314,7 +314,7 @@ int EnterGS_Mode(){
 	}
 	Time_getUnixEpoch(&g_gs_start_time);
 	int err = 0;
-	err = IsisTrxvu_tcSetIdlestate(ISIS_TRXVU_I2C_BUS_INDEX,trxvu_idle_state_on);
+	//err = IsisTrxvu_tcSetIdlestate(ISIS_TRXVU_I2C_BUS_INDEX,trxvu_idle_state_on);
 	vTaskDelay(100);
 	return err;
 }

@@ -22,7 +22,7 @@ typedef struct __attribute__ ((__packed__)) sat_packet_t
 	unsigned int ID;							///< ID of the received/transmitted command
 	char cmd_type;								///< type of the command. according to SPL protocol
 	char cmd_subtype;							///< sub-type of the command. according to SPL protocol
-	unsigned int length;						///< length of the recived data.
+	unsigned short length;						///< length of the recived data.
 	unsigned char data[MAX_COMMAND_DATA_LENGTH];///< data buffer
 
 }sat_packet_t;
