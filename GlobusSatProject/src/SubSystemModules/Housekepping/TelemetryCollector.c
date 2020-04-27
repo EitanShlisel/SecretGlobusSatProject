@@ -115,6 +115,9 @@ void TelemetryCollectorLogic()
 void TelemetryCreateFiles(Boolean8bit tlms_created[NUMBER_OF_TELEMETRIES]){
 	FileSystemResult res;
 	FRAM_read((unsigned char*)tlm_save_periods,TLM_SAVE_PERIOD_START_ADDR,NUM_OF_SUBSYSTEMS_SAVE_FUNCTIONS*sizeof(time_unix));
+	// -- WOD files
+	res = c_fileCreate(FILENAME_WOD_TLM,sizeof(WOD_Telemetry_t));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_wod)
 
 	// -- EPS files
 	res = c_fileCreate(FILENAME_EPS_HK_RAW_TLM,sizeof(isis_eps__gethousekeepingraw__from_t));

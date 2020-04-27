@@ -263,7 +263,7 @@ void DumpTask(void *args) {
 				LOGD("transmitsplpacket error: %d", err);
 			}
 			// availFrames isn't set!! we lose frames without this delay
-			vTaskDelay(100);
+			if((i+1)%10 == 0) vTaskDelay(100);
 		}
 	}
 	LOGD("finish dump gracefully %d transmitted", total_packets_read);
@@ -283,17 +283,25 @@ int DumpTelemetry(sat_packet_t *cmd) {
 	}
 
 	dump_arguments_t *dmp_pckt = malloc(sizeof(*dmp_pckt));
+	int index = 0;
+	memcpy(&(dmp_pckt->dump_type),&cmd->data[index],sizeof(dmp_pckt->dump_type));
+	index+=sizeof(dmp_pckt->dump_type);
+	memcpy(&(dmp_pckt->t_start),&cmd->data[index],sizeof(dmp_pckt->t_start));
+	index+=sizeof(dmp_pckt->t_start);
+	memcpy(&(dmp_pckt->t_end),&cmd->data[index],sizeof(dmp_pckt->t_end));
+	index+=sizeof(dmp_pckt->t_end);
+	memcpy(&(dmp_pckt->cmd),cmd,sizeof(*cmd));
 
-	dmp_pckt->dump_type = ((dump_arguments_t*)cmd->data)->dump_type;
-	dmp_pckt->t_start = ((dump_arguments_t*)cmd->data)->t_start;
-	dmp_pckt->t_end = ((dump_arguments_t*)cmd->data)->t_end;
-	dmp_pckt->cmd = *cmd;
+	//dmp_pckt->dump_type = ((dump_arguments_t*)cmd->data)->dump_type;
+	//dmp_pckt->t_start = ((dump_arguments_t*)cmd->data)->t_start;
+	//dmp_pckt->t_end = ((dump_arguments_t*)cmd->data)->t_end;
+	//dmp_pckt->cmd = *cmd;
 
 	if (xSemaphoreTake(xDumpLock,SECONDS_TO_TICKS(1)) != pdTRUE) {
 		return E_GET_SEMAPHORE_FAILED;
 	}
 	xTaskCreate(DumpTask, (const signed char* const )"DumpTask", 2000,
-			(void* )dmp_pckt, configMAX_PRIORITIES - 2, xDumpHandle);
+			(void* )dmp_pckt, configMAX_PRIORITIES - 2, &xDumpHandle);
 
 	return 0;
 }
