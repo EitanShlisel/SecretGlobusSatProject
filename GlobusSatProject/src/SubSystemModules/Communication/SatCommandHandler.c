@@ -6,7 +6,7 @@
 #include "GlobalStandards.h"
 #include "SatCommandHandler.h"
 
-#define FRAM_MAX_ADDRESS 100 //TODO: Delete this please
+#define FRAM_MAX_ADDRESS 539216400 //TODO: Delete this please
 
 
 typedef struct __attribute__ ((__packed__)) delayed_cmd_t

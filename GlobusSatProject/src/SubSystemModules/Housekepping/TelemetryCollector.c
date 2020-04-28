@@ -60,11 +60,9 @@ int GetTelemetryFilenameByType(tlm_type tlm_type, char filename[MAX_F_FILE_NAME_
 	case tlm_tx:
 		strcpy(filename,FILENAME_TX_TLM);
 		break;
-
 	case tlm_rx:
 		strcpy(filename,FILENAME_RX_TLM);
 		break;
-
 	case tlm_rx_frame:
 		strcpy(filename,FILENAME_RX_FRAME);
 		break;
@@ -146,6 +144,9 @@ void TelemetryCreateFiles(Boolean8bit tlms_created[NUMBER_OF_TELEMETRIES]){
 	res = c_fileCreate(FILENAME_RX_TLM,sizeof(ISIStrxvuRxTelemetry));
 	SAVE_FLAG_IF_FILE_CREATED(tlm_rx);
 
+	res = c_fileCreate(FILENAME_RX_FRAME,sizeof(ISIStrxvuRxFrame));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_rx_frame);
+
 	// -- ANT files
 	res = c_fileCreate(FILENAME_ANTENNA_TLM,sizeof(ISISantsTelemetry));
 	SAVE_FLAG_IF_FILE_CREATED(tlm_antenna);
@@ -201,8 +202,13 @@ void TelemetrySaveTRXVU()
 	{
 		c_fileWrite(FILENAME_RX_TLM, &rx_tlm);
 	}
-
-
+	// TODO: need to save rx_frame, but something is deeply wrong about it
+//	ISIStrxvuRxFrame rx_frame;
+//	err = IsisTrxvu_rcGetCommandFrame(ISIS_TRXVU_I2C_BUS_INDEX, &rx_frame);
+//	if (err == 0)
+//	{
+//		c_fileWrite(FILENAME_RX_FRAME, &rx_frame);
+//	}
 
 }
 
