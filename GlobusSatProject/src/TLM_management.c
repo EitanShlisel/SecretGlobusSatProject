@@ -320,9 +320,6 @@ static void writewithEpochtime(F_FILE* file, byte* data, int size,unsigned int t
 // get C_FILE struct from FRAM by name
 static Boolean get_C_FILE_struct(char* name,C_FILE* c_file,unsigned int *address)
 {
-
-
-
 	int i;
 	unsigned int c_file_address = 0;
 	int err_read=0;

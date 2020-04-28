@@ -188,6 +188,7 @@ Boolean TestExitDump()
 Boolean TestDumpTelemetry()
 {
 	sat_packet_t cmd = {0};
+	dump_arguments_t task_args = {0};
 	unsigned int temp = 0;
 	printf("Starting Dump. Please Insert Dump Parameter:\n");
 
@@ -202,6 +203,20 @@ Boolean TestDumpTelemetry()
 	printf("Please Insert Command ID:\n");
 	while(UTIL_DbguGetIntegerMinMax(&temp,0,0xFFFFFFFF));
 	cmd.ID = temp;
+
+	printf("Please Insert Command data:\n");
+
+	int offset = 0;
+	while(UTIL_DbguGetIntegerMinMax(&temp,0,255)); //dumptype
+	memcpy(&(cmd.data[offset]),&temp,sizeof(temp));
+	offset += sizeof(temp);
+	while(UTIL_DbguGetIntegerMinMax(&temp,0,0xFFFFFFFF)); //start
+	memcpy(&(cmd.data[offset]),&temp,sizeof(temp));
+	offset += sizeof(temp);
+	while(UTIL_DbguGetIntegerMinMax(&temp,0,0xFFFFFFFF)); //end
+	memcpy(&(cmd.data[offset]),&temp,sizeof(temp));
+	offset += sizeof(temp);
+
 
 	DumpTelemetry(&cmd);
 	return TRUE;

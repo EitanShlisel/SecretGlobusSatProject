@@ -134,10 +134,7 @@ void FinishDump(dump_arguments_t *task_args,unsigned char *buffer, ack_subtype_t
 		vTaskDelete(xDumpHandle);
 		xDumpHandle = NULL;
 	}
-	if(NULL != buffer){
-		LOGD("free buffer");
-		free(buffer);
-	}
+
 }
 
 void AbortDump()
@@ -292,10 +289,6 @@ int DumpTelemetry(sat_packet_t *cmd) {
 	index+=sizeof(dmp_pckt->t_end);
 	memcpy(&(dmp_pckt->cmd),cmd,sizeof(*cmd));
 
-	//dmp_pckt->dump_type = ((dump_arguments_t*)cmd->data)->dump_type;
-	//dmp_pckt->t_start = ((dump_arguments_t*)cmd->data)->t_start;
-	//dmp_pckt->t_end = ((dump_arguments_t*)cmd->data)->t_end;
-	//dmp_pckt->cmd = *cmd;
 
 	if (xSemaphoreTake(xDumpLock,SECONDS_TO_TICKS(1)) != pdTRUE) {
 		return E_GET_SEMAPHORE_FAILED;
