@@ -19,6 +19,8 @@
 //	---trxvu
 #define FILENAME_TX_TLM					"tx"
 #define FILENAME_RX_TLM					"rx"
+#define FILENAME_TX_REVC				"tx_revc"
+#define FILENAME_RX_REVC				"rx_revC"
 #define FILENAME_RX_FRAME				"rxFrame"
 #define FILENAME_ANTENNA_TLM			"ant"
 
@@ -32,10 +34,10 @@ typedef enum {
 	tlm_eps_eng_avg,
 	tlm_solar,
 	tlm_tx,
-//	tlm_tx_revc, //TODO: What did he mean by that?
+	tlm_tx_revc, //TODO: What did he mean by that?
 	tlm_rx,
-//	tlm_rx_revc,
-	tlm_rx_frame,
+	tlm_rx_revc,
+//	tlm_rx_frame,
 	tlm_antenna,
 
 }tlm_type;

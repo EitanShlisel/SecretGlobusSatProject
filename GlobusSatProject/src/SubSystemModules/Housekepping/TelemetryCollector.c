@@ -63,9 +63,15 @@ int GetTelemetryFilenameByType(tlm_type tlm_type, char filename[MAX_F_FILE_NAME_
 	case tlm_rx:
 		strcpy(filename,FILENAME_RX_TLM);
 		break;
-	case tlm_rx_frame:
-		strcpy(filename,FILENAME_RX_FRAME);
+	case tlm_tx_revc:
+		strcpy(filename,FILENAME_RX_TLM);
 		break;
+	case tlm_rx_revc:
+		strcpy(filename,FILENAME_RX_TLM);
+		break;
+//	case tlm_rx_frame: //TODO: Check if this is needed
+//		strcpy(filename,FILENAME_RX_FRAME);
+//		break;
 	case tlm_antenna:
 		strcpy(filename,FILENAME_ANTENNA_TLM);
 		break;
@@ -144,8 +150,11 @@ void TelemetryCreateFiles(Boolean8bit tlms_created[NUMBER_OF_TELEMETRIES]){
 	res = c_fileCreate(FILENAME_RX_TLM,sizeof(ISIStrxvuRxTelemetry));
 	SAVE_FLAG_IF_FILE_CREATED(tlm_rx);
 
-	res = c_fileCreate(FILENAME_RX_FRAME,sizeof(ISIStrxvuRxFrame));
-	SAVE_FLAG_IF_FILE_CREATED(tlm_rx_frame);
+	res = c_fileCreate(FILENAME_TX_REVC,sizeof(ISIStrxvuRxTelemetry));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_tx_revc);
+
+	res = c_fileCreate(FILENAME_RX_REVC,sizeof(ISIStrxvuRxTelemetry));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_rx_revc);
 
 	// -- ANT files
 	res = c_fileCreate(FILENAME_ANTENNA_TLM,sizeof(ISISantsTelemetry));
@@ -194,22 +203,28 @@ void TelemetrySaveTRXVU()
 	{
 		c_fileWrite(FILENAME_TX_TLM, &tx_tlm);
 	}
-
-
 	ISIStrxvuRxTelemetry rx_tlm;
 	err = IsisTrxvu_rcGetTelemetryAll(ISIS_TRXVU_I2C_BUS_INDEX, &rx_tlm);
 	if (err == 0)
 	{
 		c_fileWrite(FILENAME_RX_TLM, &rx_tlm);
 	}
-	// TODO: need to save rx_frame, but something is deeply wrong about it
-//	ISIStrxvuRxFrame rx_frame;
-//	err = IsisTrxvu_rcGetCommandFrame(ISIS_TRXVU_I2C_BUS_INDEX, &rx_frame);
-//	if (err == 0)
-//	{
-//		c_fileWrite(FILENAME_RX_FRAME, &rx_frame);
-//	}
 
+	ISIStrxvuTxTelemetry_revC revc_tx_tlm;
+	err = IsisTrxvu_tcGetTelemetryAll_revC(ISIS_TRXVU_I2C_BUS_INDEX,
+			&revc_tx_tlm);
+	if (err == 0)
+	{
+		c_fileWrite(FILENAME_TX_REVC, &revc_tx_tlm);
+	}
+
+	ISIStrxvuRxTelemetry_revC revc_rx_tlm;
+	err = IsisTrxvu_rcGetTelemetryAll_revC(ISIS_TRXVU_I2C_BUS_INDEX,
+			&revc_rx_tlm);
+	if (err == 0)
+	{
+		c_fileWrite(FILENAME_RX_REVC, &revc_rx_tlm);
+	}
 }
 
 void TelemetrySaveANT()
