@@ -375,7 +375,6 @@ static Boolean selectAndExecuteGomEPSDemoTest(void)
 {
 	unsigned int selection = 0;
 	Boolean offerMoreTests = TRUE;
-	gom_eps_channelstates_t state;
 
 	printf( "\n\r Select a test to perform: \n\r");
 	printf("\t 0) Return to main menu \n\r");
@@ -389,10 +388,8 @@ static Boolean selectAndExecuteGomEPSDemoTest(void)
 	printf("\t 8) EPS Enable channel \n\r");
 	printf("\t 9) EPS Disable channel \n\r");
 	printf("\t 10) EPS Reboot \n\r");
-	printf("\t 11) Payload on \n\r");
-	printf("\t 12) Payload off \n\r");
 
-	while(UTIL_DbguGetIntegerMinMax(&selection, 0, 12) == 0);
+	while(UTIL_DbguGetIntegerMinMax(&selection, 0, 10) == 0);
 
 	switch(selection) {
 	case 0:
@@ -427,30 +424,6 @@ static Boolean selectAndExecuteGomEPSDemoTest(void)
         break;
     case 10:
     	offerMoreTests = EPS_Reboot();
-    	break;
-    case 11:
-    	state.fields.quadbatSwitch = 0;
-    	state.fields.quadbatHeater = 0;
-    	state.fields.channel3V3_1 = 0;
-    	state.fields.channel3V3_2 = 0;
-    	state.fields.channel3V3_3 = 0;
-    	state.fields.channel5V_1 = 0;
-    	state.fields.channel5V_2 = 1;
-    	state.fields.channel5V_3 = 0;
-    	GomEpsSetOutput(0,state);
-    	offerMoreTests = TRUE;
-    	break;
-    case 12:
-    	state.fields.quadbatSwitch = 0;
-    	state.fields.quadbatHeater = 0;
-    	state.fields.channel3V3_1 = 0;
-    	state.fields.channel3V3_2 = 0;
-    	state.fields.channel3V3_3 = 0;
-    	state.fields.channel5V_1 = 0;
-    	state.fields.channel5V_2 = 1;
-    	state.fields.channel5V_3 = 0;
-    	GomEpsSetOutput(0,state);
-    	offerMoreTests = TRUE;
     	break;
 	default:
 		break;

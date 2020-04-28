@@ -86,7 +86,7 @@ Boolean selectAndExecuteTest()
 	printf("\t 10) Gomspace EPS test \n\r");
 	printf("\t 11) ISIS EPS Test \n\r");
 	printf("\t 12) CubeSpace ADCS test \n\r");
-	printf("\t 13) Payload Test \n\r");
+	printf("\t 13) Gecko Test \n\r");
 
 
 	while(UTIL_DbguGetIntegerMinMax(&selection, 1, 13) == 0);
