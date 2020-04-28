@@ -193,29 +193,33 @@ Boolean TestDumpTelemetry()
 	printf("Starting Dump. Please Insert Dump Parameter:\n");
 
 	printf("Please Insert Command Type:\n");
-	while(UTIL_DbguGetIntegerMinMax(&temp,0,255));
+	while(UTIL_DbguGetIntegerMinMax(&temp,0,255) == 0);
 	cmd.cmd_type = temp;
 
 	printf("Please Insert Command Subtype:\n");
-	while(UTIL_DbguGetIntegerMinMax(&temp,0,255));
+	while(UTIL_DbguGetIntegerMinMax(&temp,0,255) == 0);
 	cmd.cmd_subtype = temp;
 
 	printf("Please Insert Command ID:\n");
-	while(UTIL_DbguGetIntegerMinMax(&temp,0,0xFFFFFFFF));
+	while(UTIL_DbguGetIntegerMinMax(&temp,0,0xFFFFFFFF) == 0);
 	cmd.ID = temp;
 
 	printf("Please Insert Command data:\n");
 
 	int offset = 0;
-	while(UTIL_DbguGetIntegerMinMax(&temp,0,255)); //dumptype
-	memcpy(&(cmd.data[offset]),&temp,sizeof(temp));
-	offset += sizeof(temp);
-	while(UTIL_DbguGetIntegerMinMax(&temp,0,0xFFFFFFFF)); //start
-	memcpy(&(cmd.data[offset]),&temp,sizeof(temp));
-	offset += sizeof(temp);
-	while(UTIL_DbguGetIntegerMinMax(&temp,0,0xFFFFFFFF)); //end
-	memcpy(&(cmd.data[offset]),&temp,sizeof(temp));
-	offset += sizeof(temp);
+	printf("Please Insert dump type:\n");
+	while(UTIL_DbguGetIntegerMinMax(&temp,0,255) == 0); //dumptype
+	memcpy(&(cmd.data[offset]),&temp,sizeof(task_args.dump_type));
+	offset += sizeof(task_args.dump_type);
+
+	printf("Please Insert dump start time:\n");
+	while(UTIL_DbguGetIntegerMinMax(&temp,0,0xFFFFFFFF) == 0); //start
+	memcpy(&(cmd.data[offset]),&temp,sizeof(task_args.t_start));
+	offset += sizeof(task_args.t_start);
+
+	printf("Please Insert dump end time:\n");
+	while(UTIL_DbguGetIntegerMinMax(&temp,0,0xFFFFFFFF) == 0); //end
+	memcpy(&(cmd.data[offset]),&temp,sizeof(task_args.t_end));
 
 
 	DumpTelemetry(&cmd);
