@@ -34,10 +34,10 @@ typedef enum {
 	tlm_eps_eng_avg,
 	tlm_solar,
 	tlm_tx,
-	tlm_tx_revc, //TODO: What did he mean by that?
+	tlm_tx_revc,
 	tlm_rx,
 	tlm_rx_revc,
-//	tlm_rx_frame,
+//	tlm_rx_frame,//TODO: What did he mean by that?
 	tlm_antenna,
 
 }tlm_type;
