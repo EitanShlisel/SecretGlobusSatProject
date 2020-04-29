@@ -140,7 +140,7 @@ FileSystemResult c_fileRead(char* c_file_name, byte* buffer, int size_of_buffer,
 FileSystemResult c_fileGetSizeOfElement(char* c_file_name,int* element_size);
 //print c_file for testing
 void print_files(char* c_file_name);
-void print_file(char* c_file_name);
+int print_file(char* c_file_name);
 FileSystemResult c_fileReset(char* c_file_name);
 int FS_test();
 void test_i();

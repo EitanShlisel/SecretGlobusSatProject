@@ -687,7 +687,7 @@ void print_files(char* c_file_name)
 	}
 }
 
-void print_file(char* c_file_name)
+int print_file(char* c_file_name)
 {
 	C_FILE c_file;
 	F_FILE* current_file = NULL;
@@ -696,15 +696,17 @@ void print_file(char* c_file_name)
 	char curr_file_name[FILE_NAME_WITH_INDEX_SIZE];//store current file's name
 	//int temp[2];//use to append name with index
 	//temp[1] = '\0';
-	get_C_FILE_struct(c_file_name,&c_file,NULL);
-
+	if(!get_C_FILE_struct(c_file_name,&c_file,NULL))
+	{
+		return -1;
+	}
 	element = malloc(c_file.size_of_element+sizeof(unsigned int));//store element and his timestamp
 
 	int i = c_file.num_of_files - 1;
 	get_file_name_by_index(c_file_name,i,curr_file_name);
 	int error = f_managed_open(curr_file_name, "r", &current_file);
 	if (error != 0 || curr_file_name == NULL)
-		return;
+		return -2;
 	for(int j=0;j<f_filelength(curr_file_name)/((int)c_file.size_of_element+(int)sizeof(unsigned int));j++)
 	{
 		f_read(element,c_file.size_of_element,(size_t)c_file.size_of_element+sizeof(unsigned int),current_file);
@@ -715,7 +717,7 @@ void print_file(char* c_file_name)
 		printf("\n");
 	}
 	f_managed_close(&current_file);
-
+	return 0;
 }
 
 void DeInitializeFS( void )
