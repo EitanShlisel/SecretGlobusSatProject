@@ -63,6 +63,7 @@ static Boolean PrintFile()
 	int err;
 	int type = 0;
 	char filename[MAX_F_FILE_NAME_SIZE] = { 0 };
+	//TODO: Add deinit and tellemetry collector logic
 	while(UTIL_DbguGetIntegerMinMax((unsigned int*)&type,0,12) == 0);
 
 	err = GetTelemetryFilenameByType(type, filename);

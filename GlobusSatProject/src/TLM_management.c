@@ -29,8 +29,8 @@
 #define ELEMENTS_PER_READ 9000
 #define MAX_ELEMENT_SIZE (200)
 #define FS_TAKE_SEMPH_DELAY	(1000 * 30)
-char allocked_write_element[MAX_ELEMENT_SIZE];
 
+char allocked_write_element[MAX_ELEMENT_SIZE];
 char allocked_read_element[(MAX_ELEMENT_SIZE)*(ELEMENTS_PER_READ)];
 char allocked_delete_element[MAX_ELEMENT_SIZE];
 
@@ -50,7 +50,6 @@ typedef struct
 	char name[FILE_NAME_WITH_INDEX_SIZE];
 	unsigned int creation_time;
 	unsigned int last_time_modified;
-	int num_of_files;
 
 } C_FILE;
 #define C_FILES_BASE_ADDR (FSFRAM+sizeof(FS))
@@ -92,6 +91,8 @@ Boolean TLMfile(char* filename)
 	}
 	return FALSE;
 }
+
+
 void sd_format(int index)
 {
 	int format_err = f_format(index,F_FAT32_MEDIA);
@@ -354,12 +355,13 @@ static int getFileIndex(unsigned int creation_time, unsigned int current_time)
 	}
 	return ((current_time-creation_time)/SKIP_FILE_TIME_SEC);
 }
+
 //write to curr_file_name
 void get_file_name_by_index(char* c_file_name,int index,char* curr_file_name)
 {
-
 	sprintf(curr_file_name,"a:/%s/%d.%s", c_file_name, index, FS_FILE_ENDING);
 }
+
 FileSystemResult c_fileReset(char* c_file_name)
 {
 	C_FILE c_file;
@@ -384,14 +386,6 @@ FileSystemResult c_fileReset(char* c_file_name)
 			f_delete(temp_name);
 		} while (!f_findnext(&find));
 	}
-	//if (!f_findfirst(temp_name,&find))
-	//{
-		//do
-		//{
-			//sprintf(temp_name,"*.*/%s/%s",find.filename,find.filename);
-			//f_delete(temp_name);
-		//} while (!f_findnext(&find));
-	//}
 	return FS_SUCCSESS;
 }
 
@@ -655,68 +649,22 @@ FileSystemResult c_fileRead(char* c_file_name,byte* buffer, int size_of_buffer,
 
 	return FS_SUCCSESS;
 }
-void print_files(char* c_file_name)
-{
-	C_FILE c_file;
-	F_FILE* current_file = NULL;
-
-	void* element;
-	char curr_file_name[FILE_NAME_WITH_INDEX_SIZE];//store current file's name
-	//int temp[2];//use to append name with index
-	//temp[1] = '\0';
-	get_C_FILE_struct(c_file_name,&c_file,NULL);
-
-	element = malloc(c_file.size_of_element+sizeof(unsigned int));//store element and his timestamp
-	int i = 0;
-	for(i=0;i<c_file.num_of_files;i++)
-	{
-		get_file_name_by_index(c_file_name,i,curr_file_name);
-		int error = f_managed_open(curr_file_name, "r", &current_file);
-		if (error != 0 || curr_file_name == NULL)
-			return;
-		for(int j=0;j<f_filelength(curr_file_name)/((int)c_file.size_of_element+(int)sizeof(unsigned int));j++)
-		{
-			f_read(element,c_file.size_of_element,(size_t)c_file.size_of_element+sizeof(unsigned int),current_file);
-			for(j =0;j<c_file.size_of_element;j++)
-			{
-				printf("%d ",*((char*)(element+sizeof(int)+j)));//print data
-			}
-			printf("\n");
-		}
-		f_managed_close(&current_file);
-	}
-}
 
 int print_file(char* c_file_name)
 {
 	C_FILE c_file;
-	F_FILE* current_file = NULL;
-
-	void* element;
-	char curr_file_name[FILE_NAME_WITH_INDEX_SIZE];//store current file's name
-	//int temp[2];//use to append name with index
-	//temp[1] = '\0';
-	if(!get_C_FILE_struct(c_file_name,&c_file,NULL))
+	F_FILE *file;
+	unsigned int c_file_addr;
+	if (get_C_FILE_struct(c_file_name, &c_file, &c_file_addr) == FALSE)
 	{
 		return -1;
 	}
-	element = malloc(c_file.size_of_element+sizeof(unsigned int));//store element and his timestamp
+	int read=0;
+	char buffer = malloc(c_file.size_of_element+sizeof(int));
+	c_fileRead(c_file_name,buffer,c_file.size_of_element+sizeof(int),
+			c_file.last_time_modified,c_file.last_time_modified, &read, &read, 1);
 
-	int i = c_file.num_of_files - 1;
-	get_file_name_by_index(c_file_name,i,curr_file_name);
-	int error = f_managed_open(curr_file_name, "r", &current_file);
-	if (error != 0 || curr_file_name == NULL)
-		return -2;
-	for(int j=0;j<f_filelength(curr_file_name)/((int)c_file.size_of_element+(int)sizeof(unsigned int));j++)
-	{
-		f_read(element,c_file.size_of_element,(size_t)c_file.size_of_element+sizeof(unsigned int),current_file);
-		for(j =0;j<c_file.size_of_element;j++)
-		{
-			printf("%d ",*((char*)(element+sizeof(int)+j)));//print data
-		}
-		printf("\n");
-	}
-	f_managed_close(&current_file);
+	free(buffer);
 	return 0;
 }
 
