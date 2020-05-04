@@ -59,14 +59,18 @@ static Boolean TestTelemetryLogic()
 
 static Boolean PrintFile()
 {
+
 	printf("\nPlease insert number matching c file (just like dump requests)\n");
-	int err;
-	int type = 0;
-	char filename[MAX_F_FILE_NAME_SIZE] = { 0 };
+
 	//TODO: Add deinit and tellemetry collector logic
+	DeInitializeFS();
+
+
+	int type = 0;
 	while(UTIL_DbguGetIntegerMinMax((unsigned int*)&type,0,12) == 0);
 
-	err = GetTelemetryFilenameByType(type, filename);
+	char filename[MAX_F_FILE_NAME_SIZE] = { 0 };
+	int err = GetTelemetryFilenameByType(type, filename);
 	if (0 != err) {
 		printf("could not get filename for type %d \n", type);
 		return TRUE;
