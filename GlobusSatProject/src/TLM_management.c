@@ -610,17 +610,18 @@ FileSystemResult c_fileRead(char* c_file_name,byte* buffer, int size_of_buffer,
 				if(element_time > to_time)
 				{
 					end_read = 1;
-					break;
-				}
+					break;				}
 
 				if(element_time >= from_time)
 				{
 					*last_read_time = element_time;
-					if((unsigned int)buffer_index + size_elementWithTimeStamp>=(unsigned int)size_of_buffer)
+					if((unsigned int)buffer_index + size_elementWithTimeStamp>(unsigned int)size_of_buffer)
 					{
 						error = f_managed_close(&current_file);
 						if (error == COULD_NOT_GIVE_SEMAPHORE_ERROR)
+						{
 							return FS_COULD_NOT_GIVE_SEMAPHORE;
+						}
 						return FS_BUFFER_OVERFLOW;
 					}
 
@@ -660,9 +661,16 @@ int print_file(char* c_file_name)
 		return -1;
 	}
 	int read=0;
-	char buffer = malloc(c_file.size_of_element+sizeof(int));
-	c_fileRead(c_file_name,buffer,c_file.size_of_element+sizeof(int),
-			c_file.last_time_modified,c_file.last_time_modified, &read, &read, 1);
+	char *buffer = malloc(c_file.size_of_element+sizeof(int)*2);
+	int last_read_time;
+	c_fileRead(c_file_name,buffer,c_file.size_of_element+sizeof(int)*2,
+			c_file.last_time_modified,c_file.last_time_modified, &read, &last_read_time, 1);
+
+	printf("%d\n",c_file.size_of_element);
+	for(unsigned int i= 0;i<c_file.size_of_element+sizeof(int);i++)
+	{
+	    printf("%X",buffer[i]);
+	}
 
 	free(buffer);
 	return 0;

@@ -57,14 +57,17 @@ static Boolean TestTelemetryLogic()
 	return TRUE;
 }
 
+Boolean8bit tlms_created[NUMBER_OF_TELEMETRIES];
 static Boolean PrintFile()
 {
-
 	printf("\nPlease insert number matching c file (just like dump requests)\n");
 
 	//TODO: Add deinit and tellemetry collector logic
 	DeInitializeFS();
-
+	Boolean first_activation = TRUE;
+	InitializeFS(first_activation);
+	TelemetryCreateFiles(tlms_created);
+	TelemetryCollectorLogic();
 
 	int type = 0;
 	while(UTIL_DbguGetIntegerMinMax((unsigned int*)&type,0,12) == 0);
