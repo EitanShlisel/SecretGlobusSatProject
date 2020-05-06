@@ -12,6 +12,7 @@
 
 #define SIZE_DUMP_BUFFER (4096) ///< buffer size for dump operations
 
+#define DEFAULT_TRANS_RSSI	1500
 
 typedef struct __attribute__ ((__packed__))
 {

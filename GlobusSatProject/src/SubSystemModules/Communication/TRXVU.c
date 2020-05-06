@@ -268,7 +268,6 @@ cleanup:
 	f_managed_releaseFS();
 	FinishDump(task_args, buffer, ack_return_code, NULL, 0);
 	while(1) {
-		// TODO: figure out why this task keeps running
 		LOGD("at end of dump task");
 		vTaskDelay(5000);
 	};

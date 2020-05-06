@@ -79,7 +79,14 @@
 #define DELAYED_CMD_FRAME_COUNT_SIZE	1			//<! number of bytes describing the frame count of delayed buffer
 
 #define TRANS_ABORT_FLAG_ADDR			0x500		//<! transmission abort request flag
-#define TRANS_ABORT_FLAG_SIZE			1			//<! size of mute flag in bytes
+#define TRANS_ABORT_FLAG_SIZE			1			//<! size of transmission abort request flag in bytes
+
+#define TRANSPONDER_STATE_ADDR			0x502		//TODO: Add address
+#define TRANSPONDER_STATE_SIZE			4
+
+#define TRANSPONDER_TURN_ON_TIME_ADRR	0x508		//TODO: Add address
+#define TRANSPONDER_TURN_ON_TIME_SIZE	4
+
 // </TRXVU>
 
 // <EPS>
