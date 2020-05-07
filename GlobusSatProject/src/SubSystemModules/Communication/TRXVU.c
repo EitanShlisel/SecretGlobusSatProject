@@ -314,7 +314,7 @@ int EnterGS_Mode(){
 	}
 	Time_getUnixEpoch(&g_gs_start_time);
 	int err = 0;
-	//err = IsisTrxvu_tcSetIdlestate(ISIS_TRXVU_I2C_BUS_INDEX,trxvu_idle_state_on);
+//	err = IsisTrxvu_tcSetIdlestate(ISIS_TRXVU_I2C_BUS_INDEX,trxvu_idle_state_on);
 	vTaskDelay(100);
 	return err;
 }

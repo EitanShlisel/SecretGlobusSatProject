@@ -73,7 +73,6 @@ int set_transponder_RSSI(byte *param)
 	return err;
 }
 
-// TODO: Save TurnOnTime and TurnOn in the mainLogic
 int transponder_logic(time_unix period)
 {
 	int err;
@@ -98,15 +97,14 @@ int transponder_logic(time_unix period)
 		{
 			unsigned short temp = DEFAULT_TRANS_RSSI;
 			memcpy(rssiData, &temp, 2);
-
 			set_transponder_RSSI(rssiData);
-
 			Boolean stop_transponder = CheckExecutionTime(turn_on_time, period);
 			if (stop_transponder)
 			{
-				err = set_transonder_mode(TURN_TRANSPONDER_OFF);
+				break;
 			}
 		}
+		err = set_transonder_mode(TURN_TRANSPONDER_OFF);
 	}
 	return err;
 }

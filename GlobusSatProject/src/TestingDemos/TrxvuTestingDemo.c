@@ -441,6 +441,51 @@ Boolean TestTransmitDataAsSPL_Packet()
 	return TRUE;
 }
 
+Boolean TestTurnOnTrasnponder()
+{
+
+	byte rssiData[2];
+	unsigned short temp = 1;
+	memcpy(rssiData, &temp, 2);
+
+	int err = 0;
+	err = set_transponder_RSSI(rssiData);
+	if(0!=err)
+	{
+		printf("Error with RSSI logic\n");
+	}
+	err = set_transonder_mode(TRUE);
+
+	if(0!=err)
+	{
+		printf("Error with transponder logic\n");
+	}
+
+	return TRUE;
+}
+
+
+Boolean TestTurnOffTransponder()
+{
+	int err = set_transonder_mode(FALSE);
+	if(0!=err)
+	{
+		printf("Error with transponder logic\n");
+	}
+	return TRUE;
+}
+
+Boolean TestTurnOnIDLE()
+{
+	IsisTrxvu_tcSetIdlestate(ISIS_TRXVU_I2C_BUS_INDEX,trxvu_idle_state_on);
+	return TRUE;
+}
+
+Boolean TestTurnOffIDLE()
+{
+	IsisTrxvu_tcSetIdlestate(ISIS_TRXVU_I2C_BUS_INDEX,trxvu_idle_state_off);
+	return TRUE;
+}
 Boolean selectAndExecuteTrxvuDemoTest()
 {
 	unsigned int selection = 0;
@@ -466,8 +511,13 @@ Boolean selectAndExecuteTrxvuDemoTest()
 	printf("\t 16) Choose to default beacon inervals\n\r");
 	printf("\t 17) Restore to default beacon inervals\n\r");
 	printf("\t 18) Check Transmition Allowed\n\r");
+	printf("\t 19) Turn on transponder\n\r");
+	printf("\t 20) Turn off transponder\n\r");
+	printf("\t 21) Turn on IDLE\n\r");
+	printf("\t 22) Turn off IDLE\n\r");
 
-	unsigned int number_of_tests = 18;
+
+	unsigned int number_of_tests = 22;
 	while(UTIL_DbguGetIntegerMinMax(&selection, 0, number_of_tests) == 0);
 
 	switch(selection) {
@@ -527,6 +577,18 @@ Boolean selectAndExecuteTrxvuDemoTest()
 		break;
 	case 18:
 		offerMoreTests = TestCheckTransmitionAllowed();
+		break;
+	case 19:
+		offerMoreTests = TestTurnOnTrasnponder();
+		break;
+	case 20:
+		offerMoreTests = TestTurnOffTransponder();
+		break;
+	case 21:
+		offerMoreTests = TestTurnOnIDLE();
+		break;
+	case 22:
+		offerMoreTests = TestTurnOffIDLE();
 		break;
 	default:
 		break;
