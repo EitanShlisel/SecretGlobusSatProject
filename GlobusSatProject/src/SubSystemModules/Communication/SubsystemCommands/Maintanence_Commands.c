@@ -69,7 +69,7 @@ int CMD_FRAM_ReadAndTransmitt(sat_packet_t *cmd)
 	free(read_data);
 	return err;
 }
-
+// TODO: Add size to data of the packet.
 int CMD_FRAM_WriteAndTransmitt(sat_packet_t *cmd)
 {
 	if (cmd == NULL || cmd->data == NULL){

@@ -36,7 +36,7 @@ void firstActivationProcedure(){
 	sat_packet_t cmd = {0};
 	time_unix seconds_since_deploy = 0;
 
-	err = FRAM_read((unsigned char*) seconds_since_deploy,
+	err = FRAM_read((unsigned char*) &seconds_since_deploy,
 			SECONDS_SINCE_DEPLOY_ADDR,
 			SECONDS_SINCE_DEPLOY_SIZE);
 	if (0 != err) {
