@@ -22,12 +22,6 @@ int CMD_SendDumpAbortRequest(sat_packet_t *cmd)
 	return 0;
 }
 
-int CMD_ForceDumpAbort(sat_packet_t *cmd)
-{
-	(void)cmd;
-	AbortDump();
-	return 0;
-}
 
 
 int CMD_MuteTRXVU(sat_packet_t *cmd)

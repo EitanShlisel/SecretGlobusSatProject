@@ -137,11 +137,6 @@ void FinishDump(dump_arguments_t *task_args,unsigned char *buffer, ack_subtype_t
 
 }
 
-void AbortDump()
-{
-	FinishDump(NULL,NULL,ACK_DUMP_ABORT,NULL,0);
-}
-
 void SendDumpAbortRequest() {
 	if (eTaskGetState(xDumpHandle) == eDeleted) {
 		return;
@@ -151,9 +146,6 @@ void SendDumpAbortRequest() {
 	if (0 != err) {
 		if (NULL != xDumpLock) {
 			xSemaphoreGive(xDumpLock);
-		}
-		if (xDumpHandle != NULL) {
-			vTaskDelete(xDumpHandle);
 		}
 	}
 }

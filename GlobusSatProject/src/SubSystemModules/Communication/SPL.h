@@ -80,7 +80,6 @@ typedef enum __attribute__ ((__packed__)) trxvu_subtypes_t
 	ANT_GET_ARM_STATUS = 	0xB2,	//0b10110010
 	ANT_GET_UPTIME =		0xB3,	//0b10110011
 	ANT_CANCEL_DEPLOY = 	0xB7,	//0b10110111
-	FORCE_ABORT_DUMP_SUBTYPE = 0x33,//0b00110011
 	DELETE_DUMP_TASK = 0x44			//0b00100010
 
 }trxvu_subtypes_t;
