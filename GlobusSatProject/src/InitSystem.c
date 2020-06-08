@@ -9,17 +9,15 @@
 #include "GlobalStandards.h"
 #include "SubSystemModules/PowerManagment/EPS.h"
 #include "SubSystemModules/Communication/TRXVU.h"
+#include "SubSystemModules/Communication/ActUponCommand.h"
 #include "SubSystemModules/Maintenance/Maintenance.h"
 #include "SubSystemModules/Housekepping/TelemetryCollector.h"
 #include "InitSystem.h"
 #include "TLM_management.h"
+#include "SubSystemModules/Housekepping/TelemetryFiles.h"
 
-#ifdef GOMEPS
-#include <satellite-subsystems/GomEPS.h>
-#endif
-#ifdef ISISEPS
-#include <satellite-subsystems/IsisEPS.h>
-#endif
+#include <satellite-subsystems/isis_eps_driver.h>
+Boolean8bit tlms_created[NUMBER_OF_TELEMETRIES];
 
 #define I2c_SPEED_Hz 100000
 #define I2c_Timeout 10
@@ -32,21 +30,19 @@ Boolean isFirstActivation()
 	return flag;
 }
 
-void firstActivationProcedure()
-{
-#ifdef ISISEPS
-	ieps_statcmd_t eps_cmd;
-#endif
-
+void firstActivationProcedure(){
 	int err = 0;
 
+	sat_packet_t cmd = {0};
 	time_unix seconds_since_deploy = 0;
-	err = FRAM_read((unsigned char*) seconds_since_deploy,
+
+	err = FRAM_read((unsigned char*) &seconds_since_deploy,
 			SECONDS_SINCE_DEPLOY_ADDR,
 			SECONDS_SINCE_DEPLOY_SIZE);
 	if (0 != err) {
 		seconds_since_deploy = MINUTES_TO_SECONDS(30);	// deploy immediately. No mercy
 	}
+	isis_eps__watchdog__from_t response;
 
 	while (seconds_since_deploy < MINUTES_TO_SECONDS(30)) {
 		vTaskDelay(SECONDS_TO_TICKS(10));
@@ -56,23 +52,19 @@ void firstActivationProcedure()
 		if (0 != err) {
 			break;
 		}
-		TelemetryCollectorLogic();
-
 		seconds_since_deploy += 10;
 
-		//TODO: add more to this...
-#ifdef ISISEPS
-		IsisEPS_resetWDT(EPS_I2C_BUS_INDEX, &eps_cmd);
-#endif
-#ifdef GOMEPS
-		GomEpsResetWDT(EPS_I2C_BUS_INDEX);
+		TelemetryCollectorLogic();
 
-#endif
+		GetOnlineCommand(&cmd);
+		ActUponCommand(&cmd);
+
+		isis_eps__watchdog__tm(EPS_I2C_BUS_INDEX,&response);
 	}
 
 #ifndef TESTING
-	IsisAntS_autoDeployment(0, isisants_sideA, 10);
-	IsisAntS_autoDeployment(0, isisants_sideB, 10);
+	//IsisAntS_autoDeployment(0, isisants_sideA, 10);
+	//IsisAntS_autoDeployment(0, isisants_sideB, 10);
 #endif
 	//TODO: log
 }
@@ -119,6 +111,10 @@ void WriteDefaultValuesToFRAM()
 	beacon_interval = DEFAULT_BEACON_INTERVAL_TIME;
 	FRAM_write((unsigned char*) &beacon_interval, BEACON_INTERVAL_TIME_ADDR,
 			BEACON_INTERVAL_TIME_SIZE);
+//TODO: find a proper solution for interval defualt problems
+	time_unix tlm_save_periods[NUM_OF_SUBSYSTEMS_SAVE_FUNCTIONS] = {1,1,1,1,1};
+	FRAM_write((unsigned char*) &tlm_save_periods, TLM_SAVE_PERIOD_START_ADDR,
+			NUM_OF_SUBSYSTEMS_SAVE_FUNCTIONS*sizeof(time_unix));
 
 }
 
@@ -163,7 +159,7 @@ int DeploySystem()
 	Boolean first_activation = isFirstActivation();
 
 	if (first_activation) {
-
+		TelemetryCreateFiles(tlms_created);
 		firstActivationProcedure();
 
 		time_unix deploy_time = 0;
@@ -176,10 +172,10 @@ int DeploySystem()
 		FIRST_ACTIVATION_FLAG_ADDR, FIRST_ACTIVATION_FLAG_SIZE);
 
 		WriteDefaultValuesToFRAM();
+
 	}
 	return 0;
 }
-
 #define PRINT_IF_ERR(method) if(0 != err)printf("error in '" #method  "' err = %d\n",err);
 int InitSubsystems()
 {
@@ -198,7 +194,9 @@ int InitSubsystems()
 	err = StartTIME();
 	PRINT_IF_ERR(StartTIME)
 
-	err = InitializeFS(isFirstActivation());
+	int first_activation =isFirstActivation();
+
+	err = InitializeFS(first_activation);
 	PRINT_IF_ERR(InitializeFS)
 
 	err = EPS_Init();
@@ -206,6 +204,9 @@ int InitSubsystems()
 
 	err = InitTrxvu();
 	PRINT_IF_ERR(InitTrxvu)
+
+	err = InitTelemetryCollrctor();
+	PRINT_IF_ERR(InitTelemetryCollrctor);
 
 	err = DeploySystem();
 	PRINT_IF_ERR(DeploySystem)

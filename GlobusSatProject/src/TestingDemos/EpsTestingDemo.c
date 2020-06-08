@@ -2,6 +2,8 @@
 #include <freertos/semphr.h>
 #include <freertos/task.h>
 
+#include <satellite-subsystems/isis_eps_driver.h>
+
 #include "EpsTestingDemo.h"
 
 #include <hal/Utility/util.h>
@@ -9,13 +11,6 @@
 #include <SubSystemModules/PowerManagment/EPS.h>
 #include <SubSystemModules/PowerManagment/EPSOperationModes.h>
 #include <stdlib.h>
-
-#ifdef ISISEPS
-	#include <satellite-subsystems/IsisEPS.h>
-#endif
-#ifdef GOMEPS
-	#include <satellite-subsystems/GomEPS.h>
-#endif
 
 Boolean TestEpsConditioning()
 {
@@ -220,6 +215,31 @@ Boolean TestRestoreDefaultThresholdVoltages()
 	}
 	return TRUE;
 }
+char big_arr[1000];
+#define CHECK_ERR(return_val) if(return_val) printf("eps demo error")
+Boolean TestEPSAPI()
+{
+	char temp[200];
+	for(int i = 0; i<1000;i++)
+	{
+		CHECK_ERR(isis_eps__nop__tm(0,temp));
+		CHECK_ERR(isis_eps__watchdog__tm(0,temp));
+		CHECK_ERR(isis_eps__switchtonominal__tm(0,temp));
+		CHECK_ERR(isis_eps__switchtosafety__tm(0,temp));
+		CHECK_ERR(isis_eps__getsystemstatus__tm(0,temp));
+		CHECK_ERR(isis_eps__getsystemstatus__tm(0,big_arr));
+		CHECK_ERR(isis_eps__getovercurrentfaultstate__tm(0,big_arr));
+		CHECK_ERR(isis_eps__gethousekeepingraw__tm(0,big_arr));
+		CHECK_ERR(isis_eps__gethousekeepingrawincdb__tm(0,big_arr));
+		CHECK_ERR(isis_eps__gethousekeepingeng__tm(0,big_arr));
+		CHECK_ERR(isis_eps__gethousekeepingengincdb__tm(0,big_arr));
+		CHECK_ERR(isis_eps__gethousekeepingrunningavg__tm(0,big_arr));
+		CHECK_ERR(isis_eps__gethousekeepingengrunningavgincdb__tm(0,big_arr));
+		vTaskDelay(50);
+	}
+	return TRUE;
+}
+
 
 Boolean selectAndExecuteEpsDemoTest()
 {
@@ -236,9 +256,10 @@ Boolean selectAndExecuteEpsDemoTest()
 	printf("\t 6) Print Alpha  \n\r");
 	printf("\t 7) Restore Default Alpha \n\r");
 	printf("\t 8) Restore Default Threshold Voltages \n\r");
+	printf("\t 8) API test \n\r");
 
 
-	unsigned int number_of_tests = 8;
+	unsigned int number_of_tests = 9;
 	while(UTIL_DbguGetIntegerMinMax(&selection, 0, number_of_tests) == 0);
 
 	switch(selection) {
@@ -269,7 +290,9 @@ Boolean selectAndExecuteEpsDemoTest()
 	case 8:
 		offerMoreTests = TestRestoreDefaultThresholdVoltages();
 		break;
-
+	case 9:
+		offerMoreTests = TestEPSAPI();
+		break;
 	default:
 		break;
 	}

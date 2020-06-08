@@ -10,12 +10,7 @@
 #include <hal/Utility/util.h>
 #include <hal/Timing/Time.h>
 
-#ifdef ISISEPS
-	#include <satellite-subsystems/IsisEPS.h>
-#endif
-#ifdef GOMEPS
-	#include <satellite-subsystems/GomEPS.h>
-#endif
+#include <satellite-subsystems/isis_eps_driver.h>
 
 #include "SubSystemModules/PowerManagment/EPS.h"	// for EPS_Conditioning
 
@@ -86,15 +81,15 @@ Boolean TestTrxvuLogic()
 	int err = 0;
 	while(UTIL_DbguGetIntegerMinMax((unsigned int*)&minutes,0,10) == 0);
 
-	portTickType curr_time = xTaskGetTickCount();
-	portTickType end_time = MINUTES_TO_TICKS(minutes) + curr_time;
+	portLONG curr_time = xTaskGetTickCount();
+	portLONG end_time = MINUTES_TO_TICKS(minutes) + curr_time;
 
 	while(end_time - curr_time > 0)
 	{
 		curr_time = xTaskGetTickCount();
 
 		err = TRX_Logic();
-		if(0 != err){
+		if(cmd_command_found != err && cmd_no_command_found != err){
 			printf("error in TRX_Logic = %d\n exiting\n",err);
 			return TRUE;
 		}
@@ -177,7 +172,7 @@ Boolean TestTransmitSplPacket()
 
 			EPS_Conditioning();
 
-			printf("seconds t'ill end: %lu\n",end_time - curr_time);
+			printf("seconds t'ill end: %d\n",end_time - curr_time);
 			vTaskDelay(1000);
 		}
 
@@ -193,20 +188,39 @@ Boolean TestExitDump()
 Boolean TestDumpTelemetry()
 {
 	sat_packet_t cmd = {0};
+	dump_arguments_t task_args = {0};
 	unsigned int temp = 0;
 	printf("Starting Dump. Please Insert Dump Parameter:\n");
 
 	printf("Please Insert Command Type:\n");
-	while(UTIL_DbguGetIntegerMinMax(&temp,0,255));
+	while(UTIL_DbguGetIntegerMinMax(&temp,0,255) == 0);
 	cmd.cmd_type = temp;
 
 	printf("Please Insert Command Subtype:\n");
-	while(UTIL_DbguGetIntegerMinMax(&temp,0,255));
+	while(UTIL_DbguGetIntegerMinMax(&temp,0,255) == 0);
 	cmd.cmd_subtype = temp;
 
 	printf("Please Insert Command ID:\n");
-	while(UTIL_DbguGetIntegerMinMax(&temp,0,0xFFFFFFFF));
+	while(UTIL_DbguGetIntegerMinMax(&temp,0,0xFFFFFFFF) == 0);
 	cmd.ID = temp;
+
+	printf("Please Insert Command data:\n");
+
+	int offset = 0;
+	printf("Please Insert dump type:\n");
+	while(UTIL_DbguGetIntegerMinMax(&temp,0,255) == 0); //dumptype
+	memcpy(&(cmd.data[offset]),&temp,sizeof(task_args.dump_type));
+	offset += sizeof(task_args.dump_type);
+
+	printf("Please Insert dump start time:\n");
+	while(UTIL_DbguGetIntegerMinMax(&temp,0,0xFFFFFFFF) == 0); //start
+	memcpy(&(cmd.data[offset]),&temp,sizeof(task_args.t_start));
+	offset += sizeof(task_args.t_start);
+
+	printf("Please Insert dump end time:\n");
+	while(UTIL_DbguGetIntegerMinMax(&temp,0,0xFFFFFFFF) == 0); //end
+	memcpy(&(cmd.data[offset]),&temp,sizeof(task_args.t_end));
+
 
 	DumpTelemetry(&cmd);
 	return TRUE;
@@ -219,13 +233,13 @@ Boolean TestRestoreDefaultBeaconParameters()
 	time_unix beacon_interval_time = 0;
 	FRAM_read((unsigned char*) &beacon_interval_time, BEACON_INTERVAL_TIME_ADDR,
 	BEACON_INTERVAL_TIME_SIZE);
-	printf("Value of interval before: %lu\n",beacon_interval_time);
+	printf("Value of interval before: %d\n",beacon_interval_time);
 
 	UpdateBeaconInterval(DEFAULT_BEACON_INTERVAL_TIME);
 
 	FRAM_read((unsigned char*)&beacon_interval_time, BEACON_INTERVAL_TIME_ADDR,
 	BEACON_INTERVAL_TIME_SIZE);
-	printf("Value of interval after: %lu\n",beacon_interval_time);
+	printf("Value of interval after: %d\n",beacon_interval_time);
 
 	unsigned char cycle = 0;
 	FRAM_read((unsigned char*) &cycle, BEACON_BITRATE_CYCLE_ADDR,
@@ -253,7 +267,7 @@ Boolean TestChooseDefaultBeaconCycle()
 	time_unix beacon_interval_time = 0;
 	FRAM_read((unsigned char*) &beacon_interval_time, BEACON_INTERVAL_TIME_ADDR,
 	BEACON_INTERVAL_TIME_SIZE);
-	printf("Value before: %lu\n",beacon_interval_time);
+	printf("Value before: %d\n",beacon_interval_time);
 
 	beacon_interval_time = seconds;
 	FRAM_write((unsigned char*) &beacon_interval_time, BEACON_INTERVAL_TIME_ADDR,
@@ -261,7 +275,7 @@ Boolean TestChooseDefaultBeaconCycle()
 
 	FRAM_read((unsigned char*) &beacon_interval_time, BEACON_INTERVAL_TIME_ADDR,
 	BEACON_INTERVAL_TIME_SIZE);
-	printf("Value after: %lu\n",beacon_interval_time);
+	printf("Value after: %d\n",beacon_interval_time);
 
 	return TRUE;
 }
@@ -286,7 +300,7 @@ Boolean TestBeaconLogic()
 
 		EPS_Conditioning();
 
-		printf("seconds t'ill end: %lu\n",end_time - curr_time);
+		printf("seconds t'ill end: %d\n",end_time - curr_time);
 		vTaskDelay(1000);
 	}
 	return TRUE;
@@ -308,19 +322,14 @@ Boolean TestMuteTrxvu()
 	time_unix curr = 0;
 	Time_getUnixEpoch(&curr);
 
-#ifdef ISISEPS
-	ieps_statcmd_t cmd;
-#endif
+	isis_eps__watchdog__from_t response;
+
 	while(!CheckForMuteEnd()){
 
 		printf("current tick = %d\n",(int)xTaskGetTickCount());
 
-#ifdef ISISEPS
-		IsisEPS_resetWDT(EPS_I2C_BUS_INDEX,&cmd);
-#endif
-#ifdef GOMEPS
-		GomEpsResetWDT(EPS_I2C_BUS_INDEX);
-#endif
+		isis_eps__watchdog__tm(EPS_I2C_BUS_INDEX,&response);
+
 		printf("sending ACK(if transmission was heard then error :/ )\n");
 		SendAckPacket(ACK_MUTE,NULL,NULL,0);
 		vTaskDelay(1000);
@@ -432,6 +441,51 @@ Boolean TestTransmitDataAsSPL_Packet()
 	return TRUE;
 }
 
+Boolean TestTurnOnTrasnponder()
+{
+
+	byte rssiData[2];
+	unsigned short temp = 1;
+	memcpy(rssiData, &temp, 2);
+
+	int err = 0;
+	err = set_transponder_RSSI(rssiData);
+	if(0!=err)
+	{
+		printf("Error with RSSI logic\n");
+	}
+	err = set_transonder_mode(TRUE);
+
+	if(0!=err)
+	{
+		printf("Error with transponder logic\n");
+	}
+
+	return TRUE;
+}
+
+
+Boolean TestTurnOffTransponder()
+{
+	int err = set_transonder_mode(FALSE);
+	if(0!=err)
+	{
+		printf("Error with transponder logic\n");
+	}
+	return TRUE;
+}
+
+Boolean TestTurnOnIDLE()
+{
+	IsisTrxvu_tcSetIdlestate(ISIS_TRXVU_I2C_BUS_INDEX,trxvu_idle_state_on);
+	return TRUE;
+}
+
+Boolean TestTurnOffIDLE()
+{
+	IsisTrxvu_tcSetIdlestate(ISIS_TRXVU_I2C_BUS_INDEX,trxvu_idle_state_off);
+	return TRUE;
+}
 Boolean selectAndExecuteTrxvuDemoTest()
 {
 	unsigned int selection = 0;
@@ -457,8 +511,13 @@ Boolean selectAndExecuteTrxvuDemoTest()
 	printf("\t 16) Choose to default beacon inervals\n\r");
 	printf("\t 17) Restore to default beacon inervals\n\r");
 	printf("\t 18) Check Transmition Allowed\n\r");
+	printf("\t 19) Turn on transponder\n\r");
+	printf("\t 20) Turn off transponder\n\r");
+	printf("\t 21) Turn on IDLE\n\r");
+	printf("\t 22) Turn off IDLE\n\r");
 
-	unsigned int number_of_tests = 18;
+
+	unsigned int number_of_tests = 22;
 	while(UTIL_DbguGetIntegerMinMax(&selection, 0, number_of_tests) == 0);
 
 	switch(selection) {
@@ -518,6 +577,18 @@ Boolean selectAndExecuteTrxvuDemoTest()
 		break;
 	case 18:
 		offerMoreTests = TestCheckTransmitionAllowed();
+		break;
+	case 19:
+		offerMoreTests = TestTurnOnTrasnponder();
+		break;
+	case 20:
+		offerMoreTests = TestTurnOffTransponder();
+		break;
+	case 21:
+		offerMoreTests = TestTurnOnIDLE();
+		break;
+	case 22:
+		offerMoreTests = TestTurnOffIDLE();
 		break;
 	default:
 		break;

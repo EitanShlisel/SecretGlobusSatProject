@@ -157,7 +157,8 @@ void Maintenance()
 		printf("GS was kicked. now restarting...\n");
 		vTaskDelay(5000);
 #endif
-		restart();
+		//restart();
+		//TODO use ieps ground wdt
 	}
 
 	if(CheckForMuteEnd()){
@@ -165,6 +166,10 @@ void Maintenance()
 #ifdef TESTING
 		printf("unmuted\n");
 #endif
+	}
+
+	if(CheckForGsModeEnd()){
+		ExitGS_Mode();
 	}
 	//TODO: if(current_time < FRAM_sat_time) maybe update 'sat_time' to be 'first_wakeup_'
 }

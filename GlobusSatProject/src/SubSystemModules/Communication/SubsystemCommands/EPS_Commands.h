@@ -3,6 +3,7 @@
 #define EPS_COMMANDS_H_
 
 #include "SubSystemModules/Communication/SatCommandHandler.h"
+#define E_MEMCPY				-37	///< Failed to use memcpy
 
 int CMD_UpdateThresholdVoltages(sat_packet_t *cmd);
 
@@ -32,13 +33,13 @@ int CMD_EPS_ResetWDT(sat_packet_t *cmd);
 
 int CMD_EPS_SetChannels(sat_packet_t *cmd);
 
-int CMD_SetChannels3V3_On(sat_packet_t *cmd);
+int CMD_SetChannels_On(sat_packet_t *cmd);
 
-int CMD_SetChannels3V3_Off(sat_packet_t *cmd);
+int CMD_SetChannels_Off(sat_packet_t *cmd);
 
-int CMD_SetChannels5V_On(sat_packet_t *cmd);
+int CMD_SetGroup_On(sat_packet_t *cmd);
 
-int CMD_SetChannels5V_Off(sat_packet_t *cmd);
+int CMD_SetGroup_Off(sat_packet_t *cmd);
 
 int CMD_GetEpsParemeter(sat_packet_t *cmd);
 

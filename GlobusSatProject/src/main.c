@@ -13,7 +13,7 @@
 #include <at91/peripherals/cp15/cp15.h>
 #include <at91/utility/exithandler.h>
 #include <at91/commons.h>
-
+#include <stdlib.h>
 #include <hcc/api_fat.h>
 
 #include "GlobalStandards.h"
@@ -24,6 +24,8 @@
 #include "InitSystem.h"
 #include "main.h"
 
+#include <hal/Storage/FRAM.h>
+
 #ifdef TESTING
 	#include "TestingDemos/MainTest.h"
 #else
@@ -32,6 +34,8 @@ void taskMain()
 	WDT_startWatchdogKickTask(10 / portTICK_RATE_MS, FALSE);
 
 	InitSubsystems();
+
+	unsigned int fram_max_size = FRAM_getMaxAddress();
 
 	while (TRUE) {
 		EPS_Conditioning();
@@ -50,6 +54,7 @@ void taskMain()
 // main operation function. will be called upon software boot.
 int main()
 {
+
 	xTaskHandle taskMainHandle;
 
 	TRACE_CONFIGURE_ISP(DBGU_STANDARD, 2000000, BOARD_MCK);
@@ -69,4 +74,5 @@ int main()
 			configMAX_PRIORITIES - 2, &taskMainHandle, NULL, NULL);
 #endif
 	vTaskStartScheduler();
+	exit(0);
 }

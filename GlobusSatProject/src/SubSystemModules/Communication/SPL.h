@@ -8,7 +8,8 @@ typedef enum __attribute__ ((__packed__)) spl_command_type_t {
 	telemetry_cmd_type,
 	filesystem_cmd_type,
 	managment_cmd_type,
-	ack_type
+	ack_type,
+	freertos_type
 }spl_command_type;
 
 //TODO: set all sub-types to be different from one another
@@ -79,7 +80,6 @@ typedef enum __attribute__ ((__packed__)) trxvu_subtypes_t
 	ANT_GET_ARM_STATUS = 	0xB2,	//0b10110010
 	ANT_GET_UPTIME =		0xB3,	//0b10110011
 	ANT_CANCEL_DEPLOY = 	0xB7,	//0b10110111
-	FORCE_ABORT_DUMP_SUBTYPE = 0x33,//0b00110011
 	DELETE_DUMP_TASK = 0x44			//0b00100010
 
 }trxvu_subtypes_t;
@@ -106,8 +106,15 @@ typedef enum __attribute__ ((__packed__)) management_subtypes_t
 	TRXVU_SOFT_RESET_SUBTYPE =	0xC3,		//0b11000011
 	TRXVU_HARD_RESET_SUBTYPE = 	0x3C,		//0b00111100
 	EPS_RESET_SUBTYPE =			0xBB,		//0b10111011
-	FS_RESET_SUBTYPE =			0xCC		//0b11001100
+	FS_RESET_SUBTYPE =			0xCC,		//0b11001100
+	UPDATE_TIME_SUBTYPE =		0xCD		//0b11001101
 }management_subtypes_t;
+
+typedef enum __attribute__ ((__packed__)) freertos_subtypes_t{
+	FREERTOS_DELAY_SUBTYPE
+
+}freertos_subtypes_t;
+
 //-----------------
 
 #endif /* SPL_H_ */

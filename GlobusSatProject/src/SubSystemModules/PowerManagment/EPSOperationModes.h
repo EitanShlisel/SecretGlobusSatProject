@@ -54,11 +54,19 @@ int EnterCriticalMode();
 /*!
  * @brief Sets the channel state according to the bitwise 'logic on'
  * if the 2'nd bit is '1' the second channel will turn on (channel = 0b01000000)
- * @note please use the defines defined in this header to turn on/off channels
  * @return	0 on success
  * 			errors according to <hal/errors.h>
  */
-int SetEPS_Channels(channel_t channel);
+int SetEPS_ChannelsOn(channel_t channel);
+
+/*!
+ * @brief Sets the channel state according to the bitwise 'logic on'
+ * if the 2'nd bit is '1' the second channel will turn off (channel = 0b01000000)
+ * @return	0 on success
+ * 			errors according to <hal/errors.h>
+ */
+int SetEPS_ChannelsOff(channel_t channel);
+
 
 /*!
  * returns the current system state according to the EpsState_t enumeration

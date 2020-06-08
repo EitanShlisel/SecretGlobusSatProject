@@ -51,4 +51,13 @@ int filesystem_command_router(sat_packet_t *cmd);
  */
 int managment_command_router(sat_packet_t *cmd);
 
+/*!
+ * @brief routes the data into the appropriate FREERTOS command according to the command sub type
+ * @param[in] cmd command pertaining to a specific FREERTOS command
+ * @note the type and subtype of the command are already inside cmd
+ * @see sat_packet_t structure
+ * @return errors according to <hal/errors.h> and <freertos.h>
+ */
+int freertos_command_router(sat_packet_t *cmd);
+
 #endif /* COMMANDDICTIONARY_H_ */

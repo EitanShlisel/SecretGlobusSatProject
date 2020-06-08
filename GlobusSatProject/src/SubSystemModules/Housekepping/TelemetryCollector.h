@@ -9,14 +9,26 @@
 typedef struct __attribute__ ((__packed__)) WOD_Telemetry_t
 {
 	time_unix sat_time;				///< current Unix time of the satellites clock [sec]
-	voltage_t vbat;					///< the current voltage on the battery [mV]
-	voltage_t volt_5V;				///< the current voltage on the 5V bus [mV]
-	voltage_t volt_3V3;				///< the current voltage on the 3V3 bus [mV]
-	power_t charging_power;			///< the current charging power [mW]
-	power_t consumed_power;			///< the power consumed by the satellite [mW]
-	current_t electric_current;		///< the up-to-date electric current of the battery [mA]
-	current_t current_3V3;			///< the up-to-date 3.3 Volt bus current of the battery [mA]
-	current_t current_5V;			///< the up-to-date 5 Volt bus current of the battery [mA]
+	power_t charging_power;			///< the charging power [mW]
+	voltage_t vbat;					///< the voltage on the battery [mV]
+
+	voltage_t voltage_channel_0;	///< the output voltage on channel 0 [mV]
+	voltage_t voltage_channel_1;	///< the output voltage on channel 1 [mV]
+	voltage_t voltage_channel_2;	///< the output voltage on channel 2 [mV]
+	voltage_t voltage_channel_3;	///< the output voltage on channel 3 [mV]
+	voltage_t voltage_channel_4;	///< the output voltage on channel 4 [mV]
+	voltage_t voltage_channel_5;	///< the output voltage on channel 5 [mV]
+	voltage_t voltage_channel_6;	///< the output voltage on channel 6 [mV]
+	voltage_t voltage_channel_7;	///< the output voltage on channel 7 [mV]
+
+	current_t current_channel_0;	///< the output current on channel 0 [mA]
+	current_t current_channel_1;	///< the output current on channel 1 [mA]
+	current_t current_channel_2;	///< the output current on channel 2 [mA]
+	current_t current_channel_3;	///< the output current on channel 3 [mA]
+	current_t current_channel_4;	///< the output current on channel 4 [mA]
+	current_t current_channel_5;	///< the output current on channel 5 [mA]
+	current_t current_channel_6;	///< the output current on channel 6 [mA]
+	current_t current_channel_7;	///< the output current on channel 7 [mA]
 
 	unsigned int free_memory;		///< number of bytes free in the satellites SD [byte]
 	unsigned int corrupt_bytes;		///< number of currpted bytes in the memory	[bytes]
@@ -43,7 +55,6 @@ void TelemetryCreateFiles(Boolean8bit tlms_created[NUMBER_OF_TELEMETRIES]);
  * @brief saves all telemetries into the appropriate TLM files
  */
 void TelemetryCollectorLogic();
-
 /*!
  *  @brief saves current EPS telemetry into file
  */
@@ -74,5 +85,11 @@ void TelemetrySaveWOD();
  * @param[out] output WOD telemetry. If an error occurred while getting TLM the fields will be zero
  */
 void GetCurrentWODTelemetry(WOD_Telemetry_t *wod);
+/*!
+ *
+ * @brief Init Telemetry Collrctor Fram
+ * @param[out] fram error
+ */
+int InitTelemetryCollrctor();
 
 #endif /* TELEMETRYCOLLECTOR_H_ */
