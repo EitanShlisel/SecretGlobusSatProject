@@ -181,7 +181,7 @@ Boolean TestTransmitSplPacket()
 
 Boolean TestExitDump()
 {
-	AbortDump();
+	SendDumpAbortRequest();
 	return TRUE;
 }
 

@@ -62,11 +62,14 @@ static Boolean PrintFile()
 {
 	printf("\nPlease insert number matching c file (just like dump requests)\n");
 
-	//TODO: Add deinit and tellemetry collector logic
+	// Delete all files and check saving new data
 	DeInitializeFS();
+
 	Boolean first_activation = TRUE;
 	InitializeFS(first_activation);
+
 	TelemetryCreateFiles(tlms_created);
+
 	TelemetryCollectorLogic();
 
 	int type = 0;

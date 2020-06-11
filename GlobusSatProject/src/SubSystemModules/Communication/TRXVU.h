@@ -44,11 +44,6 @@ CommandHandlerErr TRX_Logic();
  */
 void SendDumpAbortRequest();
 
-/*!
- * @brief Closes a dump task if one is executing, using vTaskDelete.
- * @note Can be used to forcibly abort the task
- */
-void AbortDump();
 
 /*!
  * @brief dump telemetry to the ground station with telemetry in time range specified in 'cmd'
