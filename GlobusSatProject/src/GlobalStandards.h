@@ -23,7 +23,6 @@
 #endif
 
 
-
 #define TELEMETRY_SAVE_TIME_PERIOD	(10)				///< save telemetry every 10 secondss
 
 #define MINUTES_TO_MILLISECONDS(minute) ((minute)*60*1000)
@@ -34,7 +33,8 @@
 
 #define MAX_SEMAPHORE_WAIT 				(SECONDS_TO_TICKS(10))	///< wait for 10 seconds to acquire semaphore
 
-#define DELAYED_CMD_TIME_BOUND	60 								///< if requested execution time has passed by this measure the command will not be executed and deleted from buffer
+#define DELAYED_CMD_TIME_BOUND			60 								///< if requested execution time has passed by this measure the command will not be executed and deleted from buffer
+#define NUMBER_OF_SOLAR_PANELS			6
 
 #define UNIX_DATE_JAN_D1_Y2000 {\
 .seconds = 0,		\

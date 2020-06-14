@@ -107,12 +107,12 @@ void WriteDefaultValuesToFRAM()
 	FRAM_write((unsigned char*) &tlm_save_period, WOD_SAVE_TLM_PERIOD_ADDR,
 			sizeof(tlm_save_period));
 
-	time_unix beacon_interval = 0;
-	beacon_interval = DEFAULT_BEACON_INTERVAL_TIME;
+	time_unix beacon_interval = DEFAULT_BEACON_INTERVAL_TIME;
 	FRAM_write((unsigned char*) &beacon_interval, BEACON_INTERVAL_TIME_ADDR,
 			BEACON_INTERVAL_TIME_SIZE);
+
 //TODO: find a proper solution for interval defualt problems
-	time_unix tlm_save_periods[NUM_OF_SUBSYSTEMS_SAVE_FUNCTIONS] = {1,1,1,1,1};
+	time_unix tlm_save_periods[NUM_OF_SUBSYSTEMS_SAVE_FUNCTIONS] = {5,5,5,5,5};
 	FRAM_write((unsigned char*) &tlm_save_periods, TLM_SAVE_PERIOD_START_ADDR,
 			NUM_OF_SUBSYSTEMS_SAVE_FUNCTIONS*sizeof(time_unix));
 

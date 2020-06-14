@@ -164,7 +164,7 @@ int f_managed_releaseFS()
 int f_managed_open(char* file_name, char* config, F_FILE** fileHandler)
 {
 	int lastError = 0;
-	if (xSemaphoreTake(xFileOpenHandler, FS_TAKE_SEMPH_DELAY) == pdTRUE)
+	//if (xSemaphoreTake(xFileOpenHandler, FS_TAKE_SEMPH_DELAY) == pdTRUE)
 	{
 		for (int i = 0; i < 3; i++)
 		{
@@ -178,13 +178,13 @@ int f_managed_open(char* file_name, char* config, F_FILE** fileHandler)
 			vTaskDelay(100);
 		}
 
-		if (fileHandler == NULL || lastError != 0)
-			xSemaphoreGive(xFileOpenHandler);
+		//if (fileHandler == NULL || lastError != 0)
+			//xSemaphoreGive(xFileOpenHandler);
 		//vTaskDelay(SYSTEM_DEALY);
-	}
-	else
-	{
-		return COULD_NOT_TAKE_SEMAPHORE_ERROR;
+	//}
+//	else
+	//{
+	//	return COULD_NOT_TAKE_SEMAPHORE_ERROR;
 	}
 	return lastError;
 }
@@ -197,10 +197,10 @@ int f_managed_close(F_FILE** fileHandler)
 	{
 		return error;
 	}
-	if (xSemaphoreGive(xFileOpenHandler) == pdTRUE)
+//	if (xSemaphoreGive(xFileOpenHandler) == pdTRUE)
 		return 0;
 
-	return COULD_NOT_GIVE_SEMAPHORE_ERROR;
+	//return COULD_NOT_GIVE_SEMAPHORE_ERROR;
 }
 
 FileSystemResult createSemahores_FS()
@@ -263,8 +263,6 @@ FileSystemResult InitializeFS(Boolean first_time)
 			return FS_FAT_API_FAIL;
 		}
 	}
-
-
 	return FS_SUCCSESS;
 }
 
@@ -404,7 +402,7 @@ FileSystemResult c_fileWrite(char* c_file_name, void* element)
 	}
 	int index_current = getFileIndex(c_file.creation_time,curr_time);
 	get_file_name_by_index(c_file_name,index_current,curr_file_name);
-	int error = f_managed_open(curr_file_name, "a+", &file);
+	int error = f_managed_open(curr_file_name, "a+", &file); // Crushing here
 	if (error == COULD_NOT_TAKE_SEMAPHORE_ERROR)
 		return FS_COULD_NOT_TAKE_SEMAPHORE;
 	if (file == NULL || error != 0)
