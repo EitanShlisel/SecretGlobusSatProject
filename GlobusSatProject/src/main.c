@@ -35,8 +35,6 @@ void taskMain()
 
 	InitSubsystems();
 
-	unsigned int fram_max_size = FRAM_getMaxAddress();
-
 	while (TRUE) {
 		EPS_Conditioning();
 

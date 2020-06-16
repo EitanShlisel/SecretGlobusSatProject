@@ -154,10 +154,8 @@ int StartTIME()
 	return 0;
 }
 
-int DeploySystem()
+int DeploySystem(Boolean first_activation)
 {
-	Boolean first_activation = isFirstActivation();
-
 	if (first_activation) {
 		TelemetryCreateFiles(tlms_created);
 		firstActivationProcedure();
@@ -172,7 +170,6 @@ int DeploySystem()
 		FIRST_ACTIVATION_FLAG_ADDR, FIRST_ACTIVATION_FLAG_SIZE);
 
 		WriteDefaultValuesToFRAM();
-
 	}
 	return 0;
 }
@@ -194,8 +191,9 @@ int InitSubsystems()
 	err = StartTIME();
 	PRINT_IF_ERR(StartTIME)
 
-	int first_activation =isFirstActivation();
+	//Boolean first_activation =isFirstActivation();
 
+	Boolean first_activation = TRUE; // TODO: This is only for telemetry collecor check, delete later
 	err = InitializeFS(first_activation);
 	PRINT_IF_ERR(InitializeFS)
 
@@ -208,7 +206,7 @@ int InitSubsystems()
 	err = InitTelemetryCollrctor();
 	PRINT_IF_ERR(InitTelemetryCollrctor);
 
-	err = DeploySystem();
+	err = DeploySystem(first_activation);
 	PRINT_IF_ERR(DeploySystem)
 	return 0;
 }
