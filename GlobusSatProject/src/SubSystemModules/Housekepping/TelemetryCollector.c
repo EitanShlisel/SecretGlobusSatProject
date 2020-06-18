@@ -66,6 +66,7 @@ int InitTelemetryCollrctor()
 void TelemetryCollectorLogic()
 {
 	if (CheckExecutionTime(tlm_last_save_time[eps_tlm],tlm_save_periods[eps_tlm])){
+		printf("still going strong\n");
 		TelemetrySaveEPS();
 		Time_getUnixEpoch(&tlm_last_save_time[eps_tlm]);
 	}

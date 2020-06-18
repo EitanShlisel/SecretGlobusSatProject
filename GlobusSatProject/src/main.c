@@ -36,6 +36,7 @@ void taskMain()
 	InitSubsystems();
 
 	while (TRUE) {
+
 		EPS_Conditioning();
 
 		TRX_Logic();
