@@ -48,8 +48,11 @@ int GetTelemetryFilenameByType(tlm_type tlm_type, char filename[MAX_F_FILE_NAME_
 	case tlm_rx_revc:
 		strcpy(filename,FILENAME_RX_REVC);
 		break;
-	case tlm_antenna:
-		strcpy(filename,FILENAME_ANTENNA_TLM);
+	case tlm_antenna_side_a:
+		strcpy(filename,FILENAME_ANTENNA_SIDE_A_TLM);
+		break;
+	case tlm_antenna_side_b:
+		strcpy(filename,FILENAME_ANTENNA_SIDE_B_TLM);
 		break;
 		default:
 			return -2;
@@ -116,8 +119,11 @@ void TelemetryCreateFiles(Boolean8bit tlms_created[NUMBER_OF_TELEMETRIES]){
 	SAVE_FLAG_IF_FILE_CREATED(tlm_rx_revc);
 
 	// -- ANT files
-	res = c_fileCreate(FILENAME_ANTENNA_TLM,sizeof(ISISantsTelemetry));
-	SAVE_FLAG_IF_FILE_CREATED(tlm_antenna);
+	res = c_fileCreate(FILENAME_ANTENNA_SIDE_A_TLM,sizeof(ISISantsTelemetry));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_antenna_side_a);
+
+	res = c_fileCreate(FILENAME_ANTENNA_SIDE_B_TLM,sizeof(ISISantsTelemetry));
+	SAVE_FLAG_IF_FILE_CREATED(tlm_antenna_side_b);
 
 	//-- SOLAR PANEL files
 	res = c_fileCreate(FILENAME_SOLAR_PANELS_TLM,sizeof(int32_t)*ISIS_SOLAR_PANEL_COUNT);
@@ -159,13 +165,13 @@ void TelemetrySaveANT()
 			&ant_tlmA);
 	if (err == 0)
 	{
-		c_fileWrite(FILENAME_ANTENNA_TLM, &ant_tlmA);
+		c_fileWrite(FILENAME_ANTENNA_SIDE_A_TLM, &ant_tlmA);
 	}
 	err += IsisAntS_getAlltelemetry(ISIS_TRXVU_I2C_BUS_INDEX, isisants_sideB,
 			&ant_tlmB);
 	if (err == 0)
 	{
-		c_fileWrite(FILENAME_ANTENNA_TLM, &ant_tlmB);
+		c_fileWrite(FILENAME_ANTENNA_SIDE_B_TLM, &ant_tlmB);
 	}
 
 }

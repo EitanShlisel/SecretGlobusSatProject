@@ -39,6 +39,7 @@ int CMD_GenericI2C(sat_packet_t *cmd)
 	unsigned int offset = sizeof(slaveAddr) + sizeof(size);
 	err = I2C_write((unsigned int)slaveAddr,cmd->data + offset, cmd->length);
 	I2C_read((unsigned int)slaveAddr,i2c_data,size);
+	free (i2c_data);
 
 	return err;
 }

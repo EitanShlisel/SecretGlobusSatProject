@@ -16,7 +16,8 @@
 #define FILENAME_RX_REVC				"rx_revC"
 
 //  --- ants
-#define FILENAME_ANTENNA_TLM			"ant"
+#define FILENAME_ANTENNA_SIDE_A_TLM			"antSideA"
+#define FILENAME_ANTENNA_SIDE_B_TLM			"antSideB"
 
 typedef enum {
 	tlm_wod,
@@ -24,7 +25,8 @@ typedef enum {
 	tlm_solar,
 	tlm_tx_revc,
 	tlm_rx_revc,
-	tlm_antenna,
+	tlm_antenna_side_a,
+	tlm_antenna_side_b
 }tlm_type;
 
 #endif /* TELEMETRYFILES_H_ */
