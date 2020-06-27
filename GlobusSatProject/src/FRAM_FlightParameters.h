@@ -32,20 +32,20 @@
 
 #define TLM_SAVE_PERIOD_START_ADDR		0x30		//<! start of the save periods in the FRAM
 
-#define DEFAULT_EPS_SAVE_TLM_TIME		20			//<! save EPS TLM every 20 seconds
+#define DEFAULT_EPS_SAVE_TLM_TIME		5			//<! save EPS TLM every 20 seconds
 #define EPS_SAVE_TLM_PERIOD_ADDR		0x30		//<! address where the save tlm period will be
 #define LAST_EPS_TLM_SAVE_TIME_ADDR		0x20		//<! time of last EPS TLM save inot files
 
-#define DEFAULT_TRXVU_SAVE_TLM_TIME		20			//<! save TRXVU TLM every 20 seconds
+#define DEFAULT_TRXVU_SAVE_TLM_TIME		5			//<! save TRXVU TLM every 20 seconds
 #define TRXVU_SAVE_TLM_PERIOD_ADDR		0x34		//<! address where the save tlm period will be
 
-#define DEFAULT_ANT_SAVE_TLM_TIME		20			//<! save antenna TLM every 20 seconds
+#define DEFAULT_ANT_SAVE_TLM_TIME		5			//<! save antenna TLM every 20 seconds
 #define ANT_SAVE_TLM_PERIOD_ADDR		0x38		//<! address where the save tlm period will be
 
-#define DEFAULT_SOLAR_SAVE_TLM_TIME		20			//<! save solar panel TLM every 20 seconds
+#define DEFAULT_SOLAR_SAVE_TLM_TIME		5			//<! save solar panel TLM every 20 seconds
 #define SOLAR_SAVE_TLM_PERIOD_ADDR		0x3C		//<! address where the save tlm period will be
 
-#define DEFAULT_WOD_SAVE_TLM_TIME		20			//<! save WOD TLM every 20 seconds
+#define DEFAULT_WOD_SAVE_TLM_TIME		5			//<! save WOD TLM every 20 seconds
 #define WOD_SAVE_TLM_PERIOD_ADDR		0x40		//<! address where the save tlm period will be
 
 
