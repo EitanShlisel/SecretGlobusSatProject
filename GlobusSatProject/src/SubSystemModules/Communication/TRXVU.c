@@ -109,7 +109,7 @@ CommandHandlerErr TRX_Logic() {
 		//TODO: log error
 		//TODO: send message to ground when a delayed command was not executed-> add to log
 	}
-	//BeaconLogic();
+	BeaconLogic();
 
 	if (cmd_command_found != err)
 		return err;
