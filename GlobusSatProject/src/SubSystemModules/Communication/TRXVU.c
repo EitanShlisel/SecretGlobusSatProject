@@ -92,7 +92,7 @@ int InitTrxvu() {
 
 CommandHandlerErr TRX_Logic() {
 	int err = cmd_no_command_found;
-	int frame_count = GetNumberOfFramesInBuffer();
+	int frame_count = 0; //GetNumberOfFramesInBuffer(); TODO: This is only for testing
 	sat_packet_t cmd = { 0 };
 
 	if (frame_count > 0) {

@@ -52,7 +52,7 @@ Boolean CheckForMuteEnd() {
 
 int GetNumberOfFramesInBuffer() {
 	unsigned short frameCounter = 0;
-	int err = IsisTrxvu_rcGetFrameCount(0, &frameCounter);
+	int err = IsisTrxvu_rcGetFrameCount(ISIS_TRXVU_I2C_BUS_INDEX, &frameCounter);
 	if (0 != err) {
 		return -1;
 	}

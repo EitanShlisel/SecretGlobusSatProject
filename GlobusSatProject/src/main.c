@@ -39,7 +39,7 @@ void taskMain()
 
 		EPS_Conditioning();
 
-		//TRX_Logic();
+		TRX_Logic();
 
 		TelemetryCollectorLogic();
 
