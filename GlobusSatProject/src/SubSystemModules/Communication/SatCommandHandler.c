@@ -210,7 +210,7 @@ CommandHandlerErr GetOnlineCommand(sat_packet_t *cmd)
 	unsigned short frame_count = 0;
 	unsigned char received_frame_data[MAX_COMMAND_DATA_LENGTH];
 
-	err = IsisTrxvu_rcGetFrameCount(0, &frame_count);
+	err = IsisTrxvu_rcGetFrameCount(ISIS_TRXVU_I2C_BUS_INDEX, &frame_count);
 	if (0 != err) {
 		return cmd_execution_error;
 	}
@@ -220,7 +220,7 @@ CommandHandlerErr GetOnlineCommand(sat_packet_t *cmd)
 	ISIStrxvuRxFrame rxFrameCmd = { 0, 0, 0,
 			(unsigned char*) received_frame_data }; // for getting raw data from Rx, nullify values
 
-	err = IsisTrxvu_rcGetCommandFrame(0, &rxFrameCmd); //get the frame from the Rx buffer
+	err = IsisTrxvu_rcGetCommandFrame(ISIS_TRXVU_I2C_BUS_INDEX, &rxFrameCmd); //get the frame from the Rx buffer
 	if (0 != err) {
 		return cmd_execution_error;
 	}
